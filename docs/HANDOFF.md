@@ -1,3 +1,29 @@
+# Aktualizacja — częściowy zestaw preview wydany
+
+Na feat/05b-routing-prep, z bazy 6fe984e6e5b554bd90689ebf9cfa1eb1104d2844,
+wyeksportowano **5 pozytywnie zweryfikowanych kierunków** do
+public/roads/preview/routes.json (236923 B, ~71701 B gzip), dokładny format
+TransportRoute[] z feat/preview-gameplay-core / gameplay.ts (f09d861).
+Kraków ↔ Tarnów, Kraków → Zakopane, Kraków ↔ Bochnia. Zakopane → Kraków
+celowo pominięto; niepełne relacje 16545970/16545971 nie blokują innych kierunków.
+
+Pełne polilinie OSM bez upraszczania/zaokrąglania, prawdziwe metry i szacowane
+sekundy. Kontrola źródłowych odcinków, geometrii i stosowalnych restrykcji oraz
+ponowny audyt JSON po serializacji przeszły dla wszystkich pięciu. Nie ładować
+pełnego grafu do gry: plik można pobrać bezpośrednio jako tablicę TransportRoute.
+Dane, identyfikatory GeoNames, źródła/ODbL: public/roads/preview/README.md.
+Raport: docs/reports/05b-preview-export.json.
+Odtworzenie: node --max-old-space-size=4096 scripts/export-preview-routes.mjs.
+
+Kontrole: typecheck projektu i eksportera OK, routing 14/14, build OK; JSON po serializacji ponownie poddany audytowi, kopia dist zgodna bajtowo.
+
+Nie zmieniono routingu, grafu, UI ani mechaniki. Nie scalono z main. Wcześniejsze
+trzy lokalne szkice nietknięte. Cały 05B pozostaje nieukończony; zakończyć to
+zlecenie po commit/push i czekać na następne polecenie.
+Poniżej historyczny raport poprzedniego zlecenia (blokującego cały eksport).
+
+---
+
 # Aktualizacja gałęzi feat/05b-routing-prep — poprawka i blokada preview
 
 Baza fd234a10d7d0d13f62a5f47cfd8ebf33b9f776b4. Naprawiono ogólny błąd

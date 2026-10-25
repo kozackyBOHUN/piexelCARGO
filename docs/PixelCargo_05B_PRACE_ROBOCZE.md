@@ -4,7 +4,45 @@
 
 **Status:** 05B **W TRAKCIE**, nieukończony. Nie scalać z `main` bez pełnej weryfikacji na rzeczywistym grafie Małopolski.
 
-## Aktualny wynik — naprawa 3420948 i blokada preview
+## Najnowsze zlecenie — eksport tylko pozytywnie sprawdzonych kierunków
+
+**Dostarczono public/roads/preview/routes.json: 5 tras, 236923 B, ~71701 B gzip.**
+Baza: 6fe984e6e5b554bd90689ebf9cfa1eb1104d2844. Dokładna tablica TransportRoute[]
+sprawdzona z src/preview/gameplay.ts gałęzi feat/preview-gameplay-core, commit
+f09d86100e187feaed5d37b7531a132316109bc7. Bez zmian w mechanice lub UI.
+
+| Kierunek | km | Szacowany czas |
+| --- | ---: | --- |
+| Kraków → Tarnów | 82,690596 | 1 h 2 min 11,686 s |
+| Tarnów → Kraków | 82,891153 | 53 min 26,358 s |
+| Kraków → Zakopane | 103,642616 | 1 h 39 min 12,062 s |
+| Kraków → Bochnia | 41,628101 | 40 min 10,607 s |
+| Bochnia → Kraków | 41,320189 | 38 min 1,713 s |
+
+Wszystkie pięć ponownie wyznaczono i poddano audytowi na oryginalnym grafie.
+Sprawdzono także gotowy JSON po serializacji: właściwe pola/unikalne ID/kierunki,
+GeoNames IDs, dodatnie skończone długości/czasy, współrzędne WGS84 oraz identyczność
+geometrii i sum z audytowanym wynikiem routingu. Bez upraszczania/zaokrąglania
+współrzędnych i bez zastępczych łączników. Odczyt w grze wymaga tylko małego JSON,
+bez createNetwork i 1,5 GiB grafu/sieci w pamięci przeglądarki.
+
+**Pominięto wyłącznie Zakopane → Kraków**: niekompletne relacje OSM 16545970
+(brak from) i 16545971 (brak to). Nie odgadywano członków ani nie uznano zakazu
+za nieobowiązujący. Zgodnie z nowym poleceniem pominięcie kierunku nie blokuje
+innych, zweryfikowanych tras. Nie odwracano automatycznie geometrii innych tras.
+
+Raport: docs/reports/05b-preview-export.json. Licencja, instrukcja integracji
+i odtworzenia: public/roads/preview/README.md. Eksporter offline:
+node --max-old-space-size=4096 scripts/export-preview-routes.mjs.
+Nie regeneruje OSM ani nie zmienia algorytmu; pomija każdy kierunek z błędem audytu.
+
+Weryfikacja eksportu: typecheck projektu i skryptu eksportera OK, 14/14 testów routingu, build OK. Pięć audytów oraz ponowna kontrola JSON po serializacji przechodzą; kopia w dist jest identyczna z public. Bez Playwright i bez generatorów OSM.
+
+Poniższy raport blokady całego sześciotrasowego eksportu jest historyczny;
+obecnie wydano podzbiór dopuszczony nowym poleceniem. Pełnego 05B nie oznaczono
+jako ukończonego. Nie rozpoczynać kolejnych prac bez polecenia.
+
+## Historyczny wynik — naprawa 3420948 i blokada preview
 
 **Zadanie A ukończone. Zadanie B wstrzymane, nie ma wydanego routes.json.**
 Baza tej poprawki: fd234a10d7d0d13f62a5f47cfd8ebf33b9f776b4.
