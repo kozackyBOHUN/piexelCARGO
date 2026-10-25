@@ -19,6 +19,26 @@ describe('preview playable transport domain',()=>{
   expect(s.van?.cityId).toBe('T');expect(s.van!.mileageMeters).toBeCloseTo(82810);const bank=s.company!.balanceGrosze;
   expect(advancePreview(s,s.time).company?.balanceGrosze).toBe(bank);
  });
+ it('uses identical fuel for coarse and fine simulation increments',()=>{
+  const run = (increment: number) => {
+    let s=ready();
+    const actualMeters=82810.25;
+    s=dispatchTransport(s,offer,route('K','K',0,0),route('K','T',actualMeters,3600));
+    const finishAt = 90 * 60_000;
+    for(let time=increment;time<=finishAt;time+=increment)
+      s=advancePreview(s,time);
+    if (s.time < finishAt) s=advancePreview(s,finishAt);
+    expect(s.active).toBeNull();
+    return s;
+  };
+  const coarse=run(90 * 60_000);
+  const fine=run(15_000);
+  const expectedMl=Math.ceil(82810.25 * 0.12);
+  expect(coarse.van!.fuelMillilitres).toBe(20_000-expectedMl);
+  expect(fine.van!.fuelMillilitres).toBe(coarse.van!.fuelMillilitres);
+  expect(fine.van!.mileageMeters).toBeCloseTo(coarse.van!.mileageMeters,6);
+  expect(fine.company!.balanceGrosze).toBe(coarse.company!.balanceGrosze);
+ });
  it('charges daily interest only once and supports manual debt repayment',()=>{
   const s=ready();const t=advancePreview(s,24*H);expect(t.company?.debtGrosze).toBe(2000000);
   expect(t.events.filter(e=>e.message.startsWith('Odsetki'))).toHaveLength(1);
