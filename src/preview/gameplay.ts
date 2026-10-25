@@ -215,23 +215,32 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
   if (newGameTime === state.time) return state;
   let current = state;
   const step = (to: number) => {
-    const previousTime = current.time;
-    const wageTotal = current.driverHiredAt === null ? 0 : Math.floor((to - current.driverHiredAt) * WAGE_PER_HOUR / HOUR);
-    const wageDifference = wageTotal - current.paidWagesGrosze;
-    current = { ...current, time: to, paidWagesGrosze: wageTotal,
-      company: current.company ? { ...current.company, balanceGrosze: current.company.balanceGrosze - wageDifference } : null };
-    // Aggregate wage ledger entries rather than persisting one event every timer tick.
-    if (wageTotal > (current.wagesLoggedGrosze ?? 0) && Math.floor(to / HOUR) > Math.floor(previousTime / HOUR)) {
-      const toLog = wageTotal - (current.wagesLoggedGrosze ?? 0);
-      current = { ...current, wagesLoggedGrosze: wageTotal };
-      current = record(current, 'Wynagrodzenie kierowcy.', -toLog);
+    // Pay strictly at completed one-hour work intervals, counted from hiring.
+    // Old saves may contain partially accrued wages. Never refund or double-pay
+    // those amounts while transitioning to the hourly payroll rule.
+    const completedHours = current.driverHiredAt === null ? 0 :
+      Math.max(0, Math.floor((to - current.driverHiredAt) / HOUR));
+    const earnedGrosze = completedHours * WAGE_PER_HOUR;
+    const wageDifference = Math.max(0, earnedGrosze - current.paidWagesGrosze);
+    current = { ...current, time: to,
+      paidWagesGrosze: current.paidWagesGrosze + wageDifference,
+      company: current.company ? { ...current.company,
+        balanceGrosze: current.company.balanceGrosze - wageDifference } : null };
+    if (wageDifference > 0) {
+      current = { ...current, wagesLoggedGrosze: (current.wagesLoggedGrosze ?? 0) + wageDifference };
+      current = record(current, 'Pensja kierowcy - zakończona godzina pracy.', -wageDifference);
     }
   };
   while (current.time < newGameTime) {
     const startOfNextDay = (Math.floor(current.time / DAY) + 1) * DAY;
     const a = current.active;
     const phaseEnd = a ? current.time + Math.max(0, phaseDuration(a) - a.phaseProgressMs) : Infinity;
-    const to = Math.min(newGameTime, startOfNextDay, phaseEnd);
+    // Split long time jumps at payday boundaries so each full hour is charged
+    // once, even when resuming a save or accelerating the game clock.
+    const nextWageAt = current.driverHiredAt === null ? Infinity :
+      current.driverHiredAt +
+        (Math.floor(Math.max(0, current.time - current.driverHiredAt) / HOUR) + 1) * HOUR;
+    const to = Math.min(newGameTime, startOfNextDay, phaseEnd, nextWageAt);
     const dt = to - current.time;
     if (dt > 0 && a && current.van && (a.phase === 'empty' || a.phase === 'loaded')) {
       const duration = phaseDuration(a);
