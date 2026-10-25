@@ -24,7 +24,7 @@ test('first visit introduces parking, locks buildings and keeps five market list
  await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'}).click();
  await expect(page.getByText('WITAJ W SWOJEJ BAZIE')).toBeVisible();
  await expect(page.getByRole('button',{name:/KADRY, poziom 1, zablokowany/})).toBeDisabled();
- await page.getByRole('button',{name:/SPEDYCJA, poziom 1, zablokowany/})).toBeDisabled();
+ await expect(page.getByRole('button',{name:/SPEDYCJA, poziom 1, zablokowany/})).toBeDisabled();
  await page.getByRole('button',{name:/PARKING, poziom 1, otwarty/}).click();
  await expect(page.getByText('TWOJA FLOTA JEST PUSTA')).toBeVisible();
  await page.getByRole('tab',{name:'DEALER'}).click();
