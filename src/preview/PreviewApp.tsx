@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { GameRuntime } from '../core/runtime';
 import { formatGameTime } from '../core/engine';
 import {
@@ -114,12 +114,24 @@ export function PreviewApp({runtime}: {runtime: GameRuntime}) {
     if(status.mode!=='active')return;
     setState(s=>game.time >= s.time ? advancePreview(s,game.time) : s);
   },[game.time,status.mode]);
+  // The game updates every 250ms; debouncing by 500ms never fires while
+  // the clock is running. Persist periodically using the latest snapshot,
+  // and flush on navigation/unmount to avoid losing recently accepted jobs.
+  const latestState = useRef(state);
+  latestState.current = state;
   useEffect(()=>{
-    const save = window.setTimeout(()=>{
-      try{window.localStorage.setItem(STORAGE,JSON.stringify(state));}catch{/* storage full: simulation continues */}
-    },500);
-    return ()=>window.clearTimeout(save);
-  },[state]);
+    const save = () => {
+      try{window.localStorage.setItem(STORAGE, JSON.stringify(latestState.current));}
+      catch{/* storage full: simulation continues; never interrupt the game */}
+    };
+    const timer = window.setInterval(save, 1000);
+    window.addEventListener('pagehide', save);
+    return ()=>{
+      window.clearInterval(timer);
+      window.removeEventListener('pagehide', save);
+      save();
+    };
+  },[]);
   const options = useMemo(()=>[...new Set(routes.map(r=>r.fromCityId))], [routes]);
   const offers = useMemo(()=>routes.filter(r=>r.fromCityId===state.van?.cityId && routes.some(back=>back.fromCityId===r.toCityId)).map(r=>({route:r,offer:availableOffer(r,state)})),[routes,state]);
   const active = state.active;
