@@ -121,7 +121,7 @@ export function PreviewApp({runtime}: {runtime: GameRuntime}) {
     return ()=>window.clearTimeout(save);
   },[state]);
   const options = useMemo(()=>[...new Set(routes.map(r=>r.fromCityId))], [routes]);
-  const offers = useMemo(()=>routes.filter(r=>r.fromCityId===state.van?.cityId).map(r=>({route:r,offer:availableOffer(r,state)})),[routes,state]);
+  const offers = useMemo(()=>routes.filter(r=>r.fromCityId===state.van?.cityId && routes.some(back=>back.fromCityId===r.toCityId)).map(r=>({route:r,offer:availableOffer(r,state)})),[routes,state]);
   const active = state.active;
   const activeRoute = active ? (active.phase==='empty' ? active.routeEmpty : active.routeLoaded) : null;
   const percent = active ? Math.min(100,Math.max(0,active.phaseProgressMs / (active.phase==='empty' ? active.routeEmpty.seconds*1000||1 : active.phase==='loaded' ? active.routeLoaded.seconds*1000||1 : 900_000) * 100)) : 0;
@@ -146,8 +146,8 @@ export function PreviewApp({runtime}: {runtime: GameRuntime}) {
       <section className="pv-panel" aria-label="Zarządzanie firmą">
         <h2>01 / TWOJA FIRMA</h2>
         {!state.company ? <div className="pv-section">
-          <label>Nazwa firmy<input value={name} maxLength={64} onChange={e=>setName(e.target.value)} /></label>
-          <label>Miasto pierwszej bazy<select value={base} onChange={e=>setBase(e.target.value)}>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
+          <label>Nazwa firmy<input value={name} maxLength={64} onChange={(e: {target:{value:string}})=>setName(e.target.value)} /></label>
+          <label>Miasto pierwszej bazy<select value={base} onChange={(e: {target:{value:string}})=>setBase(e.target.value)}>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
           <p>Otrzymasz 20 000 zł kredytu. Startujesz bez furgonu i kierowcy.</p>
           <button disabled={!options.length||status.mode!=='active'} onClick={()=>action(s=>establishCompany(s,name,base))}>ZAŁÓŻ FIRMĘ</button>
         </div> : <div className="pv-section">
