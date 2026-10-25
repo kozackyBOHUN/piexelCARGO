@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import previewRoutes from '../../public/roads/preview/routes.json';
-import { createPreviewState, establishCompany, buyVan, hireDriver, refuelAtCity, dispatchTransport, advancePreview, repayLoan, type TransportRoute, type PreviewOffer } from './gameplay';
+import { createPreviewState, establishCompany, buyVan, buyUsedVan, listUsedVans, hireDriver, refuelAtCity, dispatchTransport, advancePreview, repayLoan, type TransportRoute, type PreviewOffer } from './gameplay';
 const H = 3_600_000;
 const route = (from: string, to: string, meters: number, seconds: number): TransportRoute => ({id:`osm:${from}:${to}`,fromCityId:from,toCityId:to,meters,seconds,geometry:[[19.93658,50.06143],[20.98698,50.01381]]});
 const offer: PreviewOffer = {id:'job-001',fromCityId:'K',toCityId:'T',cargo:'książki',massKg:300,volumeM3:3,pallets:1,payoutGrosze:65000,expiresAt:5*24*H};
@@ -15,7 +15,7 @@ describe('preview playable transport domain',()=>{
  });
  it('works across a full real-time simulation tick and pays once after delivery',()=>{
   let s=ready();s=dispatchTransport(s,offer,route('K','K',0,0),route('K','T',82810,3600));
-  s=advancePreview(s,H/2);expect(s.active?.phase).toBe('loaded');expect(s.company?.balanceGrosze).toBeLessThan(800000);
+  s=advancePreview(s,H/2);expect(s.active?.phase).toBe('loaded');expect(s.company?.balanceGrosze).toBe(800000);
   s=advancePreview(s,H+31*60_000);expect(s.active).toBeNull();expect(s.completedOfferIds).toContain('job-001');
   expect(s.van?.cityId).toBe('T');expect(s.van!.mileageMeters).toBeCloseTo(82810);const bank=s.company!.balanceGrosze;
   expect(advancePreview(s,s.time).company?.balanceGrosze).toBe(bank);
@@ -66,6 +66,40 @@ describe('preview playable transport domain',()=>{
     expect(fine.company!.balanceGrosze).toBe(baseline.company!.balanceGrosze);
     expect(fine.paidWagesGrosze).toBe(baseline.paidWagesGrosze);
   }
+ });
+ it('pays the driver exactly every completed game hour, including after restoring a save',()=>{
+  const hire=6*H+17*60_000;
+  let s=ready(hire);
+  const initial=s.company!.balanceGrosze;
+  s=advancePreview(s,hire+H-1);
+  expect(s.company!.balanceGrosze).toBe(initial);
+  expect(s.events.filter(e=>e.message.startsWith('Pensja'))).toHaveLength(0);
+  s=advancePreview(JSON.parse(JSON.stringify(s)),hire+H);
+  expect(s.company!.balanceGrosze).toBe(initial-2500);
+  expect(s.events.filter(e=>e.message.startsWith('Pensja'))).toHaveLength(1);
+  s=advancePreview(s,hire+H+1);
+  expect(s.company!.balanceGrosze).toBe(initial-2500);
+  s=advancePreview(JSON.parse(JSON.stringify(s)),hire+4*H);
+  expect(s.company!.balanceGrosze).toBe(initial-4*2500);
+  expect(s.events.filter(e=>e.message.startsWith('Pensja'))).toHaveLength(4);
+ });
+ it('seeds five varied used vans and preserves listing and chosen specs',()=>{
+   let s=createPreviewState(0);
+   s=establishCompany(s,'Kozacky Cargo','K');
+   const market=listUsedVans(s);
+   expect(market).toHaveLength(5);
+   expect(market.every(v=>v.priceGrosze>=500000)).toBe(true);
+   expect(new Set(market.map(v=>v.priceGrosze)).size).toBe(5);
+   expect(new Set(market.map(v=>v.mileageMeters)).size).toBe(5);
+   expect(listUsedVans(JSON.parse(JSON.stringify(s)))).toEqual(market);
+   const affordable=market.find(v=>v.priceGrosze<=s.company!.balanceGrosze)!;
+   const remaining=s.company!.balanceGrosze-affordable.priceGrosze;
+   s=buyUsedVan(s,affordable.id);
+   expect(s.company!.balanceGrosze).toBe(remaining);
+   expect(s.van?.specs?.id).toBe(affordable.id);
+   expect(s.van?.mileageMeters).toBe(affordable.mileageMeters);
+   expect(listUsedVans(s)).toHaveLength(4);
+   expect(()=>buyUsedVan(s,market[1].id)).toThrow(/jed(en|nym) pojazd|mieści/);
  });
  it('charges daily interest only once and supports manual debt repayment',()=>{
   const s=ready();const t=advancePreview(s,24*H);expect(t.company?.debtGrosze).toBe(2000000);
