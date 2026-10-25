@@ -110,7 +110,7 @@ interface TurnRules {
 function memberId(relation: TurnRelation, role: string, type: string): number | undefined {
   return relation.members.find(m => m[2] === role && (m[0] === type || m[0] === (type === 'w' ? 'way' : 'node')))?.[1];
 }
-function restrictions(graph: RoadGraph, profile: VanProfile): TurnRules {
+export function restrictions(graph: RoadGraph, profile: VanProfile): TurnRules {
   const byNodeAndFrom = new Map<string, ViaNodeRule[]>();
   const blockedEntries = new Map<number, Set<number>>();
   const conservative: number[] = [], handled: number[] = [], unsupported: number[] = [];
@@ -172,7 +172,7 @@ function restrictions(graph: RoadGraph, profile: VanProfile): TurnRules {
     diagnostics: { handledViaWayRestrictions: handled,
       conservativeViaWayRestrictions: conservative, unsupportedRestrictions: unsupported } };
 }
-function canTurn(network: RoadNetwork, prior: DirectedEdge, next: DirectedEdge, rules: TurnRules): boolean {
+export function canTurn(network: RoadNetwork, prior: DirectedEdge, next: DirectedEdge, rules: TurnRules): boolean {
   const prevWay = network.graph.ways[network.graph.segments[prior.segment][3]].id;
   const nextWay = network.graph.ways[network.graph.segments[next.segment][3]].id;
   if (rules.blockedEntries.get(prevWay)?.has(nextWay)) return false;
@@ -198,7 +198,7 @@ function canTurn(network: RoadNetwork, prior: DirectedEdge, next: DirectedEdge, 
  * that remembers only the last edge could incorrectly merge paths arriving
  * at the same edge with different restriction histories.
  */
-function advanceViaRules(
+export function advanceViaRules(
   network: RoadNetwork, prior: DirectedEdge, next: DirectedEdge,
   progress: readonly number[], rules: TurnRules,
 ): number[] | null {

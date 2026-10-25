@@ -2,6 +2,8 @@ import type {PreviewState,PreviewOffer,TransportRoute} from './gameplay';
 export function dispatchReadiness(s:PreviewState,o:PreviewOffer,routes:readonly TransportRoute[]){
  if(!s.van)return 'Brak samochodu — kup furgon na giełdzie.';
  if(s.driverHiredAt===null)return 'Brak zatrudnionego kierowcy — otwórz Kadry / Rekrutacja.';
+ if(s.service)return s.service.kind==='rest'?'Kierowca odpoczywa — poczekaj do końca snu.':'Trwa tankowanie — poczekaj do końca postoju.';
+ if(s.haltedReason)return s.haltedReason;
  if(s.active)return 'Samochód jest aktualnie w trasie — poczekaj na zakończenie kursu.';
  if(s.completedOfferIds.includes(o.id))return 'Zlecenie zostało już dostarczone.';
  if(o.massKg>(s.van.specs?.capacityKg??1200))return 'Ładunek przekracza ładowność — transport dzielony jest nieobsługiwany.';

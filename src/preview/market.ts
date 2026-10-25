@@ -28,11 +28,11 @@ export function ensureMarket(s:PreviewState,routes:readonly TransportRoute[]):Pr
  if(!s.company)return s;
  if(s.market){
   const ids=new Set(s.market.routes.map(r=>r.id));if(ids.size===routes.length&&routes.every(r=>ids.has(r.id)))return s;
-  const nextRoutes=routes.map(({geometry:_,...r})=>r);let m:FreightMarket={...s.market,routes:nextRoutes,offers:s.market.offers.filter(o=>routes.some(r=>r.fromCityId===o.fromCityId&&r.toCityId===o.toCityId))};
+  const nextRoutes=routes.map(r=>({id:r.id,fromCityId:r.fromCityId,toCityId:r.toCityId,meters:r.meters,seconds:r.seconds}));let m:FreightMarket={...s.market,routes:nextRoutes,offers:s.market.offers.filter(o=>routes.some(r=>r.fromCityId===o.fromCityId&&r.toCityId===o.toCityId))};
   for(const from of new Set(routes.map(r=>r.fromCityId)))while(m.offers.filter(o=>o.fromCityId===from).length<MARKET_CONFIG.slotsPerOrigin)m=generate(m,from,s.time);
   return {...s,market:m};
  }
- let m:FreightMarket={seed:hash(s.company.name+'|'+s.company.baseCityId),sequence:0,offers:[],orders:[],routes:routes.map(({geometry:_,...r})=>r)};
+ let m:FreightMarket={seed:hash(s.company.name+'|'+s.company.baseCityId),sequence:0,offers:[],orders:[],routes:routes.map(r=>({id:r.id,fromCityId:r.fromCityId,toCityId:r.toCityId,meters:r.meters,seconds:r.seconds}))};
  for(const from of new Set(routes.map(r=>r.fromCityId)))for(let i=0;i<MARKET_CONFIG.slotsPerOrigin;i++)m=generate(m,from,s.time);
  if(s.active)m={...m,orders:[{offer:s.active.offer,acceptedAt:s.active.startedAt,deadline:s.active.startedAt+MARKET_CONFIG.deliveryMs,penaltyGrosze:0,penalized:false,completedAt:null}]};
  return {...s,market:m};

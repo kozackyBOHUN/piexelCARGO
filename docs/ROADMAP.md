@@ -1,3 +1,13 @@
+# Aktualizacja — Etap 09 ukończony
+
+Praca w osobnym `/workspace/pixelcargo-stage09`, baza `367d153ef5403ddcf92ddd4e4d30b5b8ff7f5bce`, docelowo wyłącznie `feat/preview-gameplay-core`. Kod implementuje: 75 audytowanych odcinków / 306 składanych kierunków / 18 miast, Oświęcim potwierdzony, Gorlice wyłączone, kredyt i odsetki o północy, zmęczenie i niepłatny sen, planowanie odpoczynku i tankowania, kompaktową oś z edycją przyszłych postojów. Stare 135 tras zachowane. Szczegóły, migracja i ograniczenia: docs/STAGE_09.md; raport: docs/reports/09-routes.json.
+
+Potwierdzone: ponowny audyt 75 odcinków i 306 pełnych łańcuchów bez naruszeń; TypeScript OK; **123/123** testów jednostkowych; build i build:pages OK; pełny Playwright **43/43** (w tym oba rozmiary ekranu, przesuwanie przyszłego postoju, sen, paliwo, kredyt i dostawa); produkcyjny Playwright pod /piexelCARGO/ **1/1**. Zachowano wszystkie wcześniejsze testy, dostosowując liczbę ofert i oczekiwanie na rzeczywisty czas nowych tras. Brak zmian grafu źródłowego i starego katalogu 135 tras.
+
+Punkt wznowienia: commit zawierający ten wpis na `feat/preview-gameplay-core`. Etap 09 ukończony w dopuszczonym zakresie; Gorlice i 11 odrzuconych odcinków celowo wyłączone. Nie dodano usługi dowozu paliwa ani punktów POI stacji; tankowanie jest deterministycznym punktem usługi na faktycznej geometrii, zgodnie z regułami 09. Starym zapisom nie dopisuje się fikcyjnego historycznego zmęczenia. Publikacja przez istniejący workflow Pages po push tej gałęzi; wynik deploy sprawdzić dla tego samego SHA. Po raporcie końcowym **czekać na nowe polecenie**, bez kolejnych etapów, zmian main ani naruszania starych szkiców.
+
+---
+
 # Aktualizacja — Etap 08
 
 Wykonano osiem punktów: zatwierdzone 52 PNG i mapowanie wyglądu, zegar od utworzenia firmy, trwały samouczek, profilowy marker, 17 miast / 135 audytowanych kierunków (w tym powrót Zakopane → Kraków), przejazd pusty, wyjaśnienia blokad, oś TERAZ na 25% i najnowsza historia finansów na górze. Układ 07 i wcześniejsze zapisy zachowane. Oświęcim i Gorlice nie są uruchomione — brak wystarczającej kontroli tras. Nie dodano nowych modeli, odpoczynku ani planowanego tankowania. Szczegóły, audyt i punkt kontynuacji: docs/STAGE_08.md oraz docs/reports/08-routes.json. Baza d9610db409fd6405e21df1998a2caf10023a40ad. Po pozytywnych testach i commit/push wyłącznie na feat/preview-gameplay-core, sprawdzić Pages i czekać na polecenie.

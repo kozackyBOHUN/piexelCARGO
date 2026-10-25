@@ -54,7 +54,7 @@ GRAJ, powrót do panelu i strona źródeł/licencji. HTML Vite ustawia poprawne
 ścieżki JS/CSS/favicony; katalog public zawiera routes.json i pozostałe zasoby.
 Nie zmieniono mechaniki, parametrów gry, routingu ani danych OSM.
 
-Gra ładuje jedynie mały plik `/piexelCARGO/roads/preview/routes.json`, nie cały graf.
+Od etapu 09 gra ładuje `/piexelCARGO/roads/county/links.json` i `network.json` (~2,7 MB i ~28 KB), nie cały graf. Dawne `/piexelCARGO/roads/preview/routes.json` pozostaje katalogiem awaryjnym.
 Pełna baza nadal jest dostępna jako istniejący zasób i przez stronę licencji.
 
 ## Zapis w przeglądarce Windows

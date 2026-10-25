@@ -1,3 +1,5 @@
+import {simulatePreview,beginCityFuel} from './simulation09';
+import type {DriverState,PlannedStop,ServicePause,ActivityRecord} from './mechanics09';
 import {dispatchReadiness} from './dispatchReadiness';
 import {refreshMarket,type FreightMarket} from './market';
 /** Independent, deterministic preview domain. No React, global timers, APIs or implicit simulation. */
@@ -77,6 +79,12 @@ export interface PreviewEvent {
 }
 export interface PreviewState {
   readonly time: GameMs;
+  readonly driverState?:DriverState;
+  readonly stops?:readonly PlannedStop[];
+  readonly service?:ServicePause;
+  readonly activityLog?:readonly ActivityRecord[];
+  readonly stopSequence?:number;
+  readonly haltedReason?:string;
   readonly market?: FreightMarket;
   readonly company: PreviewCompany | null;
   readonly van: PreviewVan | null;
@@ -180,18 +188,9 @@ export function buyVan(state: PreviewState): PreviewState {
 }
 export function hireDriver(state: PreviewState): PreviewState {
   if (!state.company || !state.van || state.driverHiredAt !== null) throw new Error('Nie można zatrudnić kierowcy.');
-  return record({ ...state, driverHiredAt: state.time }, 'Zatrudniono kierowcę.', 0);
+  return record({ ...state, driverHiredAt: state.time,driverState:{drivingMs:0,satisfaction:100,overtimeHoursCharged:0,paidWorkMs:0} }, 'Zatrudniono kierowcę.', 0);
 }
-export function refuelAtCity(state: PreviewState, litres: number): PreviewState {
-  if (!state.company || !state.van || state.active) throw new Error('Tankowanie dostępne tylko w mieście, gdy auto jest wolne.');
-  assertNatural(litres, 'liczba litrów');
-  if (litres <= 0 || state.van.fuelMillilitres + litres * 1000 > MAX_FUEL_ML) throw new Error('Przekroczona pojemność baku.');
-  const price = litres * PRICE_PER_LITRE_GROSZE;
-  if (state.company.balanceGrosze < price) throw new Error('Brak pieniędzy na paliwo.');
-  return record({ ...state, company: { ...state.company, balanceGrosze: state.company.balanceGrosze - price },
-    van: { ...state.van, fuelMillilitres: state.van.fuelMillilitres + litres * 1000 } },
-    `Zatankowano ${litres} l.`, -price);
-}
+export function refuelAtCity(state:PreviewState,litres:number):PreviewState{return beginCityFuel(state,litres)}
 function validRoute(route: TransportRoute, from: string, to: string): boolean {
   return route.fromCityId === from && route.toCityId === to &&
     Number.isFinite(route.meters) && route.meters >= 0 &&
@@ -224,99 +223,20 @@ export function phaseDuration(a: ActiveTransport): number {
     a.phase === 'loaded' ? Math.round(a.routeLoaded.seconds * 1000) : HANDLING_GAME_MS;
 }
 /** Advance in game milliseconds (not real milliseconds). Handles phase transitions exactly once. */
-export function advancePreview(state: PreviewState, newGameTime: GameMs): PreviewState {
-  assertNatural(newGameTime, 'czas gry');
-  if (newGameTime < state.time) throw new Error('Nie można cofnąć czasu gry.');
-  if (newGameTime === state.time) return state;
-  let current = state;
-  const step = (to: number) => {
-    // Pay strictly at completed one-hour work intervals, counted from hiring.
-    // Old saves may contain partially accrued wages. Never refund or double-pay
-    // those amounts while transitioning to the hourly payroll rule.
-    const completedHours = current.driverHiredAt === null ? 0 :
-      Math.max(0, Math.floor((to - current.driverHiredAt) / HOUR));
-    const earnedGrosze = completedHours * WAGE_PER_HOUR;
-    const wageDifference = Math.max(0, earnedGrosze - current.paidWagesGrosze);
-    current = { ...current, time: to,
-      paidWagesGrosze: current.paidWagesGrosze + wageDifference,
-      company: current.company ? { ...current.company,
-        balanceGrosze: current.company.balanceGrosze - wageDifference } : null };
-    if (wageDifference > 0) {
-      current = { ...current, wagesLoggedGrosze: (current.wagesLoggedGrosze ?? 0) + wageDifference };
-      current = record(current, 'Pensja kierowcy - zakończona godzina pracy.', -wageDifference);
-    }
-  };
-  while (current.time < newGameTime) {
-    const startOfNextDay = (Math.floor(current.time / DAY) + 1) * DAY;
-    const a = current.active;
-    const phaseEnd = a ? current.time + Math.max(0, phaseDuration(a) - a.phaseProgressMs) : Infinity;
-    // Split long time jumps at payday boundaries so each full hour is charged
-    // once, even when resuming a save or accelerating the game clock.
-    const nextWageAt = current.driverHiredAt === null ? Infinity :
-      current.driverHiredAt +
-        (Math.floor(Math.max(0, current.time - current.driverHiredAt) / HOUR) + 1) * HOUR;
-    const deadlineAt = Math.min(Infinity,...(current.market?.orders.filter(o=>o.completedAt===null&&!o.penalized).map(o=>Math.max(current.time,o.deadline+1))??[]));
-    const to = Math.min(newGameTime, startOfNextDay, phaseEnd, nextWageAt, deadlineAt);
-    const dt = to - current.time;
-    if (dt > 0 && a && current.van && (a.phase === 'empty' || a.phase === 'loaded')) {
-      const duration = phaseDuration(a);
-      const routeMeters = a.phase === 'empty' ? a.routeEmpty.meters : a.routeLoaded.meters;
-      const rate = (a.phase === 'empty' ?
-        (current.van.specs?.emptyLitresPer100Km ?? 10):
-        (current.van.specs?.loadedLitresPer100Km ?? 12)) / 100; // ml per metre
-      const fraction = duration ? dt / duration : 1;
-      const meters = routeMeters * fraction;
-      // Charge the difference of cumulative consumption. Rounding each tick
-      // separately makes fuel usage depend on frame rate (e.g. 250ms vs 1s).
-      const cumulativeFuelMl = (elapsedMs: number) =>
-        Math.ceil(routeMeters * rate * (duration ? Math.min(1, elapsedMs / duration) : 1));
-      const millilitres = cumulativeFuelMl(a.phaseProgressMs + dt) - cumulativeFuelMl(a.phaseProgressMs);
-      current = { ...current, van: { ...current.van, fuelMillilitres: Math.max(0, current.van.fuelMillilitres - millilitres),
-        mileageMeters: current.van.mileageMeters + meters } };
-    }
-    step(to);
-    current=refreshMarket(current);
-    if (current.active) {
-      const job = current.active;
-      const progress = job.phaseProgressMs + dt;
-      if (progress >= phaseDuration(job)) {
-        const next: Record<Phase, Phase | 'finished'> = { empty:'loading',loading:'loaded',loaded:'unloading',unloading:'finished' };
-        const nextPhase = job.emptyOnly?'finished':next[job.phase];
-        if (nextPhase === 'finished') {
-          const value = job.emptyOnly?0:job.offer.payoutGrosze;
-          current = { ...current, active: null,
-            lastTransport: {...job,phaseProgressMs:phaseDuration(job),completedAt:current.time},
-            completedPlans:[...(current.completedPlans??(current.lastTransport?[recordedPlan(current.lastTransport,current.lastTransport.completedAt)]:[])),recordedPlan(job,current.time)],
-            completedOfferIds: job.emptyOnly?current.completedOfferIds:[...current.completedOfferIds, job.offer.id],
-            van: { ...current.van!, cityId: job.emptyOnly?job.routeEmpty.toCityId:job.offer.toCityId },
-            company: { ...current.company!, balanceGrosze: current.company!.balanceGrosze + value } };
-          if(current.market)current={...current,market:{...current.market,orders:current.market.orders.map(o=>o.offer.id===job.offer.id?{...o,completedAt:current.time}:o)}};
-          current = record(current, job.emptyOnly?`Zakończono przejazd pusty do ${job.routeEmpty.toCityId}.`:`Dostarczono ${job.offer.cargo}.`, value);
-        } else {
-          if (nextPhase === 'loading') current = { ...current, van: { ...current.van!, cityId: job.offer.fromCityId } };
-          current = { ...current, active: { ...job, phase: nextPhase, phaseProgressMs: 0 } };
-        }
-      } else current = { ...current, active: { ...job, phaseProgressMs: progress } };
-    }
-    if (to === startOfNextDay && current.company) {
-      const charge = Math.round(current.company.debtGrosze / 100);
-      current = { ...current, company: { ...current.company, balanceGrosze: current.company.balanceGrosze - charge } };
-      current = record(current, 'Odsetki od kredytu - 1% dziennie.', -charge);
-    }
-  }
-  return current;
+export function advancePreview(state:PreviewState,time:GameMs):PreviewState{return simulatePreview(state,time)}
+export function repayLoan(state:PreviewState,requested?:number):PreviewState{
+ if(!state.company)throw Error('Brak firmy.');const amount=requested??Math.min(100000,state.company.debtGrosze);
+ assertNatural(amount,'spłata');if(amount<=0||amount>state.company.debtGrosze||amount>state.company.balanceGrosze)throw Error('Kwota spłaty przekracza saldo lub dług.');
+ return record({...state,company:{...state.company,balanceGrosze:state.company.balanceGrosze-amount,debtGrosze:state.company.debtGrosze-amount}},`Spłacono ${(amount/100).toFixed(2)} zł kapitału.`,-amount);
 }
-export function repayLoan(state: PreviewState): PreviewState {
-  if (!state.company || state.active) throw new Error('Spłata niedostępna podczas kursu.');
-  const amount = Math.min(state.company.debtGrosze, 100_000);
-  if (amount < 100_000 || state.company.balanceGrosze < amount) throw new Error('Brak środków lub kapitału do spłaty.');
-  return record({ ...state, company: { ...state.company, balanceGrosze: state.company.balanceGrosze - amount,
-    debtGrosze: state.company.debtGrosze - amount } }, 'Spłacono 1000 zł kapitału.', -amount);
+export function drawLoan(state:PreviewState,amount:number):PreviewState{
+ if(!state.company)throw Error('Brak firmy.');assertNatural(amount,'kredyt');if(amount<=0||amount+state.company.debtGrosze>2000000)throw Error('Przekroczony limit 20 000 zł kapitału.');
+ return record({...state,company:{...state.company,balanceGrosze:state.company.balanceGrosze+amount,debtGrosze:state.company.debtGrosze+amount}},`Zaciągnięto ${(amount/100).toFixed(2)} zł kredytu.`,amount);
 }
 
 /** Manual relocation consumes actual empty-driving fuel and time; no cargo/payment. */
 export function startEmptyTrip(s:PreviewState,toCityId:string,routes:readonly TransportRoute[]):PreviewState{
- if(!s.company||!s.van||s.driverHiredAt===null||s.active)throw Error('Do przejazdu pustego potrzeba wolnego furgonu i kierowcy.');
+ if(!s.company||!s.van||s.driverHiredAt===null||s.active||s.service)throw Error('Do przejazdu pustego potrzeba wolnego furgonu i kierowcy.');
  const route=routes.find(r=>r.fromCityId===s.van!.cityId&&r.toCityId===toCityId);if(!route)throw Error('Brak zatwierdzonej trasy pustej.');
  const fuel=Math.ceil(route.meters*(s.van.specs?.emptyLitresPer100Km??10)/100);if(s.van.fuelMillilitres<fuel)throw Error('Za mało paliwa — zatankuj przed przejazdem pustym.');
  const offer:PreviewOffer={id:`empty:${s.time}:${route.id}`,fromCityId:route.fromCityId,toCityId,cargo:'Przejazd pusty',massKg:0,volumeM3:0,pallets:0,payoutGrosze:0,expiresAt:s.time};

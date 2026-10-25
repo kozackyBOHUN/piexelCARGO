@@ -10,7 +10,7 @@ export function geographicKm(a:string,b:string){
 export function financialDays(state:PreviewState,days:number){
  const since=days?Math.max(0,state.time-days*86400000):-Infinity;
  const events=state.events.filter(e=>e.at>=since&&e.changeGrosze!==0);
- const operating=events.filter(e=>!e.message.startsWith('Utworzono firmę')&&!e.message.startsWith('Spłacono'));
+ const operating=events.filter(e=>!e.message.startsWith('Utworzono firmę')&&!e.message.startsWith('Spłacono')&&!e.message.startsWith('Zaciągnięto'));
  const groups=new Map<number,{day:number;income:number;cost:number}>();
  for(const e of operating){const day=Math.floor(e.at/86400000);const g=groups.get(day)??{day,income:0,cost:0};if(e.changeGrosze>0)g.income+=e.changeGrosze;else g.cost-=e.changeGrosze;groups.set(day,g)}
  const income=operating.reduce((n,e)=>n+Math.max(0,e.changeGrosze),0),cost=operating.reduce((n,e)=>n-Math.min(0,e.changeGrosze),0);
