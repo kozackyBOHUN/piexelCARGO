@@ -9,7 +9,7 @@ for(const viewport of [{width:1366,height:768},{width:1920,height:1080}])test(`s
  await page.screenshot({path:`/tmp/pixelcargo-06-overview-${viewport.width}.png`});
  await menu(page,'PARKING','Giełda używanych');await expect(page.locator('.pv-car-card')).toHaveCount(5);await page.getByRole('button',{name:'KUP POJAZD',exact:true}).first().click();
  await menu(page,'KADRY','Rekrutacja');await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ',exact:true}).click();
- await menu(page,'SPEDYCJA','Szukaj zleceń');await expect(page.getByRole('table',{name:'Dostępne zlecenia'})).toBeVisible();expect((await saved()).market!.offers).toHaveLength(30);
+ await menu(page,'SPEDYCJA','Szukaj zleceń');await expect(page.getByRole('table',{name:'Dostępne zlecenia'})).toBeVisible();expect((await saved()).market!.offers).toHaveLength(170);
  await page.getByLabel('Miasto załadunku',{exact:true}).selectOption('geonames:3094802');await page.getByLabel('Promień geograficzny',{exact:true}).selectOption('50');await page.getByLabel('Miasto rozładunku',{exact:true}).selectOption('geonames:757026');await page.getByLabel('Wielkość ładunku',{exact:true}).selectOption('fits');
  const row=page.locator('[data-offer-id]').filter({has:page.getByRole('button',{name:'PRZYJMIJ',exact:true,disabled:false})}).first();await row.hover();await expect(page.getByTestId('offer-route')).toBeAttached();expect((await page.getByTestId('offer-route').getAttribute('d'))!.split('L').length).toBeGreaterThan(1000);
  await page.getByRole('heading',{name:'Szukaj zleceń',exact:true}).hover();await expect(page.getByTestId('offer-route')).toHaveCount(0);

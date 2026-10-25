@@ -1,37 +1,10 @@
+import {ART_ASSETS} from './artAssets';
 /** Pixel-art icons are authored as tiny exact-coordinate sprites; no external assets. */
 export function DriverPortrait() {
-  return <svg viewBox="0 0 96 112" shapeRendering="crispEdges" role="img" aria-label="Portret kierowcy w stylu pixelart">
-    <rect width="96" height="112" fill="#182730"/>
-    <rect x="8" y="8" width="80" height="96" fill="#31454a"/>
-    <rect x="14" y="14" width="68" height="84" fill="#426167"/>
-    <rect x="0" y="91" width="96" height="21" fill="#17232c"/>
-    <rect x="18" y="89" width="60" height="17" fill="#33434d"/>
-    <rect x="28" y="85" width="40" height="27" fill="#b87d52"/>
-    <rect x="36" y="77" width="24" height="16" fill="#e3ab7e"/>
-    <rect x="23" y="38" width="50" height="43" fill="#cf9270"/>
-    <rect x="28" y="36" width="41" height="41" fill="#e2ad82"/>
-    <rect x="21" y="45" width="7" height="17" fill="#bc7859"/>
-    <rect x="69" y="45" width="7" height="17" fill="#bc7859"/>
-    <rect x="29" y="56" width="14" height="9" fill="#efc196"/><rect x="52" y="56" width="14" height="9" fill="#efc196"/>
-    <rect x="33" y="57" width="7" height="6" fill="#20313d"/><rect x="55" y="57" width="7" height="6" fill="#20313d"/>
-    <rect x="32" y="68" width="33" height="9" fill="#a66b53"/>
-    <rect x="38" y="75" width="20" height="5" fill="#4b4140"/>
-    <rect x="45" y="66" width="8" height="5" fill="#b8785c"/>
-    <rect x="23" y="28" width="50" height="19" fill="#2c3137"/>
-    <rect x="30" y="23" width="35" height="12" fill="#36444d"/>
-    <rect x="24" y="40" width="48" height="7" fill="#33434b"/>
-    <rect x="31" y="25" width="29" height="5" fill="#5e717a"/>
-    <rect x="41" y="32" width="16" height="5" fill="#e0b16b"/>
-    <rect x="18" y="97" width="20" height="15" fill="#5c7275"/>
-    <rect x="57" y="97" width="20" height="15" fill="#5c7275"/>
-    <rect x="43" y="89" width="10" height="23" fill="#d3bc97"/>
-    <rect x="4" y="4" width="13" height="4" fill="#728c8d"/>
-    <rect x="4" y="4" width="4" height="13" fill="#728c8d"/>
-    <rect x="79" y="4" width="13" height="4" fill="#728c8d"/>
-    <rect x="88" y="4" width="4" height="13" fill="#728c8d"/>
-  </svg>;
+  return <img src={`${import.meta.env.BASE_URL}${ART_ASSETS['driver-01']}`} width={96} height={96} alt="Portret kierowcy" className="pc-driver-art"/>;
 }
 export function CargoPixel({cargo}: {cargo:string}) {
+  const png=ART_ASSETS[`cargo:${cargo}`];if(png)return <img src={`${import.meta.env.BASE_URL}${png}`} width={32} height={32} alt={cargo} className="pc-cargo-art"/>;
   const key=cargo.toLowerCase();
   const type=key.includes('ksi')?'books':key.includes('odzie')?'clothes':
     key.includes('zabaw')?'toy':key.includes('elektr')?'tech':

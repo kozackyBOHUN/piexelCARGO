@@ -4,7 +4,7 @@ import {createPreviewState,establishCompany,buyVan,hireDriver,advancePreview,typ
 import {ensureMarket,acceptOrder,startOrder,cargoFits,GOODS,MARKET_CONFIG} from './market';
 const routes=data as unknown as TransportRoute[],K='geonames:3094802',T='geonames:757026',D=86400000;
 function ready(){return ensureMarket(hireDriver(buyVan(establishCompany(createPreviewState(0),'Rynek test',K))),routes)}
-function fitting(s:PreviewState){return s.market!.offers.filter(o=>cargoFits(s,o)&&o.fromCityId===K&&o.toCityId===T)}
+function fitting(s:PreviewState){return s.market!.offers.filter(o=>cargoFits(s,o)&&o.fromCityId===K)}
 describe('persistent freight market',()=>{
  it('generates ten independent realistic dry-cargo profiles on approved routes only',()=>{
   const s=ready();expect(GOODS).toHaveLength(10);expect(new Set(s.market!.offers.map(o=>o.cargo)).size).toBe(10);
@@ -30,7 +30,7 @@ describe('persistent freight market',()=>{
   s=acceptOrder(s,offers[1].id);s=acceptOrder(s,offers[2].id);
   expect(s.market!.orders).toHaveLength(3);expect(s.market!.offers).toHaveLength(ready().market!.offers.length);
   expect(()=>acceptOrder(s,offers[0].id)).toThrow();expect(()=>acceptOrder(s,fitting(s)[0].id)).toThrow(/Limit/);
-  expect(()=>startOrder(s,offers[1].id,routes)).toThrow(/gotowa/);
+  expect(()=>startOrder(s,offers[1].id,routes)).toThrow(/aktualnie w trasie/);
   let manual=ready();manual=acceptOrder(manual,offers[0].id);manual=acceptOrder(manual,offers[1].id);manual=startOrder(manual,offers[1].id,routes);expect(manual.active!.offer.id).toBe(offers[1].id);
  });
  it('starts the three-day deadline at acceptance, charges half once, retains overdue order and pays full value once after delivery',()=>{

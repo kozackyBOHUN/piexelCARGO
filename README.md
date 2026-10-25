@@ -1,10 +1,18 @@
-# Układ gry — Etap 07
+# PixelCargo — Etap 08
 
-MAPA / BAZA w lewym górnym rogu otwiera duży widok. Ikony po lewej otwierają szerokie zarządzanie z podzakładkami. Harmonogram: 1 AUTO, 5 AUT, PEŁNY EKRAN lub wysokość ustawiona przeciągnięciem górnej krawędzi; preferencje zachowują się po odświeżeniu. Szczegóły: [docs/LAYOUT_07.md](docs/LAYOUT_07.md). Integracja PNG pozostaje wstrzymana.
+Zatwierdzona grafika, zegar od założenia firmy, samouczek, profilowy furgon, oś czasu ze stałym TERAZ i historia finansów od najnowszej operacji. Działa 17 miast / 135 audytowanych kierunków; jest powrót z Zakopanego i ręczny przejazd pusty. Szczegóły oraz ograniczenia: [docs/STAGE_08.md](docs/STAGE_08.md).
+
+Zapis firmy jest automatyczny co sekundę oraz przy opuszczaniu strony. Przycisk zapisu i restart są w Ustawieniach. Zegar stoi do utworzenia firmy; stare firmy wznawiają własny czas bez naliczania offline.
 
 ---
 
-# Interfejs gry — Etap 06
+## Układ gry — Etap 07 (zachowany w 08)
+
+MAPA / BAZA w lewym górnym rogu otwiera duży widok. Ikony po lewej otwierają szerokie zarządzanie z podzakładkami. Harmonogram: 1 AUTO, 5 AUT, PEŁNY EKRAN lub wysokość ustawiona przeciągnięciem górnej krawędzi; preferencje zachowują się po odświeżeniu. Szczegóły: [docs/LAYOUT_07.md](docs/LAYOUT_07.md).
+
+---
+
+## Interfejs gry — Etap 06 (historia)
 
 MAPA / BAZA przełącza prawy widok. Pięć sekcji po lewej otwiera funkcje bez zatrzymywania świata; harmonogram pozostaje pod mapą/bazą. Zapis i restart są pod ustawieniami w górnym pasku. Szczegóły: [docs/INTERFACE_06.md](docs/INTERFACE_06.md).
 
@@ -16,9 +24,9 @@ MAPA / BAZA przełącza prawy widok. Pięć sekcji po lewej otwiera funkcje bez 
 
 ---
 
-# PixelCargo 0.1 — mapa 04C i graf drogowy 05A
+## Historia mapy 04C i grafu drogowego 05A
 
-Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.
+Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, rynek i transporty zostały następnie uruchomione w preview opisanym wyżej.
 
 ## Uruchomienie
 
@@ -33,7 +41,7 @@ W środowisku z niezapisywalnym domyślnym cache: `npm ci --cache /tmp/pixelcarg
 
 Aplikacja działa bez backendu, kluczy API i dodatkowych usług. IndexedDB i Web Locks wymagają nowoczesnego Chrome/Edge/Firefox oraz HTTPS lub localhost. Zapisy są przypisane do originu przeglądarki (protokół, host, port).
 
-## Obsługa i zapis
+## Historyczna diagnostyka zapisu (?dev=1)
 
 - Zakładki przełączaj myszą lub klawiaturą: Tab, strzałki, Home, End. Menu nie zatrzymuje czasu.
 - Zegar startuje w poniedziałek o 06:00. Jedna sekunda rzeczywista to jedna minuta gry. Otwarta karta w tle nadrabia czas po wznowieniu.

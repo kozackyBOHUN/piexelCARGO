@@ -7,7 +7,7 @@ import "./ui/styles.css";
 import "./preview/preview.css";
 import "./preview/base.css";
 const runtime = new GameRuntime();
-const preview = new PreviewSession(runtime,window.localStorage);
+const preview = new PreviewSession(runtime,window.localStorage,!new URLSearchParams(window.location.search).has("dev"));
 const detachPreview=preview.attach(window);
 runtime.start();
 createRoot(document.getElementById("root")!).render(

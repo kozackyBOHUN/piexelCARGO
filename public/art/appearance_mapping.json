@@ -1,0 +1,13 @@
+{
+  "WARNING": "Wyłącznie mapowanie wyglądu giełdy. Nie zmienia identyfikatorów, cen, stanu, ładowności ani parametrów samochodów.",
+  "purpose": "Początkowa giełda ma 5 modeli o ID van-used-1 do van-used-5; pięć nowszych zatwierdzonych grafik 6,7,8,14,15 pokazujemy w kartach tych 5 ofert.",
+  "usedVanOfferIdToApprovedImage": {
+    "van-used-1": "public/art/vehicles/van-used-6.png",
+    "van-used-2": "public/art/vehicles/van-used-7.png",
+    "van-used-3": "public/art/vehicles/van-used-8.png",
+    "van-used-4": "public/art/vehicles/van-used-14.png",
+    "van-used-5": "public/art/vehicles/van-used-15.png"
+  },
+  "newMarketListingsFromAssets": false,
+  "notIncluded": "Wersje 09-13 użytkownik przesłał dotąd jako obrazy poglądowe, nie osobne produkcyjne PNG. Nie podłączać starych odrzuconych 09-13 z wcześniejszych paczek."
+}

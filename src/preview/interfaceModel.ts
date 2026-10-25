@@ -1,5 +1,5 @@
 import cities from '../world/data/cities-demo.json';
-import type {PreviewState} from './gameplay';
+import type {PreviewState,PreviewEvent} from './gameplay';
 export const cityName=(id:string)=>cities.find(c=>c.id===id)?.name??id;
 export function geographicKm(a:string,b:string){
  const p=cities.find(c=>c.id===a)?.coordinates,q=cities.find(c=>c.id===b)?.coordinates;
@@ -16,3 +16,6 @@ export function financialDays(state:PreviewState,days:number){
  const income=operating.reduce((n,e)=>n+Math.max(0,e.changeGrosze),0),cost=operating.reduce((n,e)=>n-Math.min(0,e.changeGrosze),0);
  return {events,income,cost,profit:income-cost,groups:[...groups.values()].sort((a,b)=>a.day-b.day)};
 }
+
+/** Latest timestamp first; equal timestamps follow reverse execution order. */
+export function newestTransactions(events:readonly PreviewEvent[]){return events.map((event,index)=>({event,index})).sort((a,b)=>b.event.at-a.event.at||b.index-a.index).map(v=>v.event)}

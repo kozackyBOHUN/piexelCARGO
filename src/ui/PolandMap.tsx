@@ -1,3 +1,4 @@
+import {VehicleSilhouette} from './VehicleSilhouette';
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { loadGeography } from "../world/loader";
 import type { GeographyDataset, MapCity } from "../world/geography";
@@ -489,9 +490,7 @@ function PolandMapView({ geography, game }: { geography: GeographyDataset; game?
           </g>}
           {vehicle&&vehicleCoordinates&&<g data-layer="vehicles" data-testid="game-vehicle" data-status={vehicle.status} data-destination={vehicle.destinationId} data-progress={vehicle.progress} data-lon={vehicleCoordinates[0]} data-lat={vehicleCoordinates[1]} data-screen-x={screenPoint(vehicleCoordinates,viewport)[0]} data-screen-y={screenPoint(vehicleCoordinates,viewport)[1]} transform={`translate(${screenPoint(vehicleCoordinates,viewport).join(' ')})`} role="button" tabIndex={0} aria-label={`Pojazd: ${vehicle.name}`} aria-pressed={vehicleSelected} onClick={()=>setVehicleSelected(v=>!v)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setVehicleSelected(v=>!v)}}}>
             <rect x="-14" y="-14" width="28" height="28" fill="transparent"/>
-            <rect x="-9" y="-6" width="18" height="12" fill="#f3ba62" stroke="#15232c" strokeWidth="2"/>
-            <rect x="3" y="-4" width="4" height="8" fill="#93c3d1"/>
-            <path d="M-6-8h4M3-8h4M-6 8h4M3 8h4" stroke="#10171d" strokeWidth="3"/>
+            <VehicleSilhouette category="van"/>
             <title>{vehicle.name} · {vehicle.status}</title>
           </g>}
         </svg>

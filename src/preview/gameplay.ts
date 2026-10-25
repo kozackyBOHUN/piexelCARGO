@@ -1,3 +1,4 @@
+import {dispatchReadiness} from './dispatchReadiness';
 import {refreshMarket,type FreightMarket} from './market';
 /** Independent, deterministic preview domain. No React, global timers, APIs or implicit simulation. */
 export type Grosze = number;
@@ -31,7 +32,10 @@ export interface ActiveTransport {
   readonly startedAt: GameMs;
   readonly phase: Phase;
   readonly phaseProgressMs: number;
+  readonly emptyOnly?:boolean;
 }
+export interface RecordedPlan {readonly start:number;readonly end:number;readonly phases:readonly {phase:Phase;durationMs:number}[]}
+export function recordedPlan(job:ActiveTransport,end:number):RecordedPlan {return {start:job.startedAt,end,phases:(job.emptyOnly?['empty'] as const:['empty','loading','loaded','unloading'] as const).map(phase=>({phase,durationMs:phaseDuration({...job,phase})}))}}
 export interface CompletedTransport extends ActiveTransport {
   readonly completedAt: GameMs;
 }
@@ -85,6 +89,8 @@ export interface PreviewState {
   readonly completedOfferIds: readonly string[];
   /** Optional so every existing preview save remains valid. */
   readonly lastTransport?: CompletedTransport;
+  readonly tutorial?:{skipped:boolean;seenJourney:boolean;mapShown?:boolean};
+  readonly completedPlans?:readonly RecordedPlan[];
   readonly events: readonly PreviewEvent[];
 }
 const DAY = 86_400_000;
@@ -163,7 +169,7 @@ export function establishCompany(state: PreviewState, name: string, baseCityId: 
   if (!name.trim() || !baseCityId) throw new Error('Podaj nazwę firmy i miasto bazy.');
   return record({ ...state, company: { name: name.trim(), baseCityId,
     balanceGrosze: LOAN, debtGrosze: LOAN },
-    usedVanMarket: makeUsedVanMarket(name.trim(),baseCityId) }, 'Utworzono firmę i zaciągnięto kredyt 20 000 zł.', LOAN);
+    tutorial:{skipped:false,seenJourney:false},usedVanMarket: makeUsedVanMarket(name.trim(),baseCityId) }, 'Utworzono firmę i zaciągnięto kredyt 20 000 zł.', LOAN);
 }
 export function buyVan(state: PreviewState): PreviewState {
   if (!state.company || state.van) throw new Error('Nie można kupić furgonu.');
@@ -194,6 +200,7 @@ function validRoute(route: TransportRoute, from: string, to: string): boolean {
 }
 export function dispatchTransport(state: PreviewState, offer: PreviewOffer,
   emptyRoute: TransportRoute, loadedRoute: TransportRoute): PreviewState {
+  const reason=dispatchReadiness(state,offer,[emptyRoute,loadedRoute]);if(reason)throw new Error(reason);
   if (!state.company || !state.van || state.driverHiredAt === null || state.active) throw new Error('Firma nie jest gotowa do kursu.');
   if(state.market&&!state.market.orders.some(o=>o.offer.id===offer.id&&o.completedAt===null))throw new Error('Najpierw przyjmij zlecenie z rynku.');
   if (state.completedOfferIds.includes(offer.id) || (!state.market?.orders.some(o=>o.offer.id===offer.id&&o.completedAt===null) && offer.expiresAt <= state.time)) throw new Error('Oferta niedostępna.');
@@ -274,16 +281,17 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
       const progress = job.phaseProgressMs + dt;
       if (progress >= phaseDuration(job)) {
         const next: Record<Phase, Phase | 'finished'> = { empty:'loading',loading:'loaded',loaded:'unloading',unloading:'finished' };
-        const nextPhase = next[job.phase];
+        const nextPhase = job.emptyOnly?'finished':next[job.phase];
         if (nextPhase === 'finished') {
-          const value = job.offer.payoutGrosze;
+          const value = job.emptyOnly?0:job.offer.payoutGrosze;
           current = { ...current, active: null,
             lastTransport: {...job,phaseProgressMs:phaseDuration(job),completedAt:current.time},
-            completedOfferIds: [...current.completedOfferIds, job.offer.id],
-            van: { ...current.van!, cityId: job.offer.toCityId },
+            completedPlans:[...(current.completedPlans??(current.lastTransport?[recordedPlan(current.lastTransport,current.lastTransport.completedAt)]:[])),recordedPlan(job,current.time)],
+            completedOfferIds: job.emptyOnly?current.completedOfferIds:[...current.completedOfferIds, job.offer.id],
+            van: { ...current.van!, cityId: job.emptyOnly?job.routeEmpty.toCityId:job.offer.toCityId },
             company: { ...current.company!, balanceGrosze: current.company!.balanceGrosze + value } };
           if(current.market)current={...current,market:{...current.market,orders:current.market.orders.map(o=>o.offer.id===job.offer.id?{...o,completedAt:current.time}:o)}};
-          current = record(current, `Dostarczono ${job.offer.cargo}.`, value);
+          current = record(current, job.emptyOnly?`Zakończono przejazd pusty do ${job.routeEmpty.toCityId}.`:`Dostarczono ${job.offer.cargo}.`, value);
         } else {
           if (nextPhase === 'loading') current = { ...current, van: { ...current.van!, cityId: job.offer.fromCityId } };
           current = { ...current, active: { ...job, phase: nextPhase, phaseProgressMs: 0 } };
@@ -304,4 +312,14 @@ export function repayLoan(state: PreviewState): PreviewState {
   if (amount < 100_000 || state.company.balanceGrosze < amount) throw new Error('Brak środków lub kapitału do spłaty.');
   return record({ ...state, company: { ...state.company, balanceGrosze: state.company.balanceGrosze - amount,
     debtGrosze: state.company.debtGrosze - amount } }, 'Spłacono 1000 zł kapitału.', -amount);
+}
+
+/** Manual relocation consumes actual empty-driving fuel and time; no cargo/payment. */
+export function startEmptyTrip(s:PreviewState,toCityId:string,routes:readonly TransportRoute[]):PreviewState{
+ if(!s.company||!s.van||s.driverHiredAt===null||s.active)throw Error('Do przejazdu pustego potrzeba wolnego furgonu i kierowcy.');
+ const route=routes.find(r=>r.fromCityId===s.van!.cityId&&r.toCityId===toCityId);if(!route)throw Error('Brak zatwierdzonej trasy pustej.');
+ const fuel=Math.ceil(route.meters*(s.van.specs?.emptyLitresPer100Km??10)/100);if(s.van.fuelMillilitres<fuel)throw Error('Za mało paliwa — zatankuj przed przejazdem pustym.');
+ const offer:PreviewOffer={id:`empty:${s.time}:${route.id}`,fromCityId:route.fromCityId,toCityId,cargo:'Przejazd pusty',massKg:0,volumeM3:0,pallets:0,payoutGrosze:0,expiresAt:s.time};
+ const stationary:TransportRoute={id:`stationary:${toCityId}`,fromCityId:toCityId,toCityId,meters:0,seconds:0,geometry:[route.geometry.at(-1)!]};
+ return record({...s,active:{offer,routeEmpty:route,routeLoaded:stationary,startedAt:s.time,phase:'empty',phaseProgressMs:0,emptyOnly:true}},`Rozpoczęto przejazd pusty do ${toCityId}.`,0);
 }

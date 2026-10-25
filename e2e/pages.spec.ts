@@ -9,6 +9,9 @@ test('production Pages base serves assets, routes and persistent preview',async(
  await readyCompany(page,'Firma GitHub Pages','/piexelCARGO/?preview=1');
  expect(await page.evaluate(()=>location.pathname)).toBe('/piexelCARGO/');
  await page.waitForTimeout(2100);
+ const artManifest=await (await page.request.get('/piexelCARGO/art/manifest.json')).json();
+ for(const a of artManifest.items){const r=await page.request.get('/piexelCARGO/'+a.path.replace(/^public\//,''));expect(r.status()).toBe(200);expect(r.headers()['content-type']).toContain('image/png')}
+
  const readSaved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('pixelcargo-0.1-preview-v1')??'null'));
  const before=await readSaved();expect(before?.company?.name).toBe('Firma GitHub Pages');expect(before.van).not.toBeNull();expect(before.driverHiredAt).not.toBeNull();
  await page.reload();await expect(page.locator('.pc-company')).toContainText('Firma GitHub Pages');

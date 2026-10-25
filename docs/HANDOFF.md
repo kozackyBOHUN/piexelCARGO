@@ -1,3 +1,9 @@
+# Aktualizacja — Etap 08
+
+Wykonano osiem punktów: zatwierdzone 52 PNG i mapowanie wyglądu, zegar od utworzenia firmy, trwały samouczek, profilowy marker, 17 miast / 135 audytowanych kierunków (w tym powrót Zakopane → Kraków), przejazd pusty, wyjaśnienia blokad, oś TERAZ na 25% i najnowsza historia finansów na górze. Układ 07 i wcześniejsze zapisy zachowane. Oświęcim i Gorlice nie są uruchomione — brak wystarczającej kontroli tras. Nie dodano nowych modeli, odpoczynku ani planowanego tankowania. Szczegóły, audyt i punkt kontynuacji: docs/STAGE_08.md oraz docs/reports/08-routes.json. Baza d9610db409fd6405e21df1998a2caf10023a40ad. Po pozytywnych testach i commit/push wyłącznie na feat/preview-gameplay-core, sprawdzić Pages i czekać na polecenie.
+
+---
+
 # Aktualizacja — Etap 07: nawigacja i harmonogram
 
 Duża mapa/baza + ikony albo szerokie zarządzanie 2/3; tabela zleceń bez przesuwania poziomego. Harmonogram 1 AUTO / 5 AUT / PEŁNY EKRAN, uchwyt wysokości, osobne trwałe preferencje UI, alerty i rzeczywista oś czasu. Mechanika, ekonomia, czas, zapisy i OSM bez zmian. Paczek grafik NIE integrowano; niedokończone zmiany poprzedniego zadania zostały w osobnym worktree, poza tą gałęzią. Baza 07ca6179a286ddd65ffa290b26d2bfd606781de6, gałąź feat/preview-gameplay-core. Szczegóły i punkt kontynuacji: docs/LAYOUT_07.md. Po testach, commit/push i sprawdzeniu Pages czekać na nowe polecenie.
@@ -211,3 +217,5 @@ Końcowe kontrole: npm run typecheck OK; npm test 93/93 (12 plików); npm run bu
 Weryfikacja: TypeScript OK; npm test 95/95 (13 plików); standardowy build i build:pages OK; Playwright interface06 36/36 (wszystkie dotychczasowe przypadki plus nowa pełna rozgrywka w obu rozdzielczościach), produkcyjny Pages 1/1. Po korekcie instrukcji samouczka i odsunięciu etykiety Biura powtórzono jednostkowe/build oraz 9 scenariuszy gry i Pages. Zrzuty rzeczywistego interfejsu: docs/screenshots/06/.
 
 Końcowa weryfikacja: npm run typecheck OK; npm test 97/97 (14 plików); npm run build i build:pages OK; Playwright layout07 38/38; produkcyjny Pages 1/1 (łącznie 39 scenariuszy). Obie rozdzielczości, powrót z pełnego harmonogramu, drag i klawiatura uchwytu, alert w 1 AUTO oraz pełna dostawa i zapis potwierdzone. Poprawiono wykryte testem nakładanie nagłówka małej mapy na wyszukiwanie. Brak zmian w mechanice i danych, brak integracji PNG.
+
+Końcowe kontrole: TypeScript OK; npm test 105/105 (16 plików); oba buildy OK; Playwright stage08 41/41 plus produkcyjny Pages 1/1 (łącznie 42 scenariusze). Dwa rozmiary okna, wszystkie PNG, pełny samouczek/dostawa do Zakopanego/powrót pusty, zapis częściowego ticka i wcześniejsze regresje zaliczone. SHA-256 katalogu tras zgadza się z raportem. Zrzuty: docs/screenshots/08/.

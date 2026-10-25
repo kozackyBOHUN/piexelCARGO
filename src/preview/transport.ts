@@ -1,5 +1,5 @@
 import type { LonLat } from '../world/geography';
-import {phaseDuration,type ActiveTransport,type Phase,type PreviewState,type TransportRoute} from './gameplay';
+import {recordedPlan,phaseDuration,type ActiveTransport,type Phase,type PreviewState,type TransportRoute} from './gameplay';
 export const PHASE_LABELS:Record<Phase,string>={empty:'Dojazd pusty',loading:'Załadunek',loaded:'Jazda z ładunkiem',unloading:'Rozładunek'};
 const cumulativeCache=new WeakMap<readonly LonLat[],Float64Array>();
 function cumulative(points:readonly LonLat[]){
@@ -38,17 +38,13 @@ export function mapState(state:PreviewState,routes:readonly TransportRoute[]):Ga
 export interface ScheduleActivity {phase:Phase|'waiting';label:string;start:number;end:number;ongoing:boolean;progress:number}
 export function scheduleActivities(state:PreviewState):ScheduleActivity[]{
  if(!state.van)return [];
- const job:ActiveTransport|undefined=state.active??state.lastTransport;
- const result:ScheduleActivity[]=[];
- if(job){let start=job.startedAt;
-  for(const phase of ['empty','loading','loaded','unloading'] as const){
-   const end=start+phaseDuration({...job,phase});
-   result.push({phase,label:PHASE_LABELS[phase],start,end,ongoing:!!state.active&&state.active.phase===phase,progress:end>start?Math.max(0,Math.min(1,(state.time-start)/(end-start))):state.time>=start?1:0});start=end;
-  }
-  if(!state.active){const from=state.lastTransport!.completedAt;result.push({phase:'waiting',label:'Oczekiwanie',start:from,end:state.time,ongoing:true,progress:1})}
- }else{
-  const from=[...state.events].reverse().find(e=>e.message.startsWith('Dostarczono')||e.message.startsWith('Kupiono'))?.at??state.time;
-  result.push({phase:'waiting',label:'Oczekiwanie',start:from,end:state.time,ongoing:true,progress:1});
+ const plans=[...(state.completedPlans??(state.lastTransport?[recordedPlan(state.lastTransport,state.lastTransport.completedAt)]:[]))];
+ if(state.active)plans.push(recordedPlan(state.active,state.active.startedAt+(['empty','loading','loaded','unloading'] as const).filter(p=>!state.active!.emptyOnly||p==='empty').reduce((sum,phase)=>sum+phaseDuration({...state.active!,phase}),0)));
+ const result:ScheduleActivity[]=[];let previousEnd:number|undefined;
+ for(const plan of plans){
+  if(previousEnd!==undefined&&plan.start>previousEnd)result.push({phase:'waiting',label:'Oczekiwanie',start:previousEnd,end:plan.start,ongoing:false,progress:1});
+  let start=plan.start;for(const {phase,durationMs} of plan.phases){const end=start+durationMs;result.push({phase,label:PHASE_LABELS[phase],start,end,ongoing:!!state.active&&state.active.startedAt===plan.start&&state.active.phase===phase,progress:durationMs?Math.max(0,Math.min(1,(state.time-start)/durationMs)):state.time>=start?1:0});start=end;}previousEnd=plan.end;
  }
+ if(!state.active){const from=previousEnd??[...state.events].reverse().find(e=>e.message.startsWith('Dostarczono')||e.message.startsWith('Kupiono'))?.at??state.time;result.push({phase:'waiting',label:'Oczekiwanie',start:from,end:state.time,ongoing:true,progress:1})}
  return result;
 }

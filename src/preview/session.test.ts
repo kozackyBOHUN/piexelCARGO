@@ -44,3 +44,9 @@ describe('one canonical preview session',()=>{
  });
 
 });
+it('gates only new-company sessions, starts from 06:00 and preserves a saved company time',()=>{
+ class GatedRuntime extends Runtime {enabled=true;setSimulationEnabled=(v:boolean)=>{this.enabled=v};tick=(ms:number)=>{if(this.enabled)this.session.advance(ms)}}
+ const runtime=new GatedRuntime(),storage=store(),session=new PreviewSession(runtime,storage,true);runtime.activate();runtime.tick(10000);expect(session.getSnapshot().time).toBe(21600000);expect(runtime.enabled).toBe(false);
+ session.update(s=>establishCompany(s,'New','K'));runtime.tick(1000);expect(session.getSnapshot().time).toBe(21660000);session.save();session.close();
+ const restored=new GatedRuntime(),resume=new PreviewSession(restored,storage,true);restored.activate();expect(resume.getSnapshot().time).toBe(21660000);expect(restored.enabled).toBe(true);resume.restart();restored.tick(10000);expect(resume.getSnapshot().time).toBe(21600000);expect(restored.enabled).toBe(false);resume.close();
+});

@@ -27,6 +27,10 @@ export class GameRuntime {
   private queue: Promise<unknown> = Promise.resolve();
   private pendingAutosave = false;
   private started = false;
+  private simulationEnabled=true;
+  /** Sample the same monotonic clock before a company action/save, without another timer. */
+  sampleClock=()=>this.sample();
+  setSimulationEnabled=(enabled:boolean)=>{if(this.simulationEnabled===enabled)return;this.sample();this.simulationEnabled=enabled;this.clock.stop();if(enabled)this.clock.start(performance.now())};
   private closing = false;
   getStatus = () => this.status;
   subscribe = (fn: () => void) => {
@@ -59,7 +63,7 @@ export class GameRuntime {
             this.session.restore(saved.state);
             this.saveId = saved.saveId;
           }
-          this.clock.start(performance.now());
+          if(this.simulationEnabled)this.clock.start(performance.now());
           this.setStatus({
             mode: "active",
             message: saved
@@ -91,7 +95,7 @@ export class GameRuntime {
     );
   }
   private sample = () => {
-    if (this.ownership.owned && this.status.mode === "active")
+    if (this.simulationEnabled && this.ownership.owned && this.status.mode === "active")
       this.clock.sample(performance.now());
   };
   private onVisibility = () => {

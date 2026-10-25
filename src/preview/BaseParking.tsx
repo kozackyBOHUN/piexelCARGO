@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { listUsedVans, type PreviewState, type UsedVanOffer } from './gameplay';
 import {ART_ASSETS} from './artAssets';
+import {ActionIcon} from './Stage08Art';
 import { DriverPortrait } from './PixelSprites';
 
 type Building = 'office'|'parking'|'kadry'|'spedycja'|'warsztat'|'magazyn'|'paliwo'|'hotel';
@@ -27,7 +28,8 @@ const BUILDINGS: {id: Building; name: string; x: number; y: number; variant: num
   {id:'hotel',name:'HOTEL',x:83,y:5,variant:6},
 ];
 /** SVG is deliberately composed of hard-edge blocks, not stock photographs. */
-export function PixelBuilding({variant, lit}: {variant:number;lit:boolean}) {
+export function PixelBuilding({variant, lit,assetId}: {variant:number;lit:boolean;assetId?:string}) {
+  const asset=assetId&&ART_ASSETS[assetId];if(asset)return <img className="pv-building-art" src={`${import.meta.env.BASE_URL}${asset}`} alt=""/>;
   if(variant===0)return <svg className="pv-building-art" viewBox="0 0 180 120" shapeRendering="crispEdges" aria-hidden="true">
     <polygon points="4,48 103,8 174,48 74,107" fill="#323f49" stroke="#7b8b94" strokeWidth="3"/>
     <polygon points="20,52 101,19 159,51 77,89" fill="#525d5e"/>
@@ -93,7 +95,7 @@ export function OfferCard({offer,canPay,owned,onBuy,money}: {
       </div>
       <div className="pv-car-condition"><div style={{width:`${offer.conditionPercent}%`,background:offer.conditionPercent<35?'#d97a59':'#8fbf92'}}/></div>
       <div className="pv-car-purchase"><strong>{money(offer.priceGrosze)}</strong>
-        <button disabled={!canPay||owned} onClick={()=>onBuy(offer.id)}>{owned?'PARKING ZAJĘTY':canPay?'KUP POJAZD':'BRAK ŚRODKÓW'}</button>
+        <button disabled={!canPay||owned} onClick={()=>onBuy(offer.id)}><ActionIcon id="icon-buy"/>{owned?'PARKING ZAJĘTY':canPay?'KUP POJAZD':'BRAK ŚRODKÓW'}</button>
       </div>
     </div>
   </article>;
@@ -123,7 +125,7 @@ export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initial
           className={`pv-base-building ${active?'is-open':'is-locked'} ${building===b.id?'is-selected':''}`}
           disabled={!active} onClick={()=>{setBuilding(b.id);onBuildingSelect?.(b.id)}}
           aria-label={`${b.name}, poziom 1, ${active?'otwarty':'zablokowany'}`}>
-          <PixelBuilding variant={b.variant} lit={active}/>
+          <PixelBuilding variant={b.variant} lit={active} assetId={({office:"building-office-lv1",parking:"building-parking-lv1",spedycja:"building-dispatch-lv1",kadry:"building-hr-lv1"} as Record<string,string>)[b.id]}/>
           <span className="pv-building-label">{b.name} <small>LV 1</small></span>
           {!active&&<span className="pv-building-locked">ZAMKNIĘTE</span>}
         </button>;

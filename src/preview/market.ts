@@ -12,10 +12,12 @@ function generate(m:FreightMarket,from:string,at:number):FreightMarket {
  let seed=m.seed;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
  const options=m.routes.filter(r=>r.fromCityId===from);
  // Working relative demand weights for the approved subset; see docs/FREIGHT_MARKET.md.
- const demandWeights:Record<string,number>={'geonames:3094802':804237,'geonames:757026':105922,'geonames:3080866':25523,'geonames:775758':28955};
- const weight=options.reduce((n,r)=>n+(demandWeights[r.toCityId]??1),0);let pick=rand()*weight;
- const route=options.find(r=>(pick-=demandWeights[r.toCityId]??1)<0)??options[0];
- const sequence=m.sequence+1,g=GOODS[(sequence-1)%GOODS.length],units=1+Math.floor(rand()*5),palletized=rand()<.5;
+ const demandWeights:Record<string,number>={'geonames:3094802':800,'geonames:757026':106,'geonames:3080866':26,'geonames:775758':29};
+ const weight=options.reduce((n,r)=>n+(demandWeights[r.toCityId]??25),0);let pick=rand()*weight;
+ const priority=['geonames:3094802','geonames:757026','geonames:3080866','geonames:775758'].map(id=>options.find(r=>r.toCityId===id)).filter((r):r is NonNullable<typeof r>=>!!r);
+ const missing=priority.find(r=>!m.offers.some(o=>o.fromCityId===from&&o.toCityId===r.toCityId));
+ const route=missing??options.find(r=>(pick-=demandWeights[r.toCityId]??25)<0)??options[0];
+ const sequence=m.sequence+1,g=GOODS[(sequence-1)%GOODS.length],units=1+Math.floor(rand()*(missing?2:5)),palletized=rand()<.5;
  const massKg=Math.round(g[1]*units*(.9+rand()*.2)),volumeM3=Number((g[2]*units).toFixed(2));
  const pallets=palletized?Math.ceil(volumeM3/1.5):0;
  const payoutGrosze=Math.round((MARKET_CONFIG.baseGrosze+route.meters/1000*MARKET_CONFIG.groszePerKm)*g[3]*(.65+units*.15)*(.95+rand()*.1));
@@ -23,7 +25,13 @@ function generate(m:FreightMarket,from:string,at:number):FreightMarket {
  return {...m,seed,sequence,offers:[...m.offers,offer]};
 }
 export function ensureMarket(s:PreviewState,routes:readonly TransportRoute[]):PreviewState {
- if(!s.company||s.market)return s;
+ if(!s.company)return s;
+ if(s.market){
+  const ids=new Set(s.market.routes.map(r=>r.id));if(ids.size===routes.length&&routes.every(r=>ids.has(r.id)))return s;
+  const nextRoutes=routes.map(({geometry:_,...r})=>r);let m:FreightMarket={...s.market,routes:nextRoutes,offers:s.market.offers.filter(o=>routes.some(r=>r.fromCityId===o.fromCityId&&r.toCityId===o.toCityId))};
+  for(const from of new Set(routes.map(r=>r.fromCityId)))while(m.offers.filter(o=>o.fromCityId===from).length<MARKET_CONFIG.slotsPerOrigin)m=generate(m,from,s.time);
+  return {...s,market:m};
+ }
  let m:FreightMarket={seed:hash(s.company.name+'|'+s.company.baseCityId),sequence:0,offers:[],orders:[],routes:routes.map(({geometry:_,...r})=>r)};
  for(const from of new Set(routes.map(r=>r.fromCityId)))for(let i=0;i<MARKET_CONFIG.slotsPerOrigin;i++)m=generate(m,from,s.time);
  if(s.active)m={...m,orders:[{offer:s.active.offer,acceptedAt:s.active.startedAt,deadline:s.active.startedAt+MARKET_CONFIG.deliveryMs,penaltyGrosze:0,penalized:false,completedAt:null}]};
