@@ -1,0 +1,652 @@
+Zbuduj grywalną grę przeglądarkową „PixelCargo” w wersji 0.1 zgodnie z poniższą specyfikacją. Chcę działającą grę, nie sam projekt interfejsu ani makietę.
+
+Pracuj samodzielnie: przejrzyj istniejący projekt, wybierz odpowiednie rozwiązania, zaimplementuj grę i sprawdź pełny przebieg rozgrywki. Jeśli repozytorium jest puste, utwórz projekt. Jeśli zawiera kod, wykorzystaj jego strukturę.
+
+Nie rozszerzaj samodzielnie zakresu 0.1 o funkcje przyszłych wersji. Drobne brakujące szczegóły rozstrzygaj rozsądnie i zapisuj jako założenia. Wszystkie liczby odpowiedzialne za balans przechowuj w łatwej do zmiany konfiguracji.
+
+## 1. Koncepcja
+
+PixelCargo to menedżer firmy transportowej na rzeczywistej mapie Polski.
+
+Najważniejsze są:
+- grywalność;
+- czytelność informacji;
+- planowanie transportów;
+- realistyczne zależności logistyczne;
+- konsekwentny klimat pixel art.
+
+Całość jest po polsku. Waluta: PLN. Jednostki: km, km/h, litry, tony, m³, miejsca paletowe oraz czas gry.
+
+Gracz kupuje pojazd, zatrudnia kierowcę, wybiera zlecenia, planuje pracę i obserwuje samochód przemieszczający się po rzeczywistych drogach. Zarządza paliwem, odpoczynkiem, awariami i pieniędzmi.
+
+## 2. Ścisły zakres wersji 0.1
+
+W tej wersji:
+- jeden gracz;
+- jedna baza;
+- maksymalnie jeden posiadany pojazd: używany furgon;
+- maksymalnie jeden zatrudniony kierowca;
+- maksymalnie trzy jednocześnie przyjęte, niezakończone zlecenia;
+- wyłącznie towary odpowiednie do furgonu;
+- ręczne zarządzanie transportami;
+- dzielenie zlecenia na kilka kursów;
+- możliwość wożenia części kilku zleceń jednocześnie;
+- dynamiczne paliwo;
+- zmęczenie i odpoczynek;
+- podstawowy system awarii i napraw;
+- kredyt i rozliczenia;
+- zapis i odczyt gry.
+
+Bez rozbudowy bazy, zdobywania poziomów kierowcy, automatycznej spedycji, multiplayera i konfiguratora nowych samochodów.
+
+Można sprzedać pojazd i kupić inny furgon, ale limit jednego posiadanego auta pozostaje. Nie sprzedawaj auta z przewożonym towarem bez wcześniejszego rozwiązania sytuacji z ładunkiem. W 0.1 najprościej zablokować taką sprzedaż z jasnym wyjaśnieniem.
+
+## 3. Styl graficzny
+
+Cała gra konsekwentnie nawiązuje do pixel art:
+- grafitowe panele;
+- pixelartowe przyciski, ramki i ikony;
+- pixelartowe ilustracje aut;
+- pixelartowe ilustracje ładunków;
+- pixelartowe portrety kierowców;
+- mapa przypominająca stare gry strategiczne i arcade.
+
+Nie używaj fotografii, emoji jako docelowych grafik ani przypadkowo mieszanych stylów.
+
+Mapa zawiera lasy, rzeki, góry i drogi, ale zachowuje prawdziwą geografię Polski. Nie pokazujemy budynków ani szczegółowych ulic w miastach.
+
+Tekst, ceny i tabele muszą być czytelne. Czcionka musi obsługiwać polskie znaki. Klimat retro nie może utrudniać obsługi.
+
+## 4. Układ ekranu
+
+Główny widok:
+- lewa około 1/3 szerokości: zarządzanie;
+- prawa około 2/3 szerokości: interaktywna mapa;
+- pod mapą: harmonogram pojazdów;
+- pasek podstawowych informacji: nazwa firmy, saldo, zadłużenie, dzień i godzina gry, alerty.
+
+Lewy panel zawiera zakładki:
+- zlecenia;
+- pojazd;
+- kierowca;
+- baza;
+- finanse;
+- historia zdarzeń;
+- ustawienia.
+
+Mapa pozostaje widoczna podczas zwykłych operacji. Rozbudowane szczegóły można otwierać w oknach.
+
+Harmonogram ma postać poziomych osi czasu, po jednym wierszu na pojazd. Docelowo widoczne są maksymalnie trzy wiersze naraz, z pionowym przewijaniem kolejnych. W 0.1 aktywny jest jeden wiersz.
+
+Dostosuj układ do typowego monitora i laptopa. Priorytetem jest obsługa myszą i klawiaturą na komputerze.
+
+## 5. Mapa Polski
+
+Uwzględnij wszystkie miasta będące siedzibami powiatów oraz miasta na prawach powiatu. Jedno miasto występuje raz, nawet jeśli obsługuje kilka jednostek administracyjnych.
+
+Pozostałe miejscowości mogą być węzłami sieci drogowej, ale nie są punktami zleceń.
+
+Każde obsługiwane miasto ma:
+- stabilny identyfikator;
+- nazwę;
+- województwo;
+- współrzędne;
+- liczbę mieszkańców samego miasta;
+- limit zleceń.
+
+Użyj wiarygodnych danych geograficznych i ludnościowych. Zapisz źródła oraz datę danych. Nie zastępuj całej Polski kilkunastoma ręcznie rozmieszczonymi punktami.
+
+Mapa:
+- przesuwanie myszą;
+- zoom kółkiem i przyciskami;
+- przycisk widoku całej Polski;
+- wyszukiwarka miasta;
+- skala odległości.
+
+Maksymalne przybliżenie odpowiada skali około 200 metrów na piksel CSS: obszar mapy o rozmiarze 1000 × 1000 pikseli pokazuje około 200 × 200 km. Uwzględnij proporcje widoku i unikaj zależności od fizycznej gęstości pikseli monitora.
+
+Przy oddaleniu ograniczaj liczbę etykiet. Po przybliżeniu ujawniaj kolejne. Unikaj nakładania nazw.
+
+Nie twórz osobnego znacznika dla każdego zlecenia:
+- kliknięcie miasta otwiera oferty w lewym panelu;
+- kliknięcie auta otwiera jego dane i plan;
+- wybranie zlecenia podświetla nadawcę, odbiorcę i trasę.
+
+Przy nakładaniu znaczników pokaż wybór obiektu. Przygotuj sposób grupowania wielu pojazdów na przyszłość.
+
+## 6. Rzeczywiste trasy
+
+Samochód porusza się po sieci drogowej, nie po prostej między miastami.
+
+Trasa wyznacza się automatycznie jako najkrótsza dostępna trasa drogowa odpowiednia dla pojazdu, mieszcząca się w Polsce.
+
+Sieć drogowa musi mieć rzeczywistą geometrię, połączenia i odległości. Można ją uprościć dla wydajności, zachowując spójność i sensowny przebieg tras.
+
+Nie wymagaj od gracza płatnego klucza API. Preferuj przygotowane dane lokalne i lokalne wyznaczanie tras. Uwzględnij licencję i wymagane oznaczenia źródeł.
+
+Jeśli pobranie wymaganych danych jest zablokowane, opisz konkretnie brak i przygotuj powtarzalny sposób ich pozyskania. Nie przedstawiaj fikcyjnej siatki jako rzeczywistej mapy.
+
+Czas jazdy wynika z długości odcinków oraz prędkości pojazdu i drogi. Ruch na mapie, paliwo, przebieg i czas mają korzystać z tej samej symulacji.
+
+## 7. Czas gry i zapis
+
+Start: poniedziałek, godzina 06:00.
+
+Przelicznik:
+1 sekunda rzeczywista = 1 minuta gry.
+Doba gry trwa 24 minuty rzeczywiste.
+
+Normalna rozgrywka:
+- bez ręcznej pauzy;
+- bez przyspieszania;
+- otwieranie menu nie zatrzymuje świata;
+- alerty nie pauzują gry.
+
+W 0.1 po zakończeniu sesji czas zatrzymuje się. Nie naliczaj postępu offline po ponownym uruchomieniu. Obsłuż zapis i powrót bez skoków czasu. Zminimalizowana lub działająca w tle sesja powinna mieć jasno określone, spójne zachowanie, niezależne od ograniczania częstotliwości klatek przez przeglądarkę.
+
+Zapisuj automatycznie, udostępnij ręczny zapis oraz eksport/import zapisu. Po odczycie odtwórz trasy, ładunki, harmonogram, paliwo, kierowcę, finanse, rynek i ceny.
+
+Pauza, przyspieszanie i przeskakiwanie czasu mogą istnieć wyłącznie w wyraźnie oddzielonym trybie developerskim. Nie pokazuj tych narzędzi w normalnej grze.
+
+## 8. Start firmy
+
+Gracz wybiera:
+- nazwę firmy;
+- miasto swojej pierwszej bazy.
+
+Początkowo nie posiada auta ani kierowcy.
+
+Otrzymuje bezpłatną bazę z poziomem 1:
+- biura;
+- parkingu;
+- kadr;
+- spedycji.
+
+Daje to limit jednego auta, jednego kierowcy i trzech przyjętych zleceń. W 0.1 poziomy pozostają stałe.
+
+Uruchomienie firmy jest finansowane kredytem 20 000 zł. Pokaż jawnie zaciągnięcie kredytu: saldo +20 000 zł i zadłużenie 20 000 zł. To nie jest dotacja.
+
+Gracz kupuje używany furgon i zatrudnia kierowcę.
+
+## 9. Kredyt i ekonomia
+
+Kredyt:
+- 1% pozostałego kapitału dziennie;
+- kapitał nie spłaca się automatycznie;
+- ręczna spłata w transzach po 1000 zł;
+- po częściowej spłacie kolejne odsetki maleją;
+- roboczo naliczaj odsetki o północy czasu gry;
+- nie dodawaj kolejnych kredytów ani wzrostu limitu w 0.1.
+
+Przykład:
+20 000 zł długu → 200 zł odsetek dziennie.
+19 000 zł długu → 190 zł dziennie.
+
+Saldo może spaść poniżej zera:
+- gra trwa dalej;
+- odsetki i należne pensje nadal są naliczane;
+- zakupy, paliwo i płatne usługi wymagają pieniędzy;
+- gracz może sprzedać dostępny majątek;
+- nie stosuj automatycznego bankructwa.
+
+Przychody i koszty zapisuj w historii finansowej. Kwoty rozliczaj dokładnie, najlepiej w groszach.
+
+Cel balansu:
+spłata początkowego kredytu powinna wymagać minimum około 10 dni dobrej gry, czyli około 4 godzin rzeczywistych, po poniesieniu kosztów działania.
+
+To cel ekonomiczny, nie sztuczna blokada spłaty przed dziesiątym dniem. Nie uzależniaj arbitralnie wynagrodzeń od tego, ile brakuje graczowi do celu.
+
+## 10. Parametry robocze do pierwszego balansu
+
+Poniższe liczby są propozycjami roboczymi, nie ostatecznie zatwierdzonymi parametrami. Sprawdź ich spójność i w razie potrzeby skoryguj:
+
+- używany furgon: około 12 000 zł;
+- ładowność: około 1,2 t;
+- objętość: około 12 m³;
+- miejsca paletowe: maksymalnie 4 europalety;
+- bak: około 80 l;
+- paliwo przy zakupie: około 20 l;
+- spalanie: około 10 l/100 km na pusto i do 12 l/100 km przy obciążeniu;
+- kierowca: roboczo 25 zł za godzinę płatnego czasu;
+- pojedynczy załadunek lub rozładunek: roboczo 15 minut przygotowania i do 45 minut obsługi zależnie od partii.
+
+Parametry furgonu muszą być wzajemnie zgodne. W 0.1 użyj fikcyjnego modelu o wiarygodnych właściwościach, bez udawania dokładnej specyfikacji konkretnego producenta.
+
+Cena przewozu zależy od:
+- odległości drogowej nadawca–odbiorca;
+- wielkości i rodzaju ładunku;
+- niewielkiego losowego zróżnicowania oferty.
+
+Cena jest znana przed przyjęciem i po przyjęciu pozostaje stała. Dodatkowe kursy oraz puste kilometry nie zwiększają wynagrodzenia.
+
+## 11. Towary i pojemność
+
+Nie stosuj przelicznika „1 paleta = 1 tona = 1 m³”.
+
+Każdy ładunek ma niezależnie:
+- masę w tonach;
+- objętość w m³;
+- liczbę miejsc paletowych, jeśli jest paletyzowany;
+- wymagany typ zabudowy;
+- nazwę i ilustrację.
+
+Brak paletyzacji oznaczaj jako „nie dotyczy”, nie jako brak zajętej przestrzeni.
+
+Samochód musi spełnić jednocześnie wszystkie ograniczenia. Sumuj parametry wszystkich partii znajdujących się na pokładzie.
+
+W 0.1 przygotuj co najmniej 10 rodzajów towarów suchych odpowiednich do furgonu:
+1. odzież;
+2. obuwie;
+3. książki;
+4. zabawki;
+5. elektronika;
+6. drobny sprzęt AGD;
+7. meble w paczkach;
+8. papier biurowy;
+9. karma dla zwierząt;
+10. konserwy.
+
+Nadaj towarom sensowne proporcje masy i objętości. Meble mogą zapełniać przestrzeń wcześniej niż wyczerpią ładowność, a papier może ograniczać przede wszystkim masa.
+
+Obsługuj towary paletyzowane i paczki. Dziel transport po rzeczywistych jednostkach towaru: całych paletach lub paczkach, bez ułamkowych palet.
+
+Zlecenie może przekraczać pojemność startowego furgonu, ponieważ można wykonać kilka kursów. Generator musi jednak zapewniać sensowną dostępność małych ofert odpowiednich na początek.
+
+Docelowe maksima zwykłych zleceń to 24 t, do 115 m³ i do 38 palet, zależnie od kompatybilnego zestawu. Nie zakładaj, że dowolny pojazd łączy wszystkie te maksima. Większe zamówienia będą przyszłymi przetargami.
+
+## 12. Rynek zleceń
+
+Rynek obejmuje wszystkie obsługiwane miasta Polski.
+
+Liczba ofert wystawionych przez miasto:
+floor(liczba mieszkańców miasta / 1000).
+
+Przykłady:
+20 000 mieszkańców → 20 ofert.
+20 800 mieszkańców → 20 ofert.
+
+To maksymalna i początkowa pula dostępnych ofert, nie liczba generowana co godzinę.
+
+- Nieprzyjęta oferta jest dostępna przez 5 dni gry.
+- Po wygaśnięciu znika i zostaje zastąpiona nową.
+- Przyjęta oferta przechodzi do zleceń firmy, a jej miejsce na rynku natychmiast zajmuje nowa.
+- Przyjęte zlecenie nie zajmuje już miejsca w publicznej puli.
+- Unikaj nieograniczonego narastania ofert.
+
+Populacja ma regulować również skalę dostaw do miasta. Duże miasta muszą mieć odpowiednio duży popyt.
+
+Zaimplementuj i opisz spójny algorytm bilansowania nadawców i odbiorców. Preferuj docelowe pule dostaw wynikające z tej samej liczby mieszkańców. Przy odtwarzaniu ofert zwalniaj i ponownie przydzielaj miejsca odbioru. Nie pomijaj tego wymagania przez równomierne losowanie miast.
+
+Jeśli dokładne bilansowanie koliduje z innymi zasadami, udokumentuj przyjęty kompromis i utrzymuj popyt proporcjonalny do populacji, bez powstawania miast praktycznie pozbawionych dostaw.
+
+Filtry:
+- województwo nadania;
+- wielkość ładunku: masa, objętość, palety;
+- typ auta/zabudowy.
+
+W 0.1 filtr typu ma furgon. Można dodać wyszukiwanie miast i sortowanie ofert.
+
+Każda oferta pokazuje trasę, ładunek, parametry, wynagrodzenie, czas do wygaśnięcia i odległość.
+
+## 13. Realizacja zlecenia
+
+Po przyjęciu zlecenia gracz ma 3 dni gry na jego wykonanie.
+
+Załadunek i rozładunek:
+- działają całodobowo, również w weekendy;
+- rozpoczynają się automatycznie zgodnie z harmonogramem;
+- wymagają fizycznej obecności auta;
+- zajmują czas i zużywają energię kierowcy.
+
+Zlecenie można przewozić partiami.
+
+Pokaż pasek postępu:
+- oczekuje na załadunek;
+- jest w transporcie;
+- dostarczono.
+
+Oddziel rezerwację planowanej partii od faktycznie załadowanego towaru. Zapobiegaj podwójnemu załadunkowi tych samych jednostek.
+
+Wynagrodzenie wypłacane jest dopiero po dostarczeniu całego zlecenia.
+
+Po przekroczeniu 3 dni:
+- zlecenie pozostaje aktywne;
+- można je ukończyć;
+- jednorazowa kara wynosi 50% wynagrodzenia przypadającego na część niedostarczoną w terminie.
+
+Przykład:
+wartość 2000 zł, dostarczono 75% → kara 250 zł.
+
+Nalicz karę tylko raz, zapisz ją w finansach i nie potrącaj ponownie przy końcowej wypłacie. Proporcję określaj według jednostek towaru danego zlecenia.
+
+## 14. Harmonogram pojazdu
+
+To edytowalna oś czasu w stylu planera transportowego, nie zwykła lista statusów.
+
+Czynności:
+- przejazd pusty;
+- załadunek;
+- przejazd z ładunkiem;
+- rozładunek;
+- oczekiwanie;
+- tankowanie;
+- odpoczynek;
+- naprawa/serwis.
+
+Przypisanie partii zlecenia może automatycznie utworzyć sekwencję dojazdu, załadunku, przewozu i rozładunku.
+
+Gracz może:
+- dodawać czynności;
+- zmieniać kolejność przyszłych czynności;
+- przeciągać je;
+- usuwać przyszłe czynności;
+- zmieniać długość odpoczynku;
+- planować doładunki;
+- zmieniać plan podczas jazdy.
+
+Po każdej zatwierdzonej zmianie przelicz:
+- trasę od aktualnej pozycji;
+- czasy;
+- obciążenie auta na każdym odcinku;
+- przewidywane paliwo;
+- energię;
+- ryzyko spóźnienia.
+
+Nie cofaj wykonanej historii i nie teleportuj pojazdu. Edycja nie może powodować zniknięcia towaru ani omijać ograniczeń.
+
+Plan pokazuje ostrzeżenia przed przewidywanym brakiem paliwa, energii, przekroczeniem pojemności i terminów. Nie ujawniaj przyszłych losowych awarii.
+
+Kolory:
+- zielony: jazda z ładunkiem;
+- pomarańczowy: przejazd pusty;
+- szary: odpoczynek lub niedostępność;
+- czerwony: problem wymagający reakcji.
+
+Dodaj ikonę i opis do koloru. Oś czasu powinna mieć wspólną skalę czasu i przewijanie poziome.
+
+## 15. Kierowca i zmęczenie
+
+W 0.1:
+- kierowca ma poziom 1;
+- posiada kategorię B;
+- nie zdobywa jeszcze poziomów ani umiejętności;
+- jest przypisany do pojazdu;
+- nie ma jeszcze mechaniki rodzinnej.
+
+Energia:
+- zakres 0–100%;
+- od 100% do 25% po około 9 godzinach jazdy;
+- przy 25% kierowca automatycznie planuje odpoczynek;
+- gracz może opóźnić odpoczynek;
+- przy 0% kierowca bezwarunkowo zatrzymuje pracę i zaczyna spać;
+- załadunek i rozładunek również zużywają energię;
+- bezczynność zużywa energię o 50% wolniej niż normalna praca.
+
+Sen:
+- standardowo pełna regeneracja od wyczerpania trwa 10 godzin;
+- regeneracja jest nieliniowa: na początku szybsza, pod koniec wolniejsza;
+- krótszy sen daje częściową regenerację;
+- można ręcznie zaplanować odpoczynek;
+- późniejsze rozpoczęcie snu przy niższej energii oznacza więcej czasu potrzebnego do pełnej regeneracji.
+
+Wybierz jednoznaczną krzywą regeneracji i opisz ją. Wielokrotne rozpoczynanie krótkiego snu nie może zapewniać nieograniczonego korzystania z szybkiej początkowej regeneracji.
+
+Pensja:
+- naliczana za cały czas poza odpoczynkiem;
+- płatne są jazda, obsługa, oczekiwanie, bezczynność i czas napraw, jeśli kierowca nie odpoczywa;
+- sen jest niepłatny.
+
+## 16. Paliwo
+
+Każde województwo ma własną cenę paliwa.
+
+Start: 7,50 zł/l we wszystkich województwach.
+
+Co godzinę gry, osobno dla każdego województwa:
+- 50%: bez zmiany;
+- 20%: −0,01 zł;
+- 4%: −0,02 zł;
+- 1%: −0,03 zł;
+- 20%: +0,01 zł;
+- 4%: +0,02 zł;
+- 1%: +0,03 zł.
+
+Ceny rozliczaj w groszach. Zapewnij dodatnią cenę także w bardzo długiej symulacji.
+
+Gracz widzi ceny i może zlecić wcześniejsze tankowanie w tańszym województwie.
+
+Po poleceniu tankowania:
+- auto szuka stacji po dalszej trasie;
+- stacja jest w odległości maksymalnie 30 km;
+- raz wybrane miejsce pozostaje stałe, bez ponownego losowania co klatkę;
+- cena zależy od województwa i godziny faktycznego tankowania;
+- domyślnie tankujemy do pełna;
+- kliknięcie bloku tankowania pozwala ograniczyć litry lub kwotę;
+- tankowanie trwa określony czas.
+
+Rezerwa daje czerwone ostrzeżenie z ikoną paliwa na osi czasu.
+
+Brak paliwa:
+- auto zatrzymuje się;
+- pojawia się alert;
+- gracz zamawia płatny dowóz;
+- pomoc wymaga czasu i pieniędzy;
+- nie ma darmowego tankowania przy saldzie ujemnym.
+
+Nie pobieraj paliwa za kilometry, których auto nie przejechało.
+
+## 17. Awarie i stan techniczny
+
+Trzy poziomy:
+- mała;
+- średnia;
+- duża.
+
+Duże awarie są najrzadsze.
+
+Ryzyko zależy od:
+- przebiegu;
+- stanu technicznego;
+- docelowo również poziomu i umiejętności kierowcy.
+
+W 0.1 wpływ kierowcy ma wartość bazową, ponieważ rozwój dochodzi później.
+
+Przebieg rośnie, stan stopniowo się pogarsza. Serwis poprawia stan, ale nie cofa licznika przebiegu.
+
+Każdą awarię można naprawić na miejscu:
+- drobną może usunąć kierowca kosztem czasu;
+- inne mogą wymagać mobilnego serwisu, pieniędzy i oczekiwania;
+- w 0.1 nie dodawaj holowania.
+
+Udostępnij płatny serwis zapobiegawczy, bez wymagania budowy własnego warsztatu. Własny warsztat będzie później obniżał koszty.
+
+Losowanie awarii opieraj na czasie lub przebiegu symulacji, nie liczbie renderowanych klatek. Szybszy komputer nie może powodować większej awaryjności.
+
+## 18. Dźwięk
+
+Bez muzyki.
+
+Krótkie, oszczędne efekty retro:
+- wpływ pieniędzy po ukończeniu zlecenia;
+- zakup;
+- alert;
+- klakson po kliknięciu auta.
+
+Dodaj regulację głośności i wyciszenie. Nie zapętlaj alertów agresywnie. Dźwięk może być generowany programowo.
+
+## 19. Architektura
+
+Wybierz technologię odpowiednią dla gry przeglądarkowej. Preferowany kierunek, jeśli projekt nie narzuca innego:
+- TypeScript;
+- interfejs komponentowy;
+- Canvas/WebGL lub biblioteka 2D do mapy;
+- lokalny zapis w IndexedDB lub innym odpowiednim mechanizmie.
+
+Oddziel:
+- silnik symulacji;
+- dane geograficzne;
+- definicje pojazdów i towarów;
+- ekonomię;
+- generator rynku;
+- planowanie tras;
+- interfejs;
+- zapis.
+
+Przygotuj wersjonowanie zapisów.
+
+Stan gry powinien nadawać się do późniejszego przeniesienia na serwer, ale nie buduj teraz backendu multiplayer.
+
+Zapewnij:
+- spójny zegar symulacji;
+- jedno źródło stanu;
+- obsługę zdarzeń;
+- możliwość kontrolowanego ziarna losowości w testach;
+- brak podwójnego naliczania wypłat, kar i kosztów;
+- ochronę zapisu przed przypadkowym równoległym uruchomieniem tej samej gry w kilku kartach.
+
+## 20. Plan dalszego rozwoju — nie implementuj w 0.1
+
+Zachowaj poniższe pomysły w dokumentacji przyszłych wersji.
+
+### Firma i budynki
+
+Rozwój za pieniądze. Rozbudowa zajmuje czas.
+
+Każda baza ma własne obiekty:
+- biuro ogranicza maksymalny poziom innych budynków;
+- parking zwiększa liczbę aut;
+- kadry zwiększają liczbę kierowców;
+- spedycja zwiększa możliwości obsługi zleceń i później automatyzuje pracę.
+
+Parking poziomu 3 wymaga biura przynajmniej poziomu 3.
+
+Dalsze obiekty:
+- warsztat: tańsze własne naprawy;
+- centrum szkoleniowe: szkolenia kierowców ze wszystkich baz, wymagające dojazdu;
+- hotel: szybszy odpoczynek i ograniczenie skutków rozłąki;
+- stacja paliw: zakup hurtowy, tankowanie floty i późniejsza sprzedaż paliwa;
+- myjnia jako ulepszenie stacji paliw;
+- magazyn: przyszłe zlecenia magazynowania;
+- księgowość: rozwinięte finanse, statystyki i kredyty;
+- dział handlowy: nowe branże, przetargi i kontrakty.
+
+### Pojazdy
+
+Więcej aut, ciężarówki, ciągniki, naczepy i tandemy.
+
+Używane mają przebieg i zużycie. Nowe można konfigurować: kolor, długość, silnik, zabudowa.
+
+Zmiana przyczepy lub naczepy tylko we własnej bazie.
+
+Rozwój pojazdu w dziesięciu kategoriach, przykładowo:
+zbiornik, silnik, ekonomia jazdy, komfort, miejsce do spania, wyposażenie mieszkalne, niezawodność, bezpieczeństwo, obsługa załadunku, ochrona towaru.
+
+Dokładny katalog i efekty wymagają osobnego dopracowania.
+
+### Kierowcy
+
+Doświadczenie za przejechane kilometry.
+Po każdym poziomie licznik postępu zeruje się.
+Pierwsze wymagania kolejnych awansów: 100, 500, 1000, 2500 km.
+
+Awans losuje darmowe ulepszenie umiejętności. Nie wybiera go gracz.
+Każda umiejętność ma maksymalnie 10 poziomów.
+Wyższy poziom ogólny zwiększa wynagrodzenie.
+
+Dziesięć zaakceptowanych kierunków:
+- wytrzymałość;
+- regeneracja;
+- ecodriving;
+- sprawność fizyczna;
+- bezpieczna jazda;
+- dbałość o pojazd;
+- mechanika;
+- zabezpieczanie ładunku;
+- manewrowanie;
+- organizacja dostawy.
+
+Przyszła umiejętność tolerowania rozłąki wymaga jeszcze decyzji, czy zastąpi jedną z powyższych.
+
+Kandydaci:
+80% poziom 1, 15% poziom 2, 5% poziom 3.
+Wyższe poziomy mają losowe umiejętności.
+
+Płatne szkolenia:
+B → B+E,
+B → C → C+E,
+oraz ADR.
+Kurs prawa jazdy trwa 24 godziny gry. Kierowca nie pracuje i nie otrzymuje pensji podczas szkolenia.
+
+### Rodzina i rotacja
+
+Idealny cykl: pięć dni w trasie, dwa dni w domu.
+Dom to baza zatrudnienia.
+
+Pobyt w domu niepłatny.
+Po dwóch dniach kierowca wraca jako dostępny i znowu otrzymuje pensję także podczas oczekiwania.
+
+Auto można przekazać innemu kierowcy obecnemu w tej samej bazie.
+
+Zbyt długa rozłąka zwiększa niezadowolenie i może prowadzić do odejścia.
+Komfort auta i przyszłe umiejętności łagodzą skutki.
+
+Hotel wyższego poziomu umożliwia pozostawienie auta w obcej bazie firmy i dwudniowy wyjazd kierowcy do domu.
+
+### Kolejne ładunki i działalności
+
+Grupy:
+- suche pakowane;
+- chłodzone i mrożone;
+- sypkie budowlane;
+- rolne luzem;
+- płynne spożywcze;
+- paliwa i płyny techniczne;
+- drewno;
+- maszyny i ciężkie elementy.
+
+Docelowo przynajmniej 10 prawdziwych nazw towarów na grupę, z odpowiednimi zabudowami i uprawnieniami.
+
+Duże zlecenia ponad pojemność standardowego zestawu trafiają do przetargów jednorazowych lub cyklicznych.
+
+Automatyczni spedytorzy mają później obsługiwać pule aut i przejmować dobór zleceń oraz planowanie.
+
+Docelowo multiplayer ze wspólnym czasem działającym nieprzerwanie.
+
+## 21. Kryteria ukończenia 0.1
+
+Gra musi umożliwiać pełną sekwencję:
+1. rozpoczęcie nowej firmy;
+2. wybór miasta;
+3. kredyt;
+4. zakup furgonu;
+5. zatrudnienie kierowcy;
+6. znalezienie i przyjęcie zlecenia;
+7. przypisanie części lub całości ładunku;
+8. automatyczny załadunek;
+9. widoczny przejazd po drogach;
+10. tankowanie i odpoczynek;
+11. rozładunek;
+12. zakończenie wszystkich partii;
+13. jednorazową zapłatę;
+14. częściową spłatę kredytu;
+15. zapis i poprawny powrót do gry.
+
+Sprawdź również:
+- wszystkie trzy ograniczenia pojemności;
+- doładunki i zmiany planu;
+- brak duplikowania towarów;
+- karę za częściowe opóźnienie;
+- wygaśnięcie i odtwarzanie ofert;
+- ceny paliwa;
+- brak paliwa;
+- obowiązkowy sen przy 0%;
+- naprawę awarii;
+- naliczanie pensji i odsetek;
+- brak postępu offline;
+- brak pauzy i przyspieszenia w normalnym interfejsie.
+
+Przeprowadź testy kluczowej logiki i sprawdź grę w przeglądarce. Oceń czytelność mapy, osi czasu i paneli.
+
+Dołącz instrukcję uruchomienia, opis sterowania, źródła danych, przyjęte założenia oraz listę rzeczy odłożonych na później.
+
+Zrealizuj działającą wersję 0.1. Nie kończ wyłącznie na planie, ekranie startowym ani statycznym panelu.
