@@ -17,6 +17,26 @@
 - **Nie** uruchomiono jeszcze `npm test`, Playwright ani typecheck całej aplikacji, ponieważ tutaj nie było repozytorium z zależnościami npm i danych grafu 40 MB. Test pliku `routing.test.ts` nie został wykonany przez Vitest.
 - Nie wykonano testów prawdziwych tras Kraków–Tarnów itd., benchmarków pamięci / czasu ani pełnej weryfikacji OSM.
 
+
+## Raport Codexa: dwie rzeczywiste trasy na 05A (przed optymalizacją)
+
+Pomiar pojedynczego procesu Node.js na oryginalnej implementacji 05B:
+
+| Trasa | Dystans | Czas jazdy | Czas obliczeń |
+|---|---:|---:|---:|
+| Kraków–Tarnów | 82,81 km | 52 min 17 s | 811 ms |
+| Kraków–Zakopane | 103,81 km | 1 h 39 min 53 s | 1752 ms |
+
+Poprawne przypięcia, kolejność krawędzi, geometria i długości. Wczytanie/dekompresja/JSON 4300 ms; utworzenie sieci 2060 ms i routera 693 ms. Peak RSS **1623 MiB**, końcowa sterta JS **926 MiB**. Diagnostyka: **215** `via-way` traktowanych konserwatywnie, **41** niewspieranych restrykcji. Te liczby nie są dowodem pełnej zgodności OSM.
+
+## Wstępna optymalizacja wykonana poza Codexem
+
+Po powyższym benchmarku zmieniono wyłącznie `routing.ts`: per-edge `Map<number, number>` dla kosztów i poprzedników zastąpiono gęstymi `Float64Array` i `Int32Array`; flagi przejezdności oraz sekundy/krawędź również przechowywane są w typed arrays. Nie zmieniono algorytmu, formatów sieci, API ani sposobu restrykcji.
+
+Lokalnie sprawdzono `tsc` oraz 9 niezależnych scenariuszy na małym grafie — OK. Dodatkowy syntetyczny benchmark liniowy (100 tys. węzłów, 99 999 odcinków) z tą wersją dał około 311 ms wyznaczania pełnej trasy i RSS ~185 MiB **dla sztucznego grafu**, więc nie zastępuje pomiaru OSM. Nowa wersja **nie została jeszcze porównana na rzeczywistym grafie 05A ani sprawdzona przez Vitest**.
+
+Najbliższa minimalna czynność zlecona Codexowi: tylko `npm run typecheck`, test `routing.test.ts` oraz te same dwie rzeczywiste trasy i porównanie czasu/pamięci z wcześniejszym raportem. Nie dodawać nowej funkcjonalności, nie robić merge.
+
 ## Znane ograniczenia i ryzyka
 
 1. `via-way`: relacje są raportowane i obsługiwane konserwatywną blokadą wejścia w drogę pośrednią. Jest to **ostrzejsze** od precyzyjnych warunków OSM i może generować objazdy; wymaga dokładniejszego modelowania dla finalnego 05B.
