@@ -1,6 +1,18 @@
-# Stan przekazania PixelCargo
+# Stan przekazania PixelCargo — 04C w toku
 
-Ostatni w pełni ukończony punkt: **Faza II, etap 04B — interaktywna obsługa mapy Polski**.
+Ostatni bezpiecznie ukończony podetap: **04C-1 — kontrola wizualna i przygotowanie**. Baza 217be676ca434fd2a0d730db01f75a0930294f7a, branch main.
+
+Przeczytano instrukcje, dokumentację i sekcje 3–5 oraz 19 specyfikacji. Zaktualizowano AGENTS.md do zakresu 04C. Pełne polecenie zachowano w docs/PixelCargo_Etap_04C.md. Cztery zrzuty rzeczywistej aplikacji Chromium są commitowane w docs/screenshots/04C/; ocena w tamtejszym README. Nie zmieniono mechaniki ani grafiki mapy.
+
+Weryfikacja: npm test **52/52**, npm run typecheck **OK**, npm run build **OK**. Kontrola Chromium: Polska 1366×768 i 1920×1080, Małopolska 1920×1080, Kraków 1366×768. Warstwy krajobrazu jeszcze nie są zaimplementowane.
+
+Następny krok: **04C-2**, lokalne dane hydrograficzne. Dostępny Natural Earth v5.1.2 z raw.githubusercontent.com, pobierane do /tmp/pixelcargo-landscape. Zbadać europejski suplement rzek (podstawowy globalny zbiór nie zawiera wszystkich wymaganych dopływów). Nie wymyślać brakujących geometrii.
+
+Przewidywana blokada 04C-3: żądania do ESA WorldCover oraz publicznych kafli wysokości S3 kończą się CONNECT/HTTP 403. Zapisano w szkicu sieci dodatkowe domeny esa-worldcover.s3.eu-central-1.amazonaws.com i s3.amazonaws.com, zachowując preset package_managers. Zapis szkicu nie stosuje runtime zmian; po ich zastosowaniu w ustawieniach ponowić odpowiednie żądania. Nie są wymagane sekrety. Kontynuować niezależną hydrografię i szukać legalnych dostępnych alternatyw.
+
+Polecenie wznowienia: „Kontynuuj 04C od 04C-2 według docs/PixelCargo_Etap_04C.md; nie twórz aplikacji od nowa. Przeczytaj HANDOFF i MAP_DATA, sprawdź zapisany punkt Git oraz dostępność źródeł danych; dokończ kolejno hydrografię, lasy/rzeźbę i oprawę”.
+
+## Stan bazowy 04B (archiwum)
 
 Punkt startowy 04B: `c525e66cc21e77652adeef9cbc195d45383b964b`. Kontynuowano istniejącą aplikację, bez nowego projektu. Faza I oraz 04A zachowane. **Nie rozpoczęto 04C**, dróg, tras ani kolejnych mechanik. Następny krok wymaga osobnego polecenia użytkownika dotyczącego 04C.
 
