@@ -165,9 +165,15 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
     const dt = to - current.time;
     if (dt > 0 && a && current.van && (a.phase === 'empty' || a.phase === 'loaded')) {
       const duration = phaseDuration(a);
+      const routeMeters = a.phase === 'empty' ? a.routeEmpty.meters : a.routeLoaded.meters;
+      const rate = a.phase === 'empty' ? 0.1 : 0.12; // ml per metre
       const fraction = duration ? dt / duration : 1;
-      const meters = (a.phase === 'empty' ? a.routeEmpty.meters : a.routeLoaded.meters) * fraction;
-      const millilitres = Math.ceil(meters * (a.phase === 'empty' ? 0.1 : 0.12));
+      const meters = routeMeters * fraction;
+      // Charge the difference of cumulative consumption. Rounding each tick
+      // separately makes fuel usage depend on frame rate (e.g. 250ms vs 1s).
+      const cumulativeFuelMl = (elapsedMs: number) =>
+        Math.ceil(routeMeters * rate * (duration ? Math.min(1, elapsedMs / duration) : 1));
+      const millilitres = cumulativeFuelMl(a.phaseProgressMs + dt) - cumulativeFuelMl(a.phaseProgressMs);
       current = { ...current, van: { ...current.van, fuelMillilitres: Math.max(0, current.van.fuelMillilitres - millilitres),
         mileageMeters: current.van.mileageMeters + meters } };
     }
