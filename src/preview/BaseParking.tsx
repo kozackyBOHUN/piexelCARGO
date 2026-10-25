@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { listUsedVans, type PreviewState, type UsedVanOffer } from './gameplay';
+import { DriverPortrait } from './PixelSprites';
 
 type Building = 'parking'|'kadry'|'spedycja'|'warsztat'|'magazyn'|'paliwo'|'hotel';
 type GarageTab = 'flota'|'dealer'|'gielda';
@@ -142,7 +143,7 @@ export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money}:Props)
           {!available.length&&<p>Brak ofert na giełdzie.</p>}</div></div>}
       </>}
       {building==='kadry'&&<div className="pv-garage-body"><div className="pv-base-toolbar"><div><h3>KADRY <small>LV 1</small></h3><p>Zatrudnij pierwszego kierowcę z kategorią B</p></div></div>
-        <div className="pv-empty-garage"><span className="pv-portrait-symbol">▙</span>
+        <div className="pv-empty-garage"><div className="pv-portrait-card"><DriverPortrait/></div>
         <strong>{driverReady?'KIEROWCA ZATRUDNIONY':'KIEROWCA · POZIOM 1'}</strong>
         <p>{driverReady?'Twoja załoga jest gotowa do realizacji kursów.':'Stawka kierowcy: 25 zł/h. Po zatrudnieniu odblokujesz Spedycję.'}</p>
         {!driverReady&&<button onClick={onHire}>ZATRUDNIJ KIEROWCĘ</button>}</div></div>}
