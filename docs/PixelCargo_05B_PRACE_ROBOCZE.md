@@ -4,6 +4,95 @@
 
 **Status:** 05B **W TRAKCIE**, nieukończony. Nie scalać z `main` bez pełnej weryfikacji na rzeczywistym grafie Małopolski.
 
+## Aktualny wynik — naprawa 3420948 i blokada preview
+
+**Zadanie A ukończone. Zadanie B wstrzymane, nie ma wydanego routes.json.**
+Baza tej poprawki: fd234a10d7d0d13f62a5f47cfd8ebf33b9f776b4.
+Nie scalano z main, nie uruchamiano 05C/05D ani mechaniki gry.
+
+### Przyczyna i naprawa
+
+Rzeczywista relacja OSM **3420948**: `restriction=no_u_turn`,
+`from way 1392975571`, `via node 30372078`, `to way 101322356`.
+Obie drogi to jednokierunkowe odcinki ul. Tadeusza Kościuszki w Krakowie.
+Zabroniony przejazd w grafie:
+
+- `1392975571:2:5:f`: węzeł 4157482765 → 30372078;
+- `101322356:0:4:f`: 30372078 → 1169737288.
+
+Stary canTurn dodatkowo wymagał `prior.from === next.to` dla każdego
+no_u_turn. Tu 4157482765 ≠ 1169737288, więc zakaz z dwóch różnych ways
+był pomijany. Naprawa ogólna: gdy from/to są różnymi ways, respektujemy
+wskazany zakaz from/via/to. Kontrola powrotu do poprzedniego węzła pozostaje
+wyłącznie dla tej samej way, aby nie zabraniać jazdy prosto.
+Nie ma wyjątku według ID relacji, zmian grafu ani nowych zasad dla innych typów.
+Test regresyjny: dwie jednokierunkowe drogi z różnymi zewnętrznymi węzłami,
+legalny objazd, A*/Dijkstra i brak trasy po usunięciu objazdu; niezależny audyt
+odrzuca nielegalną trasę. Dawny test jazdy prosto na tej samej way pozostał.
+
+### Sprawdzenie rzeczywistego grafu
+
+| Kierunek | km | Szacowany czas | Kontrola |
+| --- | ---: | --- | --- |
+| Kraków → Tarnów | 82,690596 | 1 h 2 min 11,686 s | OK |
+| Kraków → Zakopane | 103,642616 | 1 h 39 min 12,062 s | OK |
+| Tarnów → Kraków | 82,891153 | 53 min 26,358 s | OK |
+| Zakopane → Kraków | 103,684099 | 1 h 34 min 8,265 s | **Nie można zatwierdzić: niekompletne relacje** |
+| Kraków ↔ Bochnia | — | — | Nie uruchomiono po blokadzie |
+
+Dla trzech zatwierdzonych kierunków: rzeczywiste segmenty/kierunki, łączenie
+węzłów i geometrii, końce zgodne z city snaps, sumy odcinków i pełnej geometrii,
+via-node no/only oraz pełne sekwencje obsługiwanych via-way przechodzą audyt.
+Luki GeoNames–droga nie są dodawane do przejezdnego dystansu.
+Relacja 8872144 na Zakopane nie ma via, lecz trasa nie używa jej to-way
+173721166, więc nie realizuje jej zabronionego manewru. Nie naprawiano tej relacji.
+
+### Blokada eksportu — brak danych, nie dowiedzione naruszenie
+
+Na Zakopane → Kraków niezależny audyt zatrzymuje zatwierdzenie:
+
+- **16545970**, no_u_turn, via node **11283459677**, to way **1217767694**,
+  **brak from**. Trasa jedzie przez ten węzeł na tę way.
+- **16545971**, no_left_turn, from way **1312182688**, via node **11283459679**,
+  **brak to**. Trasa dojeżdża tą way do tego węzła.
+
+Te same niekompletne członki potwierdzono odczytem PyOsmium z krajowego
+`poland-261024.osm.pbf`, SHA-256
+`4d9f766c3e6cbdc4a333608a67058f617ac53c5e89707a606542b46f3ba546cb`,
+data OSM `2026-10-24T20:20:51Z`. Nie jest to wyłącznie obcięcie naszego grafu.
+To inny problem niż błąd no_u_turn z kompletnymi członkami. Nie dopisano
+nieznanych członków, nie wywnioskowano zezwolenia z samego wyglądu skrętu,
+nie zmieniano algorytmu dla nowej klasy problemu.
+Nie twierdzimy, że ta trasa jest zakazana; jej zgodność pozostaje niepotwierdzona.
+
+**Nie opublikowano częściowego ani niezweryfikowanego zestawu preview.**
+`public/roads/preview/routes.json` nie istnieje; brak rozmiaru produktu do podania.
+Roboczy kod pakowania usunięto, aby nie zostawiać pozornej gotowej integracji.
+Dalsze kroki wymagają osobnego polecenia: uzupełnione wiarygodne dane albo
+jawnie uzgodniona konserwatywna polityka niekompletnych restrykcji, następnie
+ponowny audyt sześciu kierunków i dopiero eksport.
+
+### Testy i odtwarzanie
+
+- `npm run typecheck`: OK.
+- `npx vitest run src/world/roads/routing.test.ts`: **14/14**.
+- `npm test`: **86/86** (w tym dotychczasowe 72).
+- `npm run build`: OK.
+- Bez Playwright i bez generatorów OSM.
+- `node --max-old-space-size=4096 scripts/verify-road-routes.mjs`:
+  **exit 1, oczekiwana blokada audytu** przy czwartym kierunku, nie zaliczony test preview.
+  Raport: docs/reports/05b-routing-check.json. Wymaga Node/npm dependencies jak projekt,
+  ~1,5 GiB RSS; nie jest kodem uruchamianym w przeglądarce.
+
+Diagnostyka routera niezmieniona: 206 handledViaWayRestrictions,
+9 conservativeViaWayRestrictions, 41 unsupportedRestrictions. To nie oznacza
+pełnej zgodności całego grafu OSM. Audyt nie korzysta z prywatnego canTurn:
+ponownie sprawdza źródłowe relacje na zwróconym przebiegu. Niekompletne relacje
+są uznane za nieistotne tylko gdy wymagany węzeł/droga nie występuje na trasie;
+w przeciwnym przypadku kontrola zatrzymuje eksport.
+
+Poniższe sekcje są historycznymi raportami sprzed tej poprawki.
+
 ## Przygotowane pliki
 
 - `src/world/roads/routing.ts`: A*/Dijkstra po długościach odcinków, profil furgonu, odczyt maksymalnych parametrów pojazdu oraz `maxspeed`, podstawowe `no_*`/`only_*` dla `via-node`, deterministyczna geometria, dystans, czas i identyfikator trasy; osobne API tras między węzłami lub 19 miastami demo.

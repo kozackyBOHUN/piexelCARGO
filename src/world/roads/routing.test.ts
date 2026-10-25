@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createNetwork, type RoadGraph, type TurnRelation } from './model';
 import { DEFAULT_VAN, greatCircleMeters, makeRoadRouter, routeOnGraph } from './routing';
 import { positionAtMeters, positionAtSeconds } from './position';
+import { makeRouteAuditor } from '../../../scripts/preview/audit';
 
 const nodes = [[101,19,50],[102,19.001,50],[103,19.002,50],[104,19.003,50],[105,19.001,50.001]] as const;
 const coords = (index: number) => [nodes[index][1], nodes[index][2]] as const;
@@ -55,6 +56,30 @@ describe('05B road routing on controlled physical topology', () => {
   it('no_u_turn is not interpreted as forbidding straight movement on the same way', () => {
     const graph=fixture(); graph.restrictions=[relation(3,'no_u_turn',12,103,12)];
     expect(router(graph).findBetweenNodes(102,104).route!.edgeIds).toContain('s3:f');
+  });
+  it('blocks no_u_turn between distinct one-way ways even when the outer nodes differ', () => {
+    // Two separate carriageways meet at the via node. Returning east uses a
+    // different OSM way/node, rather than reversing the incoming graph edge.
+    const points = [[19.001,50.001],[19,50],[19.0011,50.0009],[18.999,50]] as const;
+    const connections = [[0,1,0],[1,2,1],[1,3,2],[3,2,2]] as const;
+    const graph: RoadGraph = {
+      format:1, version:'separate-carriageways', nodes:points.map((p,i)=>[i+1,...p]),
+      ways:[10,20,30].map(id=>({id,tags:{highway:'tertiary',oneway:'yes'}})),
+      segments:connections.map(([a,b,w],i)=>[`u${i}`,a,b,w,greatCircleMeters(points[a],points[b]),1,[points[a],points[b]]]),
+      restrictions:[relation(901,'no_u_turn',10,2,20)],snaps:[],
+    };
+    const r=router(graph);
+    for (const strategy of ['astar','dijkstra'] as const) {
+      const route=r.findBetweenNodes(1,3,strategy).route!;
+      expect(route.nodeIds).toEqual([1,2,4,3]);
+      expect(route.edgeIds).not.toContain('u1:f');
+    }
+    const audit=makeRouteAuditor(createNetwork(graph),r.diagnostics);
+    expect(audit(r.findBetweenNodes(1,3).route!).errors).toEqual([]);
+    const illegal=router({...graph,restrictions:[]}).findBetweenNodes(1,3).route!;
+    expect(audit(illegal).errors.some(error=>error.includes('no via-node violation: 901'))).toBe(true);
+    graph.segments=graph.segments.slice(0,2);
+    expect(router(graph).findBetweenNodes(1,3).route).toBeNull();
   });
   it('never silently treats via-way restrictions as allowed', () => {
     const graph=fixture(); graph.restrictions=[relation(4,'no_left_turn',11,12,14,'w')];

@@ -15,7 +15,7 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
     - [x] 04C-4 Oprawa, optymalizacja, testy i zrzuty końcowe
 - [ ] 05 Sieć drogowa i wyznaczanie tras
   - [x] 05A Rzeczywisty graf Małopolski: OSM IDs, kierunki/dostęp, pełna geometria, granica OSM, 19 przypięć i sześć par, źródła/ODbL
-  - [ ] 05B Najkrótsze trasy, dostęp i restrykcje skrętów
+  - [ ] 05B Najkrótsze trasy, dostęp i restrykcje skrętów — gałąź robocza: błąd 3420948 naprawiony; sześciotrasowy preview zablokowany niekompletnymi relacjami 16545970/16545971, szczegóły w dokumencie roboczym
   - [ ] 05C Canvas dróg i planer demonstracyjny, powiększenie mapy
   - [ ] 05D Sieć krajowa, optymalizacja i pomiary
 - [ ] 06 Start firmy i baza

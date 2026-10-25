@@ -1,0 +1,228 @@
+{
+  "baseCommit": "fd234a10d7d0d13f62a5f47cfd8ebf33b9f776b4",
+  "graphVersion": "05A-v1-a0575a3f5bd99f19-98733c38",
+  "graphSha256": "e67a4d18e39c2894edcab59e7ef776a01ce0d6251a00618ff7b262d330e42c9f",
+  "taskA": "Two forward routes pass topology, geometry and applicable restriction checks",
+  "previewExported": false,
+  "blocked": true,
+  "diagnostics": {
+    "handledViaWayRestrictions": 206,
+    "conservativeViaWayRestrictions": 9,
+    "unsupportedRestrictions": 41
+  },
+  "routes": [
+    {
+      "from": "Kraków",
+      "to": "Tarnów",
+      "routeId": "road:05A-v1-a0575a3f5bd99f19-98733c38:4a6aff56",
+      "meters": 82690.59621817915,
+      "seconds": 3731.6861567048504,
+      "calculationMs": 821.0853049999996,
+      "legs": 604,
+      "geometryPoints": 2039,
+      "errors": [],
+      "nodeRelationsEncountered": [
+        17997359,
+        3420948,
+        14701333,
+        5540919,
+        5540920,
+        9576394,
+        9524431,
+        5648497,
+        5648496,
+        15763120,
+        6274001,
+        6274002,
+        6705172,
+        6663871,
+        6663873,
+        8727460,
+        6578418,
+        17296459,
+        17336759,
+        16759827,
+        20759880,
+        9395059,
+        9395057
+      ],
+      "viaWayEntriesUsed": [
+        2088107
+      ],
+      "unsupportedExposure": [],
+      "unsupportedRuledOut": []
+    },
+    {
+      "from": "Kraków",
+      "to": "Zakopane",
+      "routeId": "road:05A-v1-a0575a3f5bd99f19-98733c38:b174a729",
+      "meters": 103642.61551548932,
+      "seconds": 5952.062131198946,
+      "calculationMs": 1769.3865779999996,
+      "legs": 1085,
+      "geometryPoints": 4112,
+      "errors": [],
+      "nodeRelationsEncountered": [
+        17997359,
+        3420948,
+        14701333,
+        5540919,
+        5540920,
+        9576394,
+        9524431,
+        5648497,
+        5648496,
+        15763120,
+        14537511,
+        3806969,
+        3806961,
+        19221998,
+        21422673,
+        17988800,
+        17915882,
+        16461913,
+        21045461,
+        21240400
+      ],
+      "viaWayEntriesUsed": [
+        14537515
+      ],
+      "unsupportedExposure": [],
+      "unsupportedRuledOut": [
+        8872144
+      ]
+    },
+    {
+      "from": "Tarnów",
+      "to": "Kraków",
+      "routeId": "road:05A-v1-a0575a3f5bd99f19-98733c38:22dc25a9",
+      "meters": 82891.15307982748,
+      "seconds": 3206.357701530177,
+      "calculationMs": 542.4480100000001,
+      "legs": 412,
+      "geometryPoints": 1522,
+      "errors": [],
+      "nodeRelationsEncountered": [
+        18892625,
+        9395055,
+        9395060,
+        5748896,
+        4233534,
+        19361903,
+        20759846,
+        17336667,
+        1251629,
+        10556644,
+        4236505,
+        5648492,
+        6274003,
+        15763122,
+        15763121,
+        2246703,
+        7738621,
+        5540917,
+        5540918,
+        3420946,
+        12326128
+      ],
+      "viaWayEntriesUsed": [],
+      "unsupportedExposure": [],
+      "unsupportedRuledOut": []
+    },
+    {
+      "from": "Zakopane",
+      "to": "Kraków",
+      "routeId": "road:05A-v1-a0575a3f5bd99f19-98733c38:54ea3408",
+      "meters": 103684.0986756244,
+      "seconds": 5648.264835771931,
+      "calculationMs": 595.6822670000001,
+      "legs": 1089,
+      "geometryPoints": 4000,
+      "errors": [
+        "Unassessed unsupported restriction exposure: 16545970,16545971"
+      ],
+      "nodeRelationsEncountered": [
+        21240399,
+        21240401,
+        21045463,
+        17915881,
+        19024483,
+        3281139,
+        9491129,
+        21422641,
+        21422675,
+        20346889,
+        12289222,
+        13059542,
+        6274003,
+        15763122,
+        15763121,
+        2246703,
+        7738621,
+        5540917,
+        5540918,
+        3420946,
+        12326128
+      ],
+      "viaWayEntriesUsed": [
+        14537514
+      ],
+      "unsupportedExposure": [
+        16545970,
+        16545971
+      ],
+      "unsupportedRuledOut": []
+    }
+  ],
+  "blockers": [
+    {
+      "id": 16545970,
+      "tags": {
+        "restriction": "no_u_turn",
+        "type": "restriction"
+      },
+      "members": [
+        [
+          "n",
+          11283459677,
+          "via"
+        ],
+        [
+          "w",
+          1217767694,
+          "to"
+        ]
+      ]
+    },
+    {
+      "id": 16545971,
+      "tags": {
+        "restriction": "no_left_turn",
+        "type": "restriction"
+      },
+      "members": [
+        [
+          "n",
+          11283459679,
+          "via"
+        ],
+        [
+          "w",
+          1312182688,
+          "from"
+        ]
+      ]
+    }
+  ],
+  "sourceConfirmation": {
+    "url": "https://download.geofabrik.de/europe/poland-261024.osm.pbf",
+    "sha256": "4d9f766c3e6cbdc4a333608a67058f617ac53c5e89707a606542b46f3ba546cb",
+    "osmTimestamp": "2026-10-24T20:20:51Z",
+    "note": "Read-only PyOsmium extraction confirmed the same incomplete members in the national source, not only the regional graph."
+  },
+  "process": {
+    "node": "v24.19.0",
+    "maxRssMiB": 1526.96484375,
+    "heapUsedMiB": 830.4545135498047
+  }
+}

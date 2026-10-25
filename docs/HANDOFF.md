@@ -1,3 +1,28 @@
+# Aktualizacja gałęzi feat/05b-routing-prep — poprawka i blokada preview
+
+Baza fd234a10d7d0d13f62a5f47cfd8ebf33b9f776b4. Naprawiono ogólny błąd
+no_u_turn z różnymi ways (relacja 3420948) i dodano regresję A*/Dijkstra.
+14/14 testów routingu, 86/86 wszystkich unit, typecheck/build OK.
+Szczegóły, przyczyna i wyniki: docs/PixelCargo_05B_PRACE_ROBOCZE.md.
+
+Dwa kierunki Kraków → Tarnów/Zakopane i Tarnów → Kraków przechodzą audyt.
+Zestaw preview **nie został wydany**: Zakopane → Kraków napotyka niekompletne
+relacje 16545970 (brak from) i 16545971 (brak to), również w krajowej migawce.
+Nie dowiedziono naruszenia, ale nie można zatwierdzić zgodności. Bochnia nie
+była testowana po tej blokadzie. Nie ma public/roads/preview/routes.json.
+
+Odtworzenie: node --max-old-space-size=4096 scripts/verify-road-routes.mjs
+(kończy exit 1 przy blokadzie, zapisuje docs/reports/05b-routing-check.json).
+Nie traktować tego wyniku jako zaliczenia preview/całego 05B. Nie rozpoczęto
+05C/05D, UI, firmy, pojazdu ani zleceń. Oczekiwać kolejnego polecenia w sprawie
+niekompletnych danych; nie kontynuować samodzielnie.
+
+Wcześniejsze trzy szkice Codexa w /workspace/piexelCARGO pozostają nietknięte.
+Bieżąca praca w osobnym worktree /workspace/pixelcargo-05b-preview-fix.
+Raport 05A poniżej jest historyczny. Main nie był scalany ani zmieniany.
+
+---
+
 # Stan przekazania — 05A ukończony
 
 Ostatni ukończony podetap: **05A**, osobny commit w bieżącej historii.

@@ -181,7 +181,12 @@ function canTurn(network: RoadNetwork, prior: DirectedEdge, next: DirectedEdge, 
   if (!constraints) return true;
   const allowed = constraints.filter(r => r.kind === 'only');
   if (allowed.length && !allowed.some(r => r.toWay === nextWay)) return false;
-  return !constraints.some(r => r.kind === 'no' && r.toWay === nextWay && (!r.uturn || prior.from === next.to));
+  // A no_u_turn can connect distinct OSM ways (e.g. two one-way carriageways).
+  // In that case from/via/to identifies the prohibited turn; their outer nodes
+  // need not coincide. Only same-way U-turns need the reversal check so that
+  // continuing along the next segment of that way remains legal.
+  return !constraints.some(r => r.kind === 'no' && r.toWay === nextWay &&
+    (!r.uturn || prevWay !== nextWay || prior.from === next.to));
 }
 /**
  * Match the entire ordered from-way, via-way(s), to-way sequence, including
