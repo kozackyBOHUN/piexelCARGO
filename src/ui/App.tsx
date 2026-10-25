@@ -107,6 +107,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
             </span>
           </span>
         </a>
+        <a href="/?preview=1" style={{color:"#f2ba62",fontSize:"12px",fontWeight:700,border:"1px solid #ac8752",padding:"8px 11px",textDecoration:"none"}}>▶ GRAJ W PREVIEW</a>
         <div className="environment-badge">
           <span className="status-light" />
           FAZA II<span className="badge-divider">/</span>MAPA 04C
