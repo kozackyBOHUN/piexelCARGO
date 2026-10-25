@@ -66,13 +66,30 @@ export function VehiclePixel({color='#bfa36d',quality=55}: {color?:string;qualit
     <rect x="12" y="80" width="175" height="3" fill="#39434c"/>
   </svg>;
 }
+function VehicleArtwork({offer}:{offer:UsedVanOffer}){
+  const [failed,setFailed]=useState(false);
+  const validId=/^van-used-[1-5]$/.test(offer.id);
+  useEffect(()=>{setFailed(false);},[offer.id]);
+  // The artist's PNG sprites live in public/art/vehicles and are served via
+  // Vite's base path (including GitHub Pages /piexelCARGO/).
+  if(!validId||failed)return <VehiclePixel color={offer.color} quality={offer.conditionPercent}/>;
+  return <img
+    className="pv-vehicle-sprite"
+    src={`${import.meta.env.BASE_URL}art/vehicles/${offer.id}.png`}
+    alt={`Pixelartowy furgon ${offer.model}, stan ${offer.conditionPercent}%`}
+    width="320" height="160"
+    decoding="async"
+    loading="lazy"
+    onError={()=>setFailed(true)}
+  />;
+}
 function OfferCard({offer,canPay,owned,onBuy,money}: {
   offer:UsedVanOffer;canPay:boolean;owned:boolean;onBuy:(id:string)=>void;money:(g:number)=>string;
 }){
   const worn=offer.conditionPercent<35;
   return <article className="pv-car-card">
     <div className="pv-car-graphic">
-      <VehiclePixel color={offer.color} quality={offer.conditionPercent}/>
+      <VehicleArtwork offer={offer}/>
       <span className={worn?'pv-condition-warn':'pv-condition-good'}>{worn?'DO REMONTU':offer.conditionPercent>85?'ZADBANY':'UŻYWANY'}</span>
     </div>
     <div className="pv-car-info">
