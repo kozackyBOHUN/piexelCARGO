@@ -1,0 +1,46 @@
+/* PIXELCARGO // base yard, garage, used-van market. Independent of road/map renderer. */
+.pv-base-root{color:#dfe7ea;font-family:'Lucida Console','DejaVu Sans Mono',monospace}
+.pv-tutorial{display:flex;gap:11px;align-items:center;background:#213c3d;border:1px solid #55867e;margin:13px 14px 0;padding:11px 13px;color:#bbdfcc;font-size:11px;line-height:1.7}
+.pv-tutorial strong{letter-spacing:1px;color:#e7c27b;white-space:nowrap}.pv-tutorial-led{height:11px;width:11px;flex-shrink:0;background:#d8b66a;box-shadow:0 0 0 3px #3e5146;image-rendering:pixelated}
+.pv-base-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px}
+.pv-base-heading>div{display:flex;flex-direction:column;gap:3px}.pv-base-heading span{font-size:10px;color:#91b5ba;letter-spacing:.6px}.pv-base-heading strong{font-size:14px;color:#f0d6a3}.pv-base-hint{font-size:9px;color:#6f8b93;text-align:right}
+.pv-base-yard{position:relative;overflow:hidden;isolation:isolate;height:365px;background:#26383c;margin:0 14px;border:5px solid #121e26;box-shadow:inset 0 0 0 3px #5c6b63}
+.pv-yard-grid{position:absolute;inset:0;background-image:linear-gradient(#40554b88 1px,transparent 1px),linear-gradient(90deg,#40554b88 1px,transparent 1px);background-size:26px 26px;transform:skewY(-8deg) scale(1.3);background-color:#39504a}
+.pv-yard-road{position:absolute;background:repeating-linear-gradient(90deg,#53636b 0 24px,#53636b 28px,#5c6c74 29px);border-top:8px solid #2f3c42;border-bottom:8px solid #2f3c42;transform:rotate(-25deg)}
+.pv-yard-road-one{width:140%;height:47px;left:-15%;top:45%}.pv-yard-road-two{width:125%;height:45px;left:-10%;top:86%;transform:rotate(17deg)}
+.pv-yard-skyline{position:absolute;left:0;top:0;right:0;height:24%;background:linear-gradient(#29404a,#3e5752cc);clip-path:polygon(0% 0%,100% 0%,100% 100%,92% 70%,88% 70%,84% 100%,70% 100%,65% 75%,60% 100%,28% 100%,22% 68%,14% 100%,0% 100%)}
+.pv-base-building{position:absolute;z-index:1;display:flex;align-items:center;flex-direction:column;gap:0;width:18%;height:32%;padding:0!important;overflow:visible;border:0!important;background:transparent!important;box-shadow:none;transform:translateZ(0);transition:transform .12s,filter .12s;cursor:pointer}
+.pv-base-building.is-open:hover{transform:translateY(-6px) scale(1.035);filter:brightness(1.18)}.pv-base-building.is-selected.is-open{filter:drop-shadow(0 0 5px #eccb86)}
+.pv-base-building:focus-visible{outline:3px solid #ffcd67;outline-offset:4px}
+.pv-base-building.is-locked{filter:grayscale(1) brightness(.68);cursor:not-allowed!important;opacity:.73!important}
+.pv-building-art{width:100%;height:100%;min-height:70px;image-rendering:pixelated;overflow:visible}
+.pv-building-label{display:flex;gap:6px;align-items:center;white-space:nowrap;position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.6px;color:#ffdead;background:#192833;border:2px solid #a08c68;padding:2px 6px;box-shadow:3px 3px 0 #111b23}
+.pv-building-label small{font-size:8px;color:#bac5c1}.pv-building-locked{position:absolute;top:-3px;left:50%;transform:translateX(-50%);padding:2px 5px;background:#2a3039;border:1px solid #76818a;font-size:8px;white-space:nowrap;color:#d8d5d2}
+.pv-yard-badge{position:absolute;bottom:8px;left:9px;color:#a4b4a3;background:#13202acc;font-size:8px;letter-spacing:1px;padding:4px 7px}
+.pv-base-inspector{margin:14px;border:1px solid #4a5760;background:#18232e;box-shadow:5px 5px 0 #11171e;min-height:210px}
+.pv-base-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:14px 14px 10px;background:#23303a}
+.pv-base-toolbar h3{font-size:17px;color:#efcf90;letter-spacing:1px;margin:0}.pv-base-toolbar h3 small{font-size:10px;color:#8da69d}.pv-base-toolbar p{font-size:11px;margin:0;color:#9bb2ba}
+.pv-garage-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.pv-garage-tabs button{border:1px solid #657783;background:#1a2832;color:#aeb9c6;font-size:10px;padding:9px 12px}
+.pv-garage-tabs button.is-active{border-color:#e3b469;background:#675038;color:#ffe1a2}
+.pv-garage-body{padding:10px}
+.pv-market-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;color:#dec38f;font-size:11px;margin:5px 2px 11px;padding:5px 0;border-bottom:1px dashed #53626a}
+.pv-market-head span{color:#8eaab4;font-size:9px}
+.pv-used-list{max-height:390px;overflow-y:auto;padding-right:6px;scrollbar-color:#9d8058 #1b2931;scrollbar-width:thin}
+.pv-car-card{display:grid;grid-template-columns:minmax(160px,1fr) minmax(230px,1.65fr);gap:14px;margin:6px 3px 13px;background:#26343d;border:2px solid #56656c;box-shadow:4px 4px 0 #10181e;padding:10px}
+.pv-car-graphic{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:repeating-linear-gradient(0deg,#394c50 0 15px,#334449 15px 19px);border:2px solid #42595d;min-height:118px}
+.pv-van-art{display:block;width:100%;max-width:220px;min-height:80px;image-rendering:pixelated;filter:drop-shadow(4px 5px 0 #151e27)}
+.pv-condition-warn,.pv-condition-good{font-size:9px;color:#e6c091;letter-spacing:1px}.pv-condition-warn{color:#ef9878}
+.pv-car-info{display:flex;flex-direction:column;gap:6px;min-width:0}.pv-car-info>strong{font-size:13px;color:#f5e4c3}.pv-car-sub{color:#97b3bd;font-size:10px}
+.pv-car-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 11px;font-size:10px}
+.pv-car-facts span{display:flex;align-items:center;justify-content:space-between;gap:6px;color:#a1b4bf;white-space:nowrap}.pv-car-facts b{font-size:10px;color:#f0e8dc}
+.pv-car-condition{height:8px;border:1px solid #526570;background:#111b24;overflow:hidden}.pv-car-condition>div{height:100%}
+.pv-car-purchase{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}.pv-car-purchase strong{color:#a9d8b2;font-size:15px}.pv-car-purchase button{font-size:9px!important;padding:8px!important}
+.pv-empty-garage{padding:31px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:9px}.pv-empty-garage strong{color:#e3cfaa;letter-spacing:1px}.pv-empty-garage p{max-width:430px;color:#9bb4c0}.pv-empty-garage button{margin-top:6px}
+.pv-empty-symbol{font-size:56px;line-height:1;color:#84979e}.pv-portrait-symbol{display:grid;place-items:center;width:72px;height:72px;background:#343f47;border:3px solid #65777c;font-size:50px;color:#e9bd89;box-shadow:5px 5px 0 #111a22}
+.pv-dealer-locked{background:repeating-linear-gradient(45deg,#202c36,#202c36 12px,#27333d 12px,#27333d 24px)}
+.pv-menu-link{display:flex;align-items:center;justify-content:center;gap:7px;background:#293947!important;color:#d8e9e8!important;border:1px solid #758793!important}
+.pv-gate-hint{border-left:4px solid #be9d6b;padding:9px 12px;background:#25313a;margin:7px 0;color:#c0cdd0}
+@media(max-width:1250px){.pv-base-building{width:20%}.pv-base-yard{height:350px}.pv-car-card{grid-template-columns:1fr}.pv-car-graphic{min-height:100px}.pv-van-art{width:70%}}
+@media(max-width:850px){.pv-base-yard{height:305px}.pv-base-building{width:23%;height:30%}.pv-building-label{font-size:8px}.pv-building-label small{font-size:7px}.pv-building-locked{font-size:7px}.pv-tutorial{flex-wrap:wrap}.pv-base-toolbar{align-items:flex-start;flex-direction:column}.pv-car-card{grid-template-columns:minmax(120px,1fr) minmax(200px,1.5fr)}}
+@media(max-width:570px){.pv-base-yard{height:260px;margin:0 8px}.pv-base-building{width:24%;height:29%}.pv-building-label{font-size:7px;padding:2px 3px}.pv-building-label small{display:none}.pv-base-heading{flex-direction:column;align-items:flex-start}.pv-base-inspector{margin:8px}.pv-car-card{display:block}.pv-car-graphic{margin-bottom:10px}.pv-car-facts span{font-size:9px}.pv-garage-tabs button{padding:8px 10px}}
