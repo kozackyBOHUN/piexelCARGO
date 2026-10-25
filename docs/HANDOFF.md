@@ -1,16 +1,14 @@
 # Stan przekazania PixelCargo — 04C w toku
 
-Ostatni bezpiecznie ukończony podetap: **04C-1 — kontrola wizualna i przygotowanie**. Baza 217be676ca434fd2a0d730db01f75a0930294f7a, branch main.
+Ostatni bezpiecznie ukończony podetap: **04C-2 — rzeczywista hydrografia**. Baza 217be676ca434fd2a0d730db01f75a0930294f7a, branch main.
 
-Przeczytano instrukcje, dokumentację i sekcje 3–5 oraz 19 specyfikacji. Zaktualizowano AGENTS.md do zakresu 04C. Pełne polecenie zachowano w docs/PixelCargo_Etap_04C.md. Cztery zrzuty rzeczywistej aplikacji Chromium są commitowane w docs/screenshots/04C/; ocena w tamtejszym README. Nie zmieniono mechaniki ani grafiki mapy.
+04C-1 ukończony w ed2884a: cztery zrzuty bazowe, AGENTS z zakresem 04C, pełne polecenie w docs/PixelCargo_Etap_04C.md. 04C-2 dodaje Natural Earth 5.1.2 (domena publiczna): 33 obiekty rzeczne i 21 poligonów wód, wszystkie wymagane osiem rzek, trzy LOD, lokalny JSON 148 kB, cache Path2D, indeks widoczności i canvas pod SVG bez przejmowania kliknięć. Źródła, SHA, licencje i regeneracja w MAP_DATA. Pliki: src/world/landscape/*, src/ui/HydrographyCanvas.tsx, src/world/data/hydrography.json, scripts/prepare-hydrography.py. Dodano favicon SVG po diagnozie istniejącego 404 i poprawiono warstwę przycisku ponowienia. Nie zmieniono silnika, zapisu ani danych 04A.
 
-Weryfikacja: npm test **52/52**, npm run typecheck **OK**, npm run build **OK**. Kontrola Chromium: Polska 1366×768 i 1920×1080, Małopolska 1920×1080, Kraków 1366×768. Warstwy krajobrazu jeszcze nie są zaimplementowane.
+Weryfikacja 04C-2: npm test **58/58**, npm run typecheck **OK**, npm run build **OK**, npm run test:e2e **25/25** (wszystkie istniejące 52/23 także przechodzą). Produkcyjny Chromium: wczytanie hydrografii, Kraków, zoom, LOD i brak błędów konsoli/runtime. Zrzuty water-country i water-demo dla 1366/1920 oraz water-krakow-1366 zapisane w docs/screenshots/04C/. Wszystkie pięć obejrzano: woda widoczna, miasta i tekst nie giną. Pomiar samej funkcji rysującej: P95 0,3–0,4 ms w 50 próbkach, nie gwarancja FPS całej mapy.
 
-Następny krok: **04C-2**, lokalne dane hydrograficzne. Dostępny Natural Earth v5.1.2 z raw.githubusercontent.com, pobierane do /tmp/pixelcargo-landscape. Zbadać europejski suplement rzek (podstawowy globalny zbiór nie zawiera wszystkich wymaganych dopływów). Nie wymyślać brakujących geometrii.
+**Następny krok: 04C-3 — prawdziwe lasy i rzeźba terenu.** Pierwsze żądania ESA WorldCover i publicznego S3 kończyły się CONNECT/HTTP 403. Zapisano wymagane dwie domeny w szkicu sieci. Po późniejszej weryfikacji (2026-10-25 około 04:29 UTC) ESA WorldCover zwraca HTTP 200; można kontynuować pobieranie. Zweryfikować również S3 z Terrarium. Historyczne wpisy o blokadzie w README/MAP_DATA należy zastąpić opisem po rzeczywistym pobraniu źródeł.
 
-Przewidywana blokada 04C-3: żądania do ESA WorldCover oraz publicznych kafli wysokości S3 kończą się CONNECT/HTTP 403. Zapisano w szkicu sieci dodatkowe domeny esa-worldcover.s3.eu-central-1.amazonaws.com i s3.amazonaws.com, zachowując preset package_managers. Zapis szkicu nie stosuje runtime zmian; po ich zastosowaniu w ustawieniach ponowić odpowiednie żądania. Nie są wymagane sekrety. Kontynuować niezależną hydrografię i szukać legalnych dostępnych alternatyw.
-
-Polecenie wznowienia: „Kontynuuj 04C od 04C-2 według docs/PixelCargo_Etap_04C.md; nie twórz aplikacji od nowa. Przeczytaj HANDOFF i MAP_DATA, sprawdź zapisany punkt Git oraz dostępność źródeł danych; dokończ kolejno hydrografię, lasy/rzeźbę i oprawę”.
+Polecenie wznowienia: „Kontynuuj 04C od 04C-3 według docs/PixelCargo_Etap_04C.md i obecnego punktu Git. Pobierz/zweryfikuj rzeczywiste dane lasów oraz wysokości, przygotuj lokalny zoptymalizowany zestaw, zachowaj hydrografię i nawigację 04B. Następnie dokończ 04C-4 i testy/zrzuty. Nie twórz aplikacji od nowa i nie rozpoczynaj 05”.
 
 ## Stan bazowy 04B (archiwum)
 

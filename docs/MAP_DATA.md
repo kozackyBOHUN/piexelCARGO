@@ -74,3 +74,50 @@ Minimalna skala pochodzi z dopasowania całej Polski. Na minimalnym zoomie przes
 `labels.ts` ma progi rozdzielczości: ponad 1800 m/px — do 3 nazw, 600–1800 m/px — do 9, poniżej — wszystkie mieszczące się bez kolizji. Nazwa wybranego miasta ma pierwszeństwo. Nie renderujemy etykiet miast poza kadrem. Ich znaczniki nadal mają stały hitbox i obsługę klawiatury, a przy nakładaniu można wybrać miasto z listy grupy.
 
 `search.ts` normalizuje znaki Unicode i polskie ł, porównuje fragmenty nazw i sortuje wyniki. `CitySearch.tsx` otrzymuje katalog oraz nazwy województw z istniejących danych; nie zawiera ręcznej listy 19 nazw ani filtra ograniczającego przyszły większy katalog. Obecna aplikacja nadal przekazuje wyłącznie 19 miast demo i jawnie to komunikuje. Nie dodano danych ogólnopolskich ani 04C.
+
+## Hydrografia 04C-2 — lokalna, rzeczywista warstwa wody
+
+Źródło: **Natural Earth 5.1.2**, domena publiczna, „Made with Natural Earth”. [Warunki źródła](https://www.naturalearthdata.com/about/terms-of-use/), kopia pełnego oświadczenia z przypiętej wersji: public/licenses/natural-earth-PUBLIC-DOMAIN.md. Europejskie suplementy mają pochodzenie EC JRC IES opisane w tym samym oświadczeniu Natural Earth. Data pobrania: **2026-10-25**; wersja zbioru nie oznacza aktualnej daty pomiaru każdej rzeki.
+
+Wszystkie adresy zaczynają się od `https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/`:
+
+| Plik źródłowy | SHA-256 |
+| --- | --- |
+| ne_10m_rivers_lake_centerlines.geojson | bb854a900ecbd3b408df46d5e16e3e0f974ba55993f9d8b5c26e855273c0905a |
+| ne_10m_rivers_europe.geojson | 90712202ac46985812e90840df9acd5101599a9c649868d5bc55ee96c2fedd4c |
+| ne_10m_lakes.geojson | 2d036f53dedec578001c5c30c2959ee7d4eebc1306900fa4367c49929ec8f2d9 |
+| ne_10m_lakes_europe.geojson | b4dd9e7a5edd0d07b54768b5404d1ebe77f80b9d579c85fff65f90cf50369769 |
+
+### Rzeczywisty zakres
+
+Wynik: **33 obiekty rzek/osi wodnych oraz 21 poligonów jezior i zbiorników** po przecięciu z istniejącą granicą kraju. Zawiera Wisłę, Odrę, Wartę, Bug, Narew, San, Dunajec i Pilicę; także m.in. Bzurę, Drwęcę, Wkrę, Gwdę, Łynę, Wieprz, Nysę Kłodzką, Prosnę, Bóbr i Noteć. Obiekty mogą być wieloczęściowe; liczba obiektów nie oznacza liczby unikalnych nazw rzek.
+
+Jeziora/zbiorniki obejmują m.in. Dąbie, Gardno, Łebsko, Miedwie, Drawsko, Gopło oraz geometrie głównych jezior mazurskich i większych zbiorników, z których część nie ma nazwy w źródle. Nie dopisujemy niezweryfikowanych nazw do anonimowych rekordów. To generalizowany zbiór 1:10m, **nie pełny rejestr wszystkich polskich rzek, jezior i małych zbiorników**. Nie służy nawigacji ani analizie hydrologicznej; przy maksymalnym zoomie widać uogólnienie źródła.
+
+### Przetwarzanie i odtworzenie
+
+Generator scripts/prepare-hydrography.py wymaga narzędzi z scripts/requirements-map.txt i sprawdza cztery sumy SHA-256. Naprawia geometrię w razie potrzeby, przecina ją z niezmienioną granicą z 04A, zachowuje liniowe/powierzchniowe części, tłumaczy potwierdzone nazwy Vistula→Wisła, Oder→Odra i Luzicka Nisa→Nysa Łużycka. Nie łączy fikcyjnie brakujących odcinków. Douglas–Peucker z zachowaniem topologii: tolerancje 0,012°, 0,003° i 0,0007° dla trzech LOD, następnie pięć miejsc po przecinku. To najwyżej około 1,3 km / 330 m / 78 m w szerokości geograficznej; zmiana przebiegu wynika z kontrolowanego uproszczenia rzeczywistej geometrii.
+
+```sh
+mkdir -p /tmp/pixelcargo-landscape
+for layer in rivers_lake_centerlines rivers_europe lakes lakes_europe; do
+  curl -fLsS "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_${layer}.geojson" \
+    -o "/tmp/pixelcargo-landscape/ne_10m_${layer}.geojson"
+done
+python3 -m pip install --target /tmp/pixelcargo-map-tools -r scripts/requirements-map.txt --cache-dir /tmp/pixelcargo-pip-cache
+PYTHONPATH=/tmp/pixelcargo-map-tools python3 scripts/prepare-hydrography.py --source-dir /tmp/pixelcargo-landscape
+```
+
+Wynik src/world/data/hydrography.json: około **148 kB / 30 kB gzip**, commitowany lokalnie. Nie regenerować podczas działających testów E2E z Vite/HMR. Normalne uruchomienie aplikacji nie wymaga Pythona, Shapely ani żadnych zewnętrznych żądań mapowych.
+
+### Renderer i optymalizacja hydrografii
+
+Jedna warstwa Canvas pod istniejącym SVG miast i granic, `pointer-events:none`. Korzysta wyłącznie ze wspólnego project() i MapViewport. Path2D dla wszystkich trzech LOD powstają raz po odczycie danych, a indeks siatki w metrach projekcji odrzuca obiekty niewidoczne. Wzrost zoomu ujawnia dopływy i mniejsze poligony. Nad krajobrazem pozostają granice, miasta i etykiety; przyszłe lasy/wysokości należą przed wodą, a drogi/trasy/pojazdy wymagają osobnego etapu 05. Nie dodano ich pustych imitacji.
+
+Pomiar warstwy wody w bieżącym headless Chromium podczas 50 próbek przeciągania: 1366×768 mediana 0,2 ms, P95 0,3 ms, max 1,1 ms; 1920×1080 mediana 0,2 ms, P95 0,4 ms, max 0,8 ms. To czas wykonania funkcji rysującej, nie pomiar pełnego kosztu GPU/React ani gwarancja FPS na każdym laptopie. Woda dodaje jeden canvas zamiast 54 lub większej liczby elementów SVG.
+
+### Blokada kolejnego podetapu 04C-3
+
+Lasy i rzeźba terenu **nie są jeszcze zaimplementowane**. Sprawdzone planowane źródła: ESA WorldCover 2021 v200 (CC BY 4.0, klasyfikacja pokrycia terenu; planowany wybór pokrycia drzewiastego z jawnie podaną rozdzielczością) i publiczne kafle wysokości Terrarium z elevation-tiles-prod (weryfikacja źródeł i wymaganej atrybucji przed użyciem). Dane nie zostały pobrane i nie deklarujemy ich pokrycia ani licencji przygotowanego produktu wysokościowego.
+
+Żądania testowe do `esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N48E018_Map.tif` oraz `s3.amazonaws.com/elevation-tiles-prod/terrarium/7/71/43.png` kończyły się `curl: (56) CONNECT tunnel failed, response 403` / HTTP 403. To blokada dostępu w obecnym środowisku, nie brak sekretu. Dodano obie domeny do szkicu egress bez naruszania presetów. Sam zapis szkicu nie stosuje ustawień do runtime; po ich zastosowaniu należy ponowić żądania, sprawdzić metadane/licencje, przygotować lokalny zoptymalizowany zestaw i dopiero wtedy implementować 04C-3. Nie zastąpiono tych danych losową grafiką.

@@ -12,3 +12,16 @@ Zrzuty faktycznej aplikacji w Chromium, commit bazowy 217be676ca434fd2a0d730db01
 Ocena po obejrzeniu czterech obrazów: brak nachodzenia paneli, czytelne przyciski i etykiety, poprawnie wyróżniony wybór Krakowa. Mapa krajowa na laptopie jest niewielka; nie należy pokazywać w niej wszystkich szczegółów. Granice są obecnie mocniejsze niż planowany krajobraz. Brak rzek, lasów i rzeźby terenu — to punkt odniesienia, nie ukończone 04C. Po dodaniu warstw należy zachować jasne znaczniki i ciemny obrys tekstu, stonować granice wewnętrzne i ponownie obejrzeć widoki.
 
 Weryfikacja punktu 04C-1: npm test 52/52, npm run typecheck OK, npm run build OK. Start aplikacji i cztery widoki faktycznie sprawdzone w Chromium.
+
+## Po dodaniu wody — punkt 04C-2 (nie końcowe 04C)
+
+- [Polska, 1366×768](water-country-1366.jpg)
+- [Polska, 1920×1080](water-country-1920.jpg)
+- [Małopolska, 1366×768](water-demo-1366.jpg)
+- [Małopolska, 1920×1080](water-demo-1920.jpg)
+
+Rzeczywiste widoki Chromium, JPEG quality 78. Obrazy krajowy 1920 i Małopolska 1366 obejrzano bezpośrednio: rzeki widoczne, jasne miasta i obrysy tekstu pozostają czytelne; dane wodne nie przejmują kliknięć. Pozostałe dwa kadry także obejrzano; zapisano je do porównania obu rozdzielczości. Brak lasów i rzeźby terenu jest ograniczeniem bieżącego podetapu. Kontrola końcowa kompletnego krajobrazu i osobne widoki gór wymagają dokończenia 04C-3/04C-4.
+
+Pomiar funkcji rysującej wodę: 50 próbek przeciągania dla każdego rozmiaru; mediana 0,2 ms, P95 0,3 ms (1366) i 0,4 ms (1920). To pomiar tej warstwy w bieżącym headless Chromium, nie gwarancja FPS całej aplikacji na fizycznym laptopie.
+
+- [Kraków z hydrografią, produkcyjny Chromium 1366×768](water-krakow-1366.jpg) — także obejrzany, wybrane miasto pozostaje czytelne.

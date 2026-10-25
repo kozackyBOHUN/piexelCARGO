@@ -10,7 +10,7 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
   - [x] 04B Interaktywna mapa: przeciąganie, zoom pod kursorem, limit 200 m/piksel CSS, wyszukiwarka demo, etykiety i skala odległości
   - [ ] 04C Krajobraz Polski, pixel art i optymalizacja
     - [x] 04C-1 Kontrola wizualna i zrzuty przed zmianami
-    - [ ] 04C-2 Hydrografia
+    - [x] 04C-2 Hydrografia
     - [ ] 04C-3 Lasy i rzeźba terenu
     - [ ] 04C-4 Oprawa, optymalizacja, testy i zrzuty końcowe
 - [ ] 05 Sieć drogowa i wyznaczanie tras

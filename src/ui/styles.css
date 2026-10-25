@@ -1195,3 +1195,37 @@ svg {
     min-width: 92px;
   }
 }
+/* 04C-2: one noninteractive canvas below the existing boundary/city SVG. */
+.hydrography-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+.geographic-map .region-shape {
+  fill: transparent;
+}
+.geographic-map .region-shape.demo-region {
+  fill: #94a36a12;
+}
+.geographic-map .region-shape:hover {
+  fill: #b9d0c516;
+}
+.hydrography-error {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  max-width: 260px;
+  background: #3b2b23;
+  border: 1px solid #a88059;
+  color: #efd5ab;
+  padding: 5px 8px;
+  font:
+    11px system-ui,
+    sans-serif;
+}
+.hydrography-error {
+  z-index: 3;
+}

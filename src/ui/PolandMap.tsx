@@ -23,6 +23,7 @@ import {
 import { placeCityLabels } from "../world/labels";
 import { PixelIcon } from "./PixelIcon";
 import { CitySearch } from "./CitySearch";
+import { HydrographyCanvas } from "./HydrographyCanvas";
 
 /** Layer groups share one geographic projection; future roads/routes/vehicles can use screenPoint.
  * The map owns presentation state only. It neither advances nor mutates the game simulation. */
@@ -48,7 +49,7 @@ export const PolandMap = memo(function PolandMap() {
     <section className="panel map-panel" aria-labelledby="map-title">
       <header className="panel-heading">
         <h2 id="map-title">Obszar operacyjny</h2>
-        <span className="module-tag">MAPA · ETAP 04B</span>
+        <span className="module-tag">MAPA · ETAP 04C · W TOKU</span>
       </header>
       <div className="map-loading" aria-live="polite">
         <p>{error || "Wczytywanie lokalnej mapy Polski…"}</p>
@@ -266,7 +267,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
             Obszar demo
           </button>
         </div>
-        <span className="module-tag">MAPA · ETAP 04B</span>
+        <span className="module-tag">MAPA · ETAP 04C · W TOKU</span>
       </header>
       <CitySearch
         cities={geography.cities}
@@ -335,6 +336,10 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
           }
         }}
       >
+        <HydrographyCanvas
+          viewport={viewport}
+          country={geography.country.geometry}
+        />
         <svg
           viewBox={`0 0 ${viewport.width} ${viewport.height}`}
           width="100%"
@@ -582,8 +587,8 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
       <div className="panel-footnote map-attribution">
         <PixelIcon name="map" size={14} />
         <span>
-          Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) · Miasta: © GeoNames (CC BY
-          4.0) ·{" "}
+          Woda: Natural Earth (PD) · Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) ·
+          Miasta: © GeoNames (CC BY 4.0) ·{" "}
           <a href="/map-sources.html" target="_blank" rel="noreferrer">
             Źródła i licencje
           </a>
