@@ -1,3 +1,9 @@
+# Aktualizacja — Etap 06, nowy interfejs
+
+Jedna gra ma nową powłokę według referencji: pięć sekcji menu i osobny panel, niezależne tryby MAPA/BAZA, tabele zleceń/floty/finansów, przydział auta, hover OSM i stały harmonogram. Mechanika i dane bez zmian. Szczegóły i ograniczenia assetów/liczby paczek: docs/INTERFACE_06.md. Baza e3b66f2e05287185a1a050dc87904e0fba72ee5d, gałąź feat/preview-gameplay-core. Nie ingerowano w gałąź grafika. Punkt wznowienia: ukończony zakres interfejsu; po commit/push i sprawdzeniu Pages czekać na nowe polecenie. Nie rozpoczynać kolejnych etapów.
+
+---
+
 # Aktualizacja — rynek zleceń preview
 
 Rozbudowano deterministyczny rynek dziesięciu towarów, trwałe oferty (5 dni), trzy rezerwacje, ręczne rozpoczęcie, terminy 3 dni i jednorazowe kary/wypłaty. Zachowano wspólny zegar, mapę, paliwo, pensje i stare zapisy; brak zmian CSS/grafik/OSM. Szczegóły i jawne ograniczenia puli/danych ludnościowych: docs/FREIGHT_MARKET.md. Baza 15e64015b1322fa96aafd45b06af4add7f30dfb0; gałąź feat/preview-gameplay-core. Po commit/push czekać na polecenie. Nie rozpoczynać dalszych etapów ani ingerować w feat/pixelcargo-art-assets.
@@ -195,3 +201,5 @@ Uruchomienie: `npm ci` (tu opcjonalnie `--cache /tmp/pixelcargo-npm-cache`), `np
 Końcowa weryfikacja: TypeScript OK; npm test 86/86 (11 plików); standardowy build i build:pages OK; Playwright unified 33/33 (w tym scenariusze gry w obu rozdzielczościach); produkcyjny Pages 1/1. Brak zmian w danych OSM, trasach, silniku i schemacie IndexedDB.
 
 Końcowe kontrole: npm run typecheck OK; npm test 93/93 (12 plików); npm run build i build:pages OK; Playwright unified 33/33, freight 1/1, Pages 1/1 (łącznie 35). Pełna płatna dostawa, zapis w trasie, ruch auta, harmonogram i restart potwierdzone.
+
+Weryfikacja: TypeScript OK; npm test 95/95 (13 plików); standardowy build i build:pages OK; Playwright interface06 36/36 (wszystkie dotychczasowe przypadki plus nowa pełna rozgrywka w obu rozdzielczościach), produkcyjny Pages 1/1. Po korekcie instrukcji samouczka i odsunięciu etykiety Biura powtórzono jednostkowe/build oraz 9 scenariuszy gry i Pages. Zrzuty rzeczywistego interfejsu: docs/screenshots/06/.

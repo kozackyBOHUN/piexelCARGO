@@ -1,3 +1,9 @@
+# Interfejs gry — Etap 06
+
+MAPA / BAZA przełącza prawy widok. Pięć sekcji po lewej otwiera funkcje bez zatrzymywania świata; harmonogram pozostaje pod mapą/bazą. Zapis i restart są pod ustawieniami w górnym pasku. Szczegóły: [docs/INTERFACE_06.md](docs/INTERFACE_06.md).
+
+---
+
 # Aktualna gra preview
 
 `/` i `/?preview=1` otwierają jedną grę: mapa Polski, baza, flota, rynek i harmonogram korzystają z jednego zegara i zapisu. Historyczny panel techniczny: `/?dev=1`. Szczegóły integracji: [docs/UNIFIED_GAME.md](docs/UNIFIED_GAME.md). Publikacja pod `/piexelCARGO/`: [instrukcja Pages](docs/GITHUB_PAGES.md).

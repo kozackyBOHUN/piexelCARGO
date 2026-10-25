@@ -19,7 +19,7 @@ export function pointOnRoute(route:TransportRoute,fraction:number):LonLat {
  return [points[low][0]+(points[high][0]-points[low][0])*t,points[low][1]+(points[high][1]-points[low][1])*t];
 }
 export interface MapVehicle {name:string;cityId:string;coordinates:LonLat|null;status:string;destinationId:string;progress:number;route:readonly LonLat[]|null}
-export interface GameMapState {time:number;baseCityId:string|null;vehicle:MapVehicle|null}
+export interface GameMapState {highlightedRoute?:readonly LonLat[];time:number;baseCityId:string|null;vehicle:MapVehicle|null}
 export function mapState(state:PreviewState,routes:readonly TransportRoute[]):GameMapState {
  if(!state.van)return {time:state.time,baseCityId:state.company?.baseCityId??null,vehicle:null};
  const job=state.active;let coordinates:LonLat|null=null,route:readonly LonLat[]|null=null,progress=0;

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { listUsedVans, type PreviewState, type UsedVanOffer } from './gameplay';
+import {ART_ASSETS} from './artAssets';
 import { DriverPortrait } from './PixelSprites';
 
-type Building = 'parking'|'kadry'|'spedycja'|'warsztat'|'magazyn'|'paliwo'|'hotel';
+type Building = 'office'|'parking'|'kadry'|'spedycja'|'warsztat'|'magazyn'|'paliwo'|'hotel';
 type GarageTab = 'flota'|'dealer'|'gielda';
 interface Props {
   state: PreviewState;
@@ -12,8 +13,11 @@ interface Props {
   onShowMap: () => void;
   money: (grosze: number) => string;
   initialBuilding?: 'parking';
+  sceneOnly?: boolean;
+  onBuildingSelect?: (building:string)=>void;
 }
 const BUILDINGS: {id: Building; name: string; x: number; y: number; variant: number}[] = [
+  {id:'office',name:'BIURO',x:38,y:32,variant:2},
   {id:'parking',name:'PARKING',x:11,y:47,variant:0},
   {id:'kadry',name:'KADRY',x:41,y:12,variant:1},
   {id:'spedycja',name:'SPEDYCJA',x:66,y:20,variant:2},
@@ -67,13 +71,14 @@ export function VehiclePixel({color='#bfa36d',quality=55}: {color?:string;qualit
     <rect x="12" y="80" width="175" height="3" fill="#39434c"/>
   </svg>;
 }
-function OfferCard({offer,canPay,owned,onBuy,money}: {
+export function VehicleArt({offer}:{offer:UsedVanOffer}){const asset=ART_ASSETS[`vehicle:${offer.id}`];return asset?<img className="pv-van-art" src={`${import.meta.env.BASE_URL}${asset}`} alt={offer.model}/>:<VehiclePixel color={offer.color} quality={offer.conditionPercent}/>}
+export function OfferCard({offer,canPay,owned,onBuy,money}: {
   offer:UsedVanOffer;canPay:boolean;owned:boolean;onBuy:(id:string)=>void;money:(g:number)=>string;
 }){
   const worn=offer.conditionPercent<35;
   return <article className="pv-car-card">
     <div className="pv-car-graphic">
-      <VehiclePixel color={offer.color} quality={offer.conditionPercent}/>
+      <VehicleArt offer={offer}/>
       <span className={worn?'pv-condition-warn':'pv-condition-good'}>{worn?'DO REMONTU':offer.conditionPercent>85?'ZADBANY':'UŻYWANY'}</span>
     </div>
     <div className="pv-car-info">
@@ -93,15 +98,15 @@ function OfferCard({offer,canPay,owned,onBuy,money}: {
     </div>
   </article>;
 }
-export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initialBuilding}:Props){
+export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initialBuilding,sceneOnly,onBuildingSelect}:Props){
   const [building,setBuilding]=useState<Building|null>(initialBuilding??null);
   const [tab,setTab]=useState<GarageTab>('flota');
   const parkingReady=!!state.van;
   const driverReady=state.driverHiredAt!==null;
   useEffect(()=>{if(parkingReady)setTab('flota');},[parkingReady]);
-  const isUnlocked=(b:Building)=>b==='parking'||b==='kadry'&&parkingReady||b==='spedycja'&&driverReady;
+  const isUnlocked=(b:Building)=>b==='office'||b==='parking'||b==='kadry'&&parkingReady||b==='spedycja'&&driverReady;
   const available=listUsedVans(state);
-  const tutorial= !parkingReady ? 'KROK 1/3 · Wybierz PARKING, następnie GIEŁDA i kup pierwszy furgon.' :
+  const tutorial=sceneOnly?(!parkingReady?'KROK 1/3 · PARKING → Giełda używanych w lewym menu: kup pierwszy furgon.':!driverReady?'KROK 2/3 · KADRY → Rekrutacja: zatrudnij kierowcę.':'KROK 3/3 · SPEDYCJA → Szukaj zleceń; przyjmij zlecenie i przydziel auto.') : !parkingReady ? 'KROK 1/3 · Wybierz PARKING, następnie GIEŁDA i kup pierwszy furgon.' :
     !driverReady ? 'KROK 2/3 · Pojazd zakupiony! Kliknij budynek KADRY i zatrudnij kierowcę.' :
     'KROK 3/3 · Załoga gotowa! Kliknij SPEDYCJA i przyjmij pierwszy transport.';
   return <div className="pv-base-root">
@@ -116,7 +121,7 @@ export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initial
         const active=isUnlocked(b.id);
         return <button key={b.id} style={{left:`${b.x}%`,top:`${b.y}%`}}
           className={`pv-base-building ${active?'is-open':'is-locked'} ${building===b.id?'is-selected':''}`}
-          disabled={!active} onClick={()=>setBuilding(b.id)}
+          disabled={!active} onClick={()=>{setBuilding(b.id);onBuildingSelect?.(b.id)}}
           aria-label={`${b.name}, poziom 1, ${active?'otwarty':'zablokowany'}`}>
           <PixelBuilding variant={b.variant} lit={active}/>
           <span className="pv-building-label">{b.name} <small>LV 1</small></span>
@@ -125,7 +130,7 @@ export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initial
       })}
       <div className="pv-yard-badge">PIXELCARGO · BAZA</div>
     </div>
-    <div className="pv-base-inspector">
+    <div className="pv-base-inspector" hidden={sceneOnly}>
       {building===null&&<div className="pv-empty-garage"><span className="pv-empty-symbol">⌁</span><strong>WITAJ W SWOJEJ BAZIE</strong><p>Kliknij podświetlony PARKING, aby otworzyć zarządzanie pojazdami.</p></div>}
       {building==='parking'&&<><div className="pv-base-toolbar"><div><h3>PARKING <small>LV 1</small></h3><p>1 miejsce na pojazd · {parkingReady?'1/1 zajęte':'0/1 zajętych'}</p></div>
         <div className="pv-garage-tabs" role="tablist" aria-label="Zakładki parkingu">

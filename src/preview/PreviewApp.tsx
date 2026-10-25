@@ -1,170 +1,66 @@
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
-import type { GameRuntime } from '../core/runtime';
-import { formatGameTime } from '../core/engine';
-import {
-  buyUsedVan, establishCompany,
-  hireDriver, refuelAtCity, repayLoan,
-  type PreviewState, type TransportRoute,
-} from './gameplay';
-import { BaseParking } from './BaseParking';
-import { CargoPixel } from './PixelSprites';
-import {ensureMarket,acceptOrder,startOrder,cargoFits} from './market';
-import { PreviewSession } from './session';
-import { mapState, PHASE_LABELS } from './transport';
-import { PolandMap } from '../ui/PolandMap';
-import { Timeline } from '../ui/Timeline';
-
-/** This preview is independent of the unreleased full-country market and road graph. */
-const CITIES: Record<string,string> = {
-  'geonames:3094802': 'Kraków', 'geonames:757026': 'Tarnów',
-  'geonames:3080866': 'Zakopane', 'geonames:775758': 'Bochnia',
-};
-const price = (grosze: number) => `${(grosze / 100).toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2})} zł`;
-const city = (id: string) => CITIES[id] ?? id;
-const duration = (secs: number) => `${Math.floor(secs / 3600)} h ${Math.round((secs % 3600) / 60)} min`;
-function isRoute(v: unknown): v is TransportRoute {
-  if (!v || typeof v !== 'object') return false;
-  const r = v as Partial<TransportRoute>;
-  return typeof r.id === 'string' && typeof r.fromCityId === 'string' && typeof r.toCityId === 'string'
-    && Number.isFinite(r.meters) && (r.meters ?? 0) > 0 && Number.isFinite(r.seconds) && (r.seconds ?? 0) > 0
-    && Array.isArray(r.geometry) && r.geometry.length > 1
-    && r.geometry.every(c => Array.isArray(c) && c.length === 2 && c.every(Number.isFinite));
+import {useEffect,useState,useSyncExternalStore} from 'react';
+import type {GameRuntime} from '../core/runtime';
+import {formatGameTime} from '../core/engine';
+import {buyUsedVan,establishCompany,hireDriver,listUsedVans,refuelAtCity,repayLoan,type PreviewState,type TransportRoute} from './gameplay';
+import {acceptOrder,cargoFits,ensureMarket,startOrder,GOODS} from './market';
+import {PreviewSession} from './session';
+import {BaseParking,OfferCard} from './BaseParking';
+import {DriverPortrait} from './PixelSprites';
+import {PolandMap} from '../ui/PolandMap';
+import {mapState} from './transport';
+import {VehicleSchedule} from './VehicleSchedule';
+import {cityName as city,financialDays,geographicKm} from './interfaceModel';
+import {PixelIcon,type IconName} from '../ui/PixelIcon';
+import './interface.css';
+const money=(n:number)=>`${(n/100).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})} zł`;
+const stamp=(n:number)=>`D${formatGameTime(n).dayNumber} ${formatGameTime(n).hour}`;
+const menus:readonly (readonly [string,IconName,readonly (readonly [string,string])[]])[]=[['BIURO','base',[['overview','Przegląd firmy'],['buildings','Budynki bazy'],['development','Rozwój i korzyści'],['features','Dostępne funkcje']]],['SPEDYCJA','cargo',[['active','Zlecenia w realizacji'],['accepted','Zlecenia przyjęte'],['search','Szukaj zleceń'],['completed','Zlecenia zakończone']]],['PARKING','vehicle',[['fleet','Moje samochody'],['used','Giełda używanych'],['dealer','Dealer nowych pojazdów']]],['KADRY','driver',[['drivers','Moi kierowcy'],['recruit','Rekrutacja'],['training','Szkolenia'],['work','Czas pracy i odpoczynek']]],['FINANSE','finance',[['finance','Podsumowanie finansowe'],['history','Historia finansowa'],['credit','Kredyty'],['stats','Statystyki']]]];
+export function PreviewApp({runtime,session}:{runtime:GameRuntime;session:PreviewSession}){
+ const status=useSyncExternalStore(runtime.subscribe,runtime.getStatus);
+ return status.mode==='active'?<Game session={session}/>:<main className="pc-loading" role="status">{status.message}</main>;
 }
-function routeKey(r: TransportRoute) { return `${r.fromCityId}|${r.toCityId}`; }
-export function PreviewApp({runtime,session}: {runtime: GameRuntime;session:PreviewSession}) {
-  const status = useSyncExternalStore(runtime.subscribe, runtime.getStatus);
-  // Do not read/write preview state before ownership and IndexedDB restoration.
-  if (status.mode !== 'active') return <div className="pv-app"><p role="status">{status.message}</p></div>;
-  return <ActivePreviewApp runtime={runtime} session={session} />;
-}
-function ActivePreviewApp({runtime,session}: {runtime: GameRuntime;session:PreviewSession}) {
-  const state=useSyncExternalStore(session.subscribe,session.getSnapshot);
-  const status=useSyncExternalStore(runtime.subscribe,runtime.getStatus);
-  const previewTime=state.time;
-  const [routes, setRoutes] = useState<TransportRoute[]>([]);
-  const [loadError,setLoadError] = useState('');
-  const [error,setError] = useState('');
-  const [name,setName] = useState('');
-  const [view,setView] = useState<'base'|'map'|'fleet'|'market'|'timeline'>(()=>{
-    const value=new URLSearchParams(window.location.search).get('view');
-    return value==='base'||value==='fleet'||value==='market'||value==='timeline'?value:'map';
-  });
-  useEffect(()=>{const url=new URL(window.location.href);url.searchParams.set('view',view);window.history.replaceState(null,'',url);},[view]);
-  const [base,setBase] = useState('');
-  useEffect(()=>{
-    // Resuming a transport stays on the map even after the cargo arrives.
-    if(state.active) setView('map');
-  },[Boolean(state.active)]);
-  useEffect(()=>{
-    let active = true;
-    fetch(`${import.meta.env.BASE_URL}roads/preview/routes.json`).then(async response=>{
-      if(!response.ok) throw new Error('Nie znaleziono zestawu zatwierdzonych tras preview.');
-      const json: unknown = await response.json();
-      if (!Array.isArray(json) || !json.every(isRoute) || json.length===0) throw new Error('Dane tras mają nieprawidłowy format.');
-      const keys = new Set<string>();
-      for(const route of json) {const key=routeKey(route);if(keys.has(key))throw new Error(`Powtarzający się kierunek: ${key}`);keys.add(key);}
-      if(active) {setRoutes(json); setBase(json[0].fromCityId);}
-    }).catch(err=>{if(active)setLoadError(String(err instanceof Error?err.message:err));});
-    return ()=>{active=false;};
-  },[]);
-  const options = useMemo(()=>[...new Set(routes.map(r=>r.fromCityId))], [routes]);
-  useEffect(()=>{if(state.company&&!state.market&&routes.length)session.update(s=>ensureMarket(s,routes));},[state.company,state.market,routes,session]);
-  const [origin,setOrigin]=useState('');
-  const [size,setSize]=useState('all');
-  const [sort,setSort]=useState('expiry');
-  const offers=useMemo(()=>[...(state.market?.offers??[])].filter(o=>(!origin||o.fromCityId===origin)&&(size==='all'||(size==='fits'?cargoFits(state,o):size==='small'?o.massKg<=500&&o.volumeM3<=5&&o.pallets<=2:!cargoFits(state,o)))).sort((a,b)=>sort==='price'?b.payoutGrosze-a.payoutGrosze:sort==='size'?a.massKg-b.massKg: a.expiresAt-b.expiresAt),[state.market,state.van,origin,size,sort]);
-  const remaining=(end:number)=>{const minutes=Math.max(0,Math.ceil((end-state.time)/60000));return `${Math.floor(minutes/1440)} d ${Math.floor(minutes%1440/60)} h ${minutes%60} min`;};
-  const canReach=(from:string)=>!!state.van&&(state.van.cityId===from||routes.some(r=>r.fromCityId===state.van!.cityId&&r.toCityId===from));
-  const active = state.active;
-  const percent = active ? Math.min(100,Math.max(0,active.phaseProgressMs / (active.phase==='empty' ? active.routeEmpty.seconds*1000||1 : active.phase==='loaded' ? active.routeLoaded.seconds*1000||1 : 900_000) * 100)) : 0;
-  const locationLabel = active ? `${city(active.offer.fromCityId)} → ${city(active.offer.toCityId)}` : state.van ? city(state.van.cityId) : 'Brak pojazdu';
-  function action(fn: (state: PreviewState)=>PreviewState) {
-    if(status.mode!=='active') {setError('Ta sesja jest nieaktywna. Zamknij inne karty gry.');return;}
-    try{session.update(fn);setError('');}catch(e){setError(e instanceof Error?e.message:String(e));}
-  }
-  function reset(){
-    if(!window.confirm('Zrestartować firmę? Utracisz firmę, pojazdy, kierowcę, pieniądze, zlecenia i historię. Tej operacji nie można cofnąć.')) return;
-    session.restart();
-    setView('base');
-    setName('');
-    setBase(routes[0]?.fromCityId??'');
-    setError('');
-  }
-  const overlay=mapState(state,routes);
-  const market=<><h2>02 / RYNEK ZLECEŃ</h2><div className="pv-section">
-    <p>Tylko zatwierdzone trasy OSM. Suche towary do furgonu. Przyjęcie rezerwuje zlecenie; kolejność przewozów wybierasz samodzielnie.</p>
-    <h3>Przyjęte zlecenia ({state.market?.orders.filter(o=>o.completedAt===null).length??0}/3)</h3>
-    {state.market?.orders.filter(o=>o.completedAt===null).map(o=><article className="pv-job" key={o.offer.id} data-order-id={o.offer.id}>
-      <strong>{city(o.offer.fromCityId)} → {city(o.offer.toCityId)}</strong><span>{o.offer.cargo} · {price(o.offer.payoutGrosze)}</span>
-      <span>{state.active?.offer.id===o.offer.id?PHASE_LABELS[state.active.phase]:'Oczekuje na realizację'} · Termin: dzień {formatGameTime(o.deadline).dayNumber}, {formatGameTime(o.deadline).hour} · {state.time>o.deadline?'PO TERMINIE — zlecenie pozostaje aktywne':remaining(o.deadline)}</span>
-      {o.penalized&&<span>Kara naliczona: {price(o.penaltyGrosze)}</span>}
-      <button disabled={!!state.active||state.driverHiredAt===null||!canReach(o.offer.fromCityId)} onClick={()=>action(s=>startOrder(s,o.offer.id,routes))}>ROZPOCZNIJ KURS</button>
-      {!canReach(o.offer.fromCityId)&&<small>Brak zatwierdzonego dojazdu z obecnej lokalizacji.</small>}
-    </article>)}
-    <h3>Dostępne oferty</h3>
-    <label>Miejsce nadania<select aria-label="Miejsce nadania" value={origin} onChange={e=>setOrigin(e.target.value)}><option value="">Wszystkie miasta</option>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
-    <label>Wielkość ładunku<select aria-label="Wielkość ładunku" value={size} onChange={e=>setSize(e.target.value)}><option value="all">Wszystkie</option><option value="small">Do 500 kg, 5 m³, 2 palet</option><option value="fits">Mieści się w moim furgonie</option><option value="large">Nie mieści się w moim furgonie</option></select></label>
-    <label>Sortowanie<select aria-label="Sortowanie" value={sort} onChange={e=>setSort(e.target.value)}><option value="expiry">Czas do wygaśnięcia</option><option value="price">Cena malejąco</option><option value="size">Masa rosnąco</option></select></label>
-    <p>{offers.length} ofert · wyświetlane maksymalnie 30</p>
-    {offers.slice(0,30).map(offer=>{const route=routes.find(r=>r.fromCityId===offer.fromCityId&&r.toCityId===offer.toCityId)!;const fits=cargoFits(state,offer);return <article className="pv-job" key={offer.id} data-offer-id={offer.id}>
-      <strong>{city(offer.fromCityId)} → {city(offer.toCityId)}</strong>
-      <div className="pv-cargo-row"><CargoPixel cargo={offer.cargo}/><span>{offer.cargo}<small>{offer.massKg} kg · {offer.volumeM3} m³ · {offer.pallets?`${offer.pallets} palety`:'palety: nie dotyczy (paczki)'}</small></span></div>
-      <span>{((route?.meters??0)/1000).toFixed(1)} km · {duration(route?.seconds??0)} · wygasa za {remaining(offer.expiresAt)}</span>
-      <small>{!state.van?'Kup furgon, aby sprawdzić pojemność.':fits?'Ładunek mieści się we furgonie.':'Za duży: wymaga innego furgonu lub kilku kursów (nieobsługiwane).'} {!canReach(offer.fromCityId)&&state.van?'Brak zatwierdzonego dojazdu pustego.':''}</small>
-      <div><b>{price(offer.payoutGrosze)}</b><button disabled={!fits||!canReach(offer.fromCityId)||(state.market?.orders.filter(o=>o.completedAt===null).length??0)>=3||offer.expiresAt<=state.time} onClick={()=>action(s=>acceptOrder(s,offer.id))}>PRZYJMIJ</button></div>
-    </article>})}
-    {!offers.length&&<p>Brak ofert spełniających filtry.</p>}
-  </div></>;
-  return <div className="pv-app">
-    <header className="pv-header"><div><a href={`${import.meta.env.BASE_URL}?dev=1`}>WIDOK DEVELOPERSKI</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
-      <div className="pv-clock" data-testid="canonical-clock" data-time={state.time}><button type="button" className="pv-restart-button" onClick={reset} aria-label="RESTART FIRMY">↺ RESTART FIRMY</button><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
-    <nav className="pv-game-nav" aria-label="Widoki gry">{([['map','Mapa Polski'],['base','Baza firmy'],['fleet','Flota / parking'],['market','Rynek zleceń'],['timeline','Harmonogram']] as const).map(([id,label])=><button key={id} aria-pressed={view===id} onClick={()=>setView(id)}>{label}</button>)}</nav>
-    <div className="pv-summary">
-      <div><small>FIRMA</small><strong>{state.company?.name ?? 'Nieutworzona'}</strong></div>
-      <div><small>SALDO</small><strong>{state.company ? price(state.company.balanceGrosze) : '—'}</strong></div>
-      <div><small>KREDYT</small><strong>{state.company ? price(state.company.debtGrosze) : '—'}</strong></div>
-      <div><small>FURGON</small><strong>{locationLabel}</strong><small>{state.van ? `${(state.van.fuelMillilitres/1000).toFixed(1)} l paliwa` : 'Brak auta'}</small></div>
-    </div>
-    {loadError ? <div className="pv-alert" role="alert">BRAK ZATWIERDZONYCH TRAS: {loadError} Gra nie uruchomi fikcyjnych przejazdów.</div> : null}
-    {error ? <div className="pv-alert" role="alert">{error}</div> : null}
-    <div className="pv-columns">
-      <section className="pv-panel" aria-label="Zarządzanie firmą">
-        <h2>01 / TWOJA FIRMA</h2>
-        {!state.company ? <div className="pv-section">
-          <label>Nazwa firmy<input value={name} placeholder="Moja Firma Transportowa" maxLength={64} onChange={(e: {target:{value:string}})=>setName(e.target.value)} /></label>
-          <label>Miasto pierwszej bazy<select value={base} onChange={(e: {target:{value:string}})=>setBase(e.target.value)}>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
-          <p>Otrzymasz 20 000 zł kredytu. Startujesz bez furgonu i kierowcy.</p>
-          <button disabled={!options.length||!name.trim()||status.mode!=='active'} onClick={()=>{action(s=>establishCompany(s,name,base));setView('base');}}>ZAŁÓŻ FIRMĘ</button>
-        </div> : <div className="pv-section">
-          <div className="pv-stat">Baza: <strong>{city(state.company.baseCityId)} · poziom 1</strong></div>
-          <div className="pv-stat">Parking: <strong>{state.van?'1/1 zajęte':'0/1 pojazdów'}</strong></div>
-          <div className="pv-stat">Kierowca: <strong>{state.driverHiredAt!==null?'Zatrudniony':'Brak'}</strong></div>
-          {state.van&&<div className="pv-stat">Pojazd: <strong>{state.van.specs?.model??'Furgon'} · {(state.van.mileageMeters/1000).toLocaleString('pl-PL',{maximumFractionDigits:0})} km</strong></div>}
-          <div className="pv-actions">
-            <button className="pv-menu-link" onClick={()=>setView('base')}>◈ WRÓĆ DO BAZY</button>
-            {state.driverHiredAt!==null&&<button onClick={()=>setView('map')}>MAPA</button>}
-            {state.van&&<button disabled={!!state.active} onClick={()=>action(s=>refuelAtCity(s,10))}>TANKUJ 10 L</button>}
-            <button disabled={!!state.active} onClick={()=>action(repayLoan)}>SPŁAĆ 1 000 ZŁ</button>
-          </div>
-        </div>}
-        {view!=='market'&&market}
-
-      </section>
-      <section className="pv-panel pv-world" aria-label="Transport i historia">
-        <h2>03 / {view==='base'?'BAZA TWOJEJ FIRMY':view==='fleet'?'FLOTA / PARKING':view==='market'?'RYNEK ZLECEŃ':view==='timeline'?'HARMONOGRAM':'MAPA POLSKI'}</h2>
-        <div className="pv-map unified-map" hidden={view!=='map'}><PolandMap game={overlay}/>
-          {active?<div className="pv-section"><div className="pv-stat">Aktywny kurs: <strong>{city(active.offer.fromCityId)} → {city(active.offer.toCityId)}</strong></div><div className="pv-stat">Etap: <strong data-testid="transport-phase">{PHASE_LABELS[active.phase]}</strong></div><div className="pv-progress"><div style={{width:`${percent}%`}}/></div><small>{percent.toFixed(0)}% bieżącego etapu</small></div>:<div className="pv-section"><strong>MAPA GOTOWA</strong><p>{state.van?'Pojazd oczekuje na następny kurs.':'Załóż firmę i kup furgon na giełdzie.'}</p></div>}
-        </div>
-        {(view==='base'||view==='fleet')&&(state.company?<BaseParking key={view} initialBuilding={view==='fleet'?'parking':undefined} state={state} cityName={city(state.company.baseCityId)} onBuy={id=>action(s=>buyUsedVan(s,id))} onHire={()=>action(hireDriver)} onShowMap={()=>setView('map')} money={price}/>:<div className="pv-section">Załóż firmę w panelu po lewej.</div>)}
-        {view==='market'&&market}
-        <div hidden={view!=='map'&&view!=='timeline'}><Timeline time={previewTime} state={state}/></div>
-        <h2>04 / HISTORIA OPERACJI</h2>
-        <div className="pv-events">{[...state.events].reverse().map(event=><div key={event.id}><span>{formatGameTime(event.at).hour}</span><span>{event.message}</span><strong>{event.changeGrosze ? price(event.changeGrosze) : '—'}</strong></div>)}
-          {!state.events.length && <p>Brak operacji.</p>}
-        </div>
-        <div className="pv-foot"><span>Jeden zapis firmy i wspólny czas gry we wszystkich widokach. RESTART FIRMY rozpoczyna nową rozgrywkę.</span></div>
-      </section>
-    </div>
-    <footer className="pv-footer">PIXELCARGO • PREVIEW • NIEPEŁNA WERSJA 0.1 · ŹRÓDŁO DRÓG: © OPENSTREETMAP CONTRIBUTORS</footer>
-  </div>;
+function Game({session}:{session:PreviewSession}){
+ const s=useSyncExternalStore(session.subscribe,session.getSnapshot);
+ const [routes,setRoutes]=useState<TransportRoute[]>([]),[error,setError]=useState(''),[name,setName]=useState(''),[base,setBase]=useState('geonames:3094802');
+ const [mode,setMode]=useState<'map'|'base'>(()=>new URLSearchParams(location.search).get('mode')==='base'?'base':'map');
+ const [panel,setPanel]=useState(()=>new URLSearchParams(location.search).get('panel')??'overview');
+ const [expanded,setExpanded]=useState(()=>menus.find(m=>m[2].some(([id])=>id===new URLSearchParams(location.search).get('panel')))?.[0]??'BIURO'),[highlight,setHighlight]=useState<TransportRoute|null>(null),[assign,setAssign]=useState('');
+ const [from,setFrom]=useState(''),[to,setTo]=useState(''),[radius,setRadius]=useState('0'),[goods,setGoods]=useState(''),[size,setSize]=useState('all'),[region,setRegion]=useState('all'),[sort,setSort]=useState('expiry'),[period,setPeriod]=useState(7);
+ useEffect(()=>{const u=new URL(location.href);u.searchParams.set('mode',mode);u.searchParams.set('panel',panel);history.replaceState(null,'',u)},[mode,panel]);
+ useEffect(()=>{let alive=true;fetch(`${import.meta.env.BASE_URL}roads/preview/routes.json`).then(async r=>{if(!r.ok)throw Error('Brak zatwierdzonych tras OSM.');const data=await r.json() as TransportRoute[];if(!Array.isArray(data)||!data.length||!data.every(r=>r.id&&r.geometry?.length>1&&r.meters>0&&r.seconds>0))throw Error('Nieprawidłowy katalog tras.');if(alive)setRoutes(data)}).catch(e=>{if(alive)setError(String(e))});return()=>{alive=false}},[]);
+ useEffect(()=>{if(s.company&&!s.market&&routes.length)session.update(v=>ensureMarket(v,routes));},[s.company,s.market,routes,session]);
+ function action(fn:(s:PreviewState)=>PreviewState){try{session.update(fn);setError('')}catch(e){setError(e instanceof Error?e.message:String(e))}}
+ function choose(id:string){setPanel(id);setHighlight(null);const section=menus.find(m=>m[2].some(item=>item[0]===id));if(section)setExpanded(section[0])}
+ const origins=[...new Set(routes.map(r=>r.fromCityId))],destinations=[...new Set(routes.map(r=>r.toCityId))];
+ const orders=s.market?.orders??[],pending=orders.filter(o=>o.completedAt===null);
+ const offers=[...(s.market?.offers??[])].filter(o=>(region==='all'||region==='PL-12')&&(!from||(radius==='0'?o.fromCityId===from:geographicKm(from,o.fromCityId)<=Number(radius)))&&(!to||o.toCityId===to)&&(!goods||o.cargo===goods)&&(size==='all'||(size==='fits'?cargoFits(s,o):size==='small'?o.massKg<=500&&o.volumeM3<=5&&o.pallets<=2:!cargoFits(s,o)))).sort((a,b)=>sort==='price'?b.payoutGrosze-a.payoutGrosze:sort==='mass'?a.massKg-b.massKg:a.expiresAt-b.expiresAt);
+ const leftTitle=menus.flatMap(m=>m[2]).find(x=>x[0]===panel)?.[1]??(panel==='settings'?'Ustawienia i zapis':'Przegląd firmy');
+ const routeFor=(a:string,b:string)=>routes.find(r=>r.fromCityId===a&&r.toCityId===b);
+ const reach=(from:string)=>!!s.van&&(s.van.cityId===from||!!routeFor(s.van.cityId,from));
+ const remaining=(at:number)=>{const min=Math.max(0,Math.ceil((at-s.time)/60000));return `${Math.floor(min/1440)} d ${Math.floor(min%1440/60)} h ${min%60} min`};
+ const finance=financialDays(s,period),maxValue=Math.max(1,...finance.groups.flatMap(g=>[g.income,g.cost,Math.abs(g.income-g.cost)]));
+ const buildingPanel=(b:string)=>choose(b==='parking'?'fleet':b==='kadry'?'drivers':b==='spedycja'?'search':'overview');
+ return <main className="pc-game">
+ <header className="pc-topbar"><a className="pc-logo" href={import.meta.env.BASE_URL}><PixelIcon name="vehicle"/><span>PIXEL<b>CARGO</b></span></a><div className="pc-company"><strong>{s.company?.name??'Nowa firma'}</strong><small>Poziom firmy: 1</small></div><div className="pc-metric"><small>Saldo</small><strong className={s.company&&s.company.balanceGrosze<0?'pc-danger':'pc-good'}>{money(s.company?.balanceGrosze??0)}</strong></div><div className="pc-metric"><small>Kredyt</small><strong className="pc-danger">{money(s.company?.debtGrosze??0)}</strong></div><div className="pc-date"><small>Dzień w grze</small><strong>{formatGameTime(s.time).day} · {formatGameTime(s.time).dayNumber}</strong></div><div className="pc-clock" data-testid="canonical-clock" data-time={s.time}><small>Godzina · 1 s = 1 min</small><strong>{formatGameTime(s.time).hour}</strong></div><div className="pc-modes" role="group" aria-label="Tryb świata"><button aria-pressed={mode==='map'} onClick={()=>setMode('map')}><PixelIcon name="map"/>MAPA</button><button aria-pressed={mode==='base'} onClick={()=>setMode('base')}><PixelIcon name="base"/>BAZA</button></div><button aria-label="Zapisz grę" title="Zapisz grę" onClick={()=>{if(!session.save())setError('Nie udało się zapisać firmy.')}}><PixelIcon name="history"/></button><button aria-label="Ustawienia" onClick={()=>choose('settings')}><PixelIcon name="settings"/></button></header>
+ {error&&<div className="pc-alert" role="alert">{error}<button onClick={()=>setError('')}>Zamknij</button></div>}
+ <div className="pc-body"><nav className="pc-sidebar" aria-label="Menu gry">{menus.map(([section,icon,items])=><div key={section}><button aria-label={section} className={expanded===section?'pc-selected':''} aria-expanded={expanded===section} onClick={()=>setExpanded(expanded===section?'':section)}><PixelIcon name={icon as IconName}/>{section}<span>⌄</span></button>{expanded===section&&<div className="pc-submenu">{items.map(([id,label])=><button key={id} aria-current={panel===id?'page':undefined} onClick={()=>choose(id)}>{label}</button>)}</div>}</div>)}</nav>
+ <section className="pc-inspector" aria-label="Panel funkcji"><h1>{leftTitle}</h1><div className="pc-panel-content">
+ {!s.company?<form onSubmit={e=>{e.preventDefault();action(v=>establishCompany(v,name,base))}}><h2>Załóż firmę transportową</h2><p>Zacznij od firmy, używanego furgonu i kierowcy. Kredyt początkowy: 20 000 zł.</p><label>Nazwa firmy<input value={name} maxLength={64} onChange={e=>setName(e.target.value)} required/></label><label>Miasto pierwszej bazy<select value={base} onChange={e=>setBase(e.target.value)}>{origins.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label><button disabled={!routes.length||!name.trim()}>ZAŁÓŻ FIRMĘ</button></form>:<>
+ {['overview','buildings','development','features'].includes(panel)&&<><div className="pc-office-banner"><PixelIcon name="base"/><strong>{s.company.name}</strong><span>Baza · {city(s.company.baseCityId)}</span></div><dl>{[['Nazwa firmy',s.company.name],['Poziom',1],['Siedziba',city(s.company.baseCityId)],['Liczba samochodów',s.van?1:0],['Liczba kierowców',s.driverHiredAt===null?0:1],['Zrealizowane zlecenia',s.completedOfferIds.length],['Czas gry',stamp(s.time)]].map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl><h2>Budynki bazy</h2>{[['Biuro','overview'],['Parking','fleet'],['Spedycja','search'],['Kadry','drivers']].map(([label,id])=><button className="pc-building-row" key={label} onClick={()=>choose(id)}><PixelIcon name="base"/>{label}<small>Poziom 1 · działa</small><span>›</span></button>)}{['Warsztat','Stacja paliw','Hotel','Magazyn'].map(label=><div className="pc-building-row pc-muted" key={label}>{label}<small>Niedostępny w 0.1</small></div>)}<p>W 0.1: jeden pojazd, jeden kierowca i trzy niezakończone zlecenia. Rozbudowa jest niedostępna. W przyszłości może zwiększyć limity i udostępnić nowe usługi; ceny i poziomy nie zostały ustalone.</p></>}
+ {panel==='search'&&<><p>30 trwałych ofert · tylko zatwierdzone kierunki OSM · suche towary do furgonu.</p><div className="pc-filters"><label>Województwo<select aria-label="Województwo" value={region} onChange={e=>setRegion(e.target.value)}><option value="all">Wszystkie obsługiwane</option><option value="PL-12">Małopolskie</option></select></label><label>Miasto załadunku<select aria-label="Miasto załadunku" value={from} onChange={e=>setFrom(e.target.value)}><option value="">Wszystkie</option>{origins.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label><label>Promień geograficzny<select aria-label="Promień geograficzny" value={radius} disabled={!from} onChange={e=>setRadius(e.target.value)}>{[0,50,100,200].map(k=><option key={k} value={k}>{k?`+${k} km`:'Tylko wybrane miasto'}</option>)}</select></label><label>Miasto rozładunku<select aria-label="Miasto rozładunku" value={to} onChange={e=>setTo(e.target.value)}><option value="">Wszystkie</option>{destinations.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label><label>Rodzaj ładunku<select aria-label="Rodzaj ładunku" value={goods} onChange={e=>setGoods(e.target.value)}><option value="">Wszystkie</option>{GOODS.map(g=><option key={g[0]}>{g[0]}</option>)}</select></label><label>Wielkość ładunku<select aria-label="Wielkość ładunku" value={size} onChange={e=>setSize(e.target.value)}><option value="all">Wszystkie</option><option value="fits">Mieści się w moim furgonie</option><option value="small">Do 500 kg / 5 m³ / 2 palet</option><option value="large">Wymaga innego auta / wielu kursów</option></select></label><label>Sortowanie<select aria-label="Sortowanie" value={sort} onChange={e=>setSort(e.target.value)}><option value="expiry">Czas do wygaśnięcia</option><option value="price">Cena malejąco</option><option value="mass">Masa rosnąco</option></select></label></div><p>{offers.length} pasujących ofert. Najedź na wiersz, aby podświetlić drogę na mapie.</p><div className="pc-table-scroll"><table aria-label="Dostępne zlecenia"><thead><tr>{['Skąd','Dokąd','Typ towaru','Ładunek','Ilość, masa i objętość','Wygasa za','Cena','Działanie'].map(v=><th key={v}>{v}</th>)}</tr></thead><tbody>{offers.map(o=><tr key={o.id} data-offer-id={o.id} onMouseEnter={()=>setHighlight(routeFor(o.fromCityId,o.toCityId)??null)} onMouseLeave={()=>setHighlight(null)} onFocus={()=>setHighlight(routeFor(o.fromCityId,o.toCityId)??null)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setHighlight(null)}}><td>{city(o.fromCityId)}</td><td>{city(o.toCityId)}</td><td>Suche · furgon</td><td>{o.cargo}</td><td>{o.pallets?`${o.pallets} palet`:'Paczki · liczba sztuk nie zapisana; palety nie dotyczą'} · {o.massKg} kg · {o.volumeM3} m³<br/>{((routeFor(o.fromCityId,o.toCityId)?.meters??0)/1000).toFixed(1)} km</td><td>{remaining(o.expiresAt)}</td><td>{money(o.payoutGrosze)}</td><td><button disabled={!cargoFits(s,o)||!reach(o.fromCityId)||pending.length>=3} onClick={()=>action(v=>acceptOrder(v,o.id))}>PRZYJMIJ ZLECENIE</button><small>{!s.van?'Kup pojazd':!cargoFits(s,o)?'Za duży — kilka kursów nieobsługiwane':!reach(o.fromCityId)?'Brak dojazdu OSM':pending.length>=3?'Limit 3 zleceń':'Możliwe jednym kursem'}</small></td></tr>)}</tbody></table></div></>}
+ {['accepted','active','completed'].includes(panel)&&<div className="pc-table-scroll"><table aria-label="Zlecenia firmy"><thead><tr><th>Trasa / ładunek</th><th>Termin</th><th>Wynagrodzenie</th><th>Status</th><th>Przydział</th></tr></thead><tbody>{orders.filter(o=>panel==='completed'?o.completedAt!==null:panel==='active'?s.active?.offer.id===o.offer.id:o.completedAt===null).map(o=><tr key={o.offer.id} data-order-id={o.offer.id}><td>{city(o.offer.fromCityId)} → {city(o.offer.toCityId)}<br/>{o.offer.cargo}</td><td>{stamp(o.deadline)}<br/>{s.time>o.deadline?'Po terminie':remaining(o.deadline)}</td><td>{money(o.offer.payoutGrosze)}{o.penalized&&<small>Kara: {money(o.penaltyGrosze)}</small>}</td><td>{o.completedAt!==null?'Dostarczono':s.active?.offer.id===o.offer.id?'W realizacji':'Oczekuje'}</td><td>{o.completedAt===null&&<button disabled={!!s.active||!s.van||s.driverHiredAt===null||!reach(o.offer.fromCityId)} onClick={()=>setAssign(o.offer.id)}>PRZYDZIEL AUTO</button>}</td></tr>)}</tbody></table>{!orders.length&&<p>Brak zleceń firmy.</p>}</div>}
+ {assign&&<section className="pc-assignment" aria-label="Przydziel samochód"><h2>Wybierz pojazd</h2><label>Samochód<select aria-label="Samochód do zlecenia"><option>{s.van?.specs?.model??'Furgon 01'}</option></select></label><p>Jeden posiadany furgon. Rozpoczęcie wykorzysta zatwierdzony dojazd pusty i trasę ładunku.</p><button onClick={()=>{action(v=>startOrder(v,assign,routes));setAssign('')}}>ROZPOCZNIJ KURS</button><button onClick={()=>setAssign('')}>Anuluj</button></section>}
+ {panel==='fleet'&&<><div className="pc-table-scroll"><table><thead><tr>{['Auto','Kierowca','Paliwo','Stan przy zakupie','Lokalizacja','Przebieg'].map(t=><th key={t}>{t}</th>)}</tr></thead><tbody>{s.van&&<tr><td>{s.van.specs?.model??'Furgon'}</td><td>{s.driverHiredAt===null?'Brak':'Kierowca 01'}</td><td>{(s.van.fuelMillilitres/1000).toFixed(1)} l</td><td>{s.van.specs?`${s.van.specs.conditionPercent}%`:'Brak danych'}</td><td>{s.active?'Na trasie':city(s.van.cityId)}</td><td>{(s.van.mileageMeters/1000).toFixed(1)} km</td></tr>}</tbody></table></div>{!s.van&&<p>Twoja flota jest pusta. Kup używany pojazd na giełdzie.</p>}<button disabled={!s.van||!!s.active} onClick={()=>action(v=>refuelAtCity(v,10))}>TANKUJ 10 L</button></>}
+ {panel==='used'&&<div className="pc-used-list">{listUsedVans(s).map(v=><OfferCard key={v.id} offer={v} canPay={s.company!.balanceGrosze>=v.priceGrosze} owned={!!s.van} onBuy={id=>action(v=>buyUsedVan(v,id))} money={money}/>)}</div>}
+ {panel==='dealer'&&<p>Dealer nowych pojazdów niedostępny w wersji 0.1. Skorzystaj z giełdy używanych.</p>}
+ {['drivers','recruit','work'].includes(panel)&&<><div className="pc-portrait"><DriverPortrait/></div><h2>{s.driverHiredAt===null?'Kandydat · kat. B':'Kierowca 01 · kat. B'}</h2><p>Poziom 1 · 25 zł za każdą pełną godzinę płatnego czasu.</p>{s.driverHiredAt===null?<button disabled={!s.van} onClick={()=>action(hireDriver)}>ZATRUDNIJ KIEROWCĘ</button>:<dl><div><dt>Zatrudniony</dt><dd>{stamp(s.driverHiredAt)}</dd></div><div><dt>Naliczona pensja</dt><dd>{money(s.paidWagesGrosze)}</dd></div><div><dt>Czas od zatrudnienia</dt><dd>{((s.time-s.driverHiredAt)/3600000).toFixed(1)} h</dd></div></dl>}<p>Zmęczenie i odpoczynek nie są jeszcze zaimplementowane. Nie wyświetlamy fikcyjnych wartości energii ani snu.</p></>}
+ {panel==='training'&&<p>Szkolenia niedostępne w wersji 0.1.</p>}
+ {['finance','history'].includes(panel)&&<><label>Okres<select aria-label="Okres finansów" value={period} onChange={e=>setPeriod(Number(e.target.value))}><option value="7">7 dni</option><option value="30">30 dni</option><option value="0">Cała historia</option></select></label>{panel==='finance'?<><dl>{[['Przychody',finance.income],['Koszty',finance.cost],['Zysk / strata',finance.profit]].map(([k,v])=><div key={k}><dt>{k}</dt><dd>{money(Number(v))}</dd></div>)}</dl><p>Kredyt i spłata kapitału są przepływami finansowymi, nie przychodem ani kosztem działalności.</p>{!finance.groups.length?<p>Brak historii operacyjnej — wykres jest pusty.</p>:<div className="pc-chart" role="img" aria-label="Wykres przychodów, kosztów i zysku">{finance.groups.map(g=><div key={g.day}><div className="pc-chart-bars">{[g.income,g.cost,g.income-g.cost].map((v,i)=><span key={i} className={`bar-${i}`} style={{height:`${Math.max(1,Math.abs(v)/maxValue*90)}px`}} title={money(v)}/>)}</div><small>D{g.day+1}</small></div>)}</div>}<p>■ Przychody · ■ Koszty · ■ Zysk (wartość bezwzględna słupka; znak w podsumowaniu)</p></>:<div className="pc-table-scroll"><table><thead><tr><th>Czas</th><th>Operacja</th><th>Kwota</th></tr></thead><tbody>{finance.events.map(e=><tr key={e.id}><td>{stamp(e.at)}</td><td>{e.message}</td><td>{money(e.changeGrosze)}</td></tr>)}</tbody></table></div>}</>}
+ {panel==='credit'&&<><h2>Zadłużenie: {money(s.company.debtGrosze)}</h2><p>Odsetki 1% pozostałego kapitału dziennie. Spłata w transzach po 1000 zł.</p><button disabled={!!s.active} onClick={()=>action(repayLoan)}>SPŁAĆ 1 000 ZŁ</button></>}
+ {panel==='stats'&&<dl>{[['Dostarczone zlecenia',s.completedOfferIds.length],['Przebieg pojazdu',s.van?`${(s.van.mileageMeters/1000).toFixed(1)} km (licznik całkowity)`:'Brak pojazdu'],['Wypłacone pensje',money(s.paidWagesGrosze)]].map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>}
+ {panel==='settings'&&<><button onClick={()=>{if(!session.save())setError('Nie udało się zapisać firmy.')}}>ZAPISZ GRĘ</button><p>Automatyczny zapis co sekundę. Brak naliczania offline.</p><button className="pc-reset" onClick={()=>{if(confirm('Zrestartować firmę? Utracisz całą rozgrywkę.')){session.restart();choose('overview')}}}>RESTART FIRMY</button><p><a href={`${import.meta.env.BASE_URL}?dev=1`}>WIDOK DEVELOPERSKI</a></p></>}
+ </>}
+ </div></section>
+ <section className="pc-world" aria-label="Świat gry"><div className="pc-visual"><div className="pc-map" hidden={mode!=='map'}><PolandMap game={{...mapState(s,routes),highlightedRoute:highlight?.geometry}}/></div><div className="pc-base" hidden={mode!=='base'}>{s.company?<BaseParking state={s} cityName={city(s.company.baseCityId)} onBuy={id=>action(v=>buyUsedVan(v,id))} onHire={()=>action(hireDriver)} onShowMap={()=>setMode('map')} money={money} sceneOnly onBuildingSelect={buildingPanel}/>:<p>Załóż firmę, aby otworzyć bazę.</p>}</div></div><VehicleSchedule state={s}/></section>
+ </div></main>;
 }

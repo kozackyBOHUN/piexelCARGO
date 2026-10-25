@@ -83,6 +83,7 @@ function PolandMapView({ geography, game }: { geography: GeographyDataset; game?
   const vehicleCoordinates=vehicle?.coordinates??geography.cities.find(c=>c.id===vehicle?.cityId)?.coordinates;
   const routeGeometry=vehicle?.route;
   const routePath=useMemo(()=>routeGeometry?worldPath({type:'LineString',coordinates:routeGeometry}):'', [routeGeometry]);
+  const highlightedPath=useMemo(()=>game?.highlightedRoute?worldPath({type:'LineString',coordinates:game.highlightedRoute}):'',[game?.highlightedRoute]);
   const companyBase=geography.cities.find(c=>c.id===game?.baseCityId);
   const [view, setView] = useState<"country" | "demo" | "custom">("country");
   const [viewport, setViewport] = useState(() =>
@@ -400,6 +401,7 @@ function PolandMapView({ geography, game }: { geography: GeographyDataset; game?
             <path d={routePath} fill="none" stroke="#172129" strokeWidth="6" vectorEffect="non-scaling-stroke"/>
             <path d={routePath} fill="none" stroke="#f3ba62" strokeWidth="3" vectorEffect="non-scaling-stroke" data-testid="osm-route"/>
           </g>}
+          {highlightedPath&&<g data-layer="offer-route" pointerEvents="none" transform={`translate(${viewport.offsetX} ${viewport.offsetY}) scale(${viewport.scale})`}><path data-testid="offer-route" d={highlightedPath} fill="none" stroke="#54baff" strokeWidth="4" vectorEffect="non-scaling-stroke"/></g>}
           <g data-layer="cities">
             {renderedCities.map((city) => {
               const [x, y] = screenPoint(city.coordinates, viewport);

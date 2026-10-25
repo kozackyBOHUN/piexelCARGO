@@ -1,3 +1,9 @@
+# Aktualizacja — Etap 06, nowy interfejs
+
+Jedna gra ma nową powłokę według referencji: pięć sekcji menu i osobny panel, niezależne tryby MAPA/BAZA, tabele zleceń/floty/finansów, przydział auta, hover OSM i stały harmonogram. Mechanika i dane bez zmian. Szczegóły i ograniczenia assetów/liczby paczek: docs/INTERFACE_06.md. Baza e3b66f2e05287185a1a050dc87904e0fba72ee5d, gałąź feat/preview-gameplay-core. Nie ingerowano w gałąź grafika. Punkt wznowienia: ukończony zakres interfejsu; po commit/push i sprawdzeniu Pages czekać na nowe polecenie. Nie rozpoczynać kolejnych etapów.
+
+---
+
 # Aktualizacja — rynek zleceń preview
 
 Rozbudowano deterministyczny rynek dziesięciu towarów, trwałe oferty (5 dni), trzy rezerwacje, ręczne rozpoczęcie, terminy 3 dni i jednorazowe kary/wypłaty. Zachowano wspólny zegar, mapę, paliwo, pensje i stare zapisy; brak zmian CSS/grafik/OSM. Szczegóły i jawne ograniczenia puli/danych ludnościowych: docs/FREIGHT_MARKET.md. Baza 15e64015b1322fa96aafd45b06af4add7f30dfb0; gałąź feat/preview-gameplay-core. Po commit/push czekać na polecenie. Nie rozpoczynać dalszych etapów ani ingerować w feat/pixelcargo-art-assets.
