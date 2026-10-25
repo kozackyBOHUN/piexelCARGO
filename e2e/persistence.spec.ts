@@ -14,7 +14,7 @@ const envelope = (time = 36_900_000) => ({
   },
 });
 async function ready(page: Page) {
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await page.getByRole("tab", { name: "Ustawienia", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Zapisz", exact: true }),
@@ -100,7 +100,7 @@ test("second tab cannot simulate or save; closing owner transfers lock and resto
   await importFile(page, envelope());
   await expect(page.getByRole("status")).toContainText("Zaimportowano");
   const second = await context.newPage();
-  await second.goto("/");
+  await second.goto("/?dev=1");
   await second.getByRole("tab", { name: "Ustawienia", exact: true }).click();
   await expect(second.getByRole("alert")).toContainText("nie nalicza czasu");
   await expect(
@@ -148,7 +148,7 @@ test("unsupported locking blocks simulation instead of using unsafe fallback", a
   await page.addInitScript(() =>
     Object.defineProperty(navigator, "locks", { value: undefined }),
   );
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await page.getByRole("tab", { name: "Ustawienia", exact: true }).click();
   await expect(page.getByTestId("save-status")).toContainText("Web Locks");
   await expect(
@@ -166,7 +166,7 @@ test("storage startup failure is visible and cannot silently start unsaved sessi
       throw new Error("Odmowa dostępu do IndexedDB");
     };
   });
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await page.getByRole("tab", { name: "Ustawienia", exact: true }).click();
   await expect(page.getByTestId("save-status")).toContainText("Odmowa dostępu");
   await expect(

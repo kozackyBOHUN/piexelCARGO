@@ -31,6 +31,9 @@ export interface ActiveTransport {
   readonly phase: Phase;
   readonly phaseProgressMs: number;
 }
+export interface CompletedTransport extends ActiveTransport {
+  readonly completedAt: GameMs;
+}
 export interface PreviewCompany {
   readonly name: string;
   readonly baseCityId: string;
@@ -78,6 +81,8 @@ export interface PreviewState {
   readonly wagesLoggedGrosze: Grosze;
   readonly active: ActiveTransport | null;
   readonly completedOfferIds: readonly string[];
+  /** Optional so every existing preview save remains valid. */
+  readonly lastTransport?: CompletedTransport;
   readonly events: readonly PreviewEvent[];
 }
 const DAY = 86_400_000;
@@ -204,7 +209,7 @@ export function dispatchTransport(state: PreviewState, offer: PreviewOffer,
     startedAt: state.time, phase: 'empty', phaseProgressMs: 0 };
   return record({ ...state, active }, `Przyjęto zlecenie ${offer.id}.`, 0);
 }
-function phaseDuration(a: ActiveTransport): number {
+export function phaseDuration(a: ActiveTransport): number {
   return a.phase === 'empty' ? Math.round(a.routeEmpty.seconds * 1000) :
     a.phase === 'loaded' ? Math.round(a.routeLoaded.seconds * 1000) : HANDLING_GAME_MS;
 }
@@ -268,6 +273,7 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
         if (nextPhase === 'finished') {
           const value = job.offer.payoutGrosze;
           current = { ...current, active: null,
+            lastTransport: {...job,phaseProgressMs:phaseDuration(job),completedAt:current.time},
             completedOfferIds: [...current.completedOfferIds, job.offer.id],
             van: { ...current.van!, cityId: job.offer.toCityId },
             company: { ...current.company!, balanceGrosze: current.company!.balanceGrosze + value } };

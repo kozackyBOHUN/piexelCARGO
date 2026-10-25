@@ -1,3 +1,9 @@
+# Aktualna gra preview
+
+`/` i `/?preview=1` otwierają jedną grę: mapa Polski, baza, flota, rynek i harmonogram korzystają z jednego zegara i zapisu. Historyczny panel techniczny: `/?dev=1`. Szczegóły integracji: [docs/UNIFIED_GAME.md](docs/UNIFIED_GAME.md). Publikacja pod `/piexelCARGO/`: [instrukcja Pages](docs/GITHUB_PAGES.md).
+
+---
+
 # PixelCargo 0.1 — mapa 04C i graf drogowy 05A
 
 Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.

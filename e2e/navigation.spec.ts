@@ -10,7 +10,7 @@ async function camera(page: Page) {
   }));
 }
 async function ready(page: Page) {
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await expect(page.locator('[data-layer="voivodeships"] path')).toHaveCount(
     16,
   );

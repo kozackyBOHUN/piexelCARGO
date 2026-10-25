@@ -11,6 +11,7 @@ interface Props {
   onHire: () => void;
   onShowMap: () => void;
   money: (grosze: number) => string;
+  initialBuilding?: 'parking';
 }
 const BUILDINGS: {id: Building; name: string; x: number; y: number; variant: number}[] = [
   {id:'parking',name:'PARKING',x:11,y:47,variant:0},
@@ -92,8 +93,8 @@ function OfferCard({offer,canPay,owned,onBuy,money}: {
     </div>
   </article>;
 }
-export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money}:Props){
-  const [building,setBuilding]=useState<Building|null>(null);
+export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money,initialBuilding}:Props){
+  const [building,setBuilding]=useState<Building|null>(initialBuilding??null);
   const [tab,setTab]=useState<GarageTab>('flota');
   const parkingReady=!!state.van;
   const driverReady=state.driverHiredAt!==null;

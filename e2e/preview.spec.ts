@@ -91,13 +91,13 @@ test('reload during driving preserves transport and never pays a delivery twice'
  const job=page.locator('.pv-job').filter({has:page.getByText('Kraków → Tarnów',{exact:true})});
  await job.getByRole('button',{name:'PRZYJMIJ'}).click();
  await page.clock.runFor(17000);
- await expect(page.getByText('Jazda z ładunkiem',{exact:true})).toBeVisible();
+ await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');
  const before=(await saved(page))!;expect(before.active?.phase).toBe('loaded');
  expect(before.van!.mileageMeters).toBeGreaterThan(0);
  const offer=before.active!.offer;
  await page.reload();
  await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
- await expect(page.getByText('Jazda z ładunkiem',{exact:true})).toBeVisible();
+ await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');
  await page.clock.runFor(1250);
  const restored=(await saved(page))!;
  expect(restored.active?.offer.id).toBe(offer.id);

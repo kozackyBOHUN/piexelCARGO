@@ -1,3 +1,11 @@
+# Aktualizacja — jedna grywalna aplikacja
+
+Połączono mapę, firmę, bazę, flotę, rynek i prawdziwy harmonogram. Jeden zegar GameRuntime.session.time, obsługiwany przez PreviewSession; stary zapis firmy zostaje zachowany. / oraz /?preview=1 otwierają tę samą grę; diagnostyka tylko /?dev=1. Pojazd porusza się po gotowej geometrii OSM i pozostaje w celu. Bez zmian ekonomii, tras i IndexedDB.
+
+Opis architektury, testów i ograniczeń: docs/UNIFIED_GAME.md. Punkt wznowienia: ukończona integracja na feat/preview-gameplay-core, baza 0222e511156683bb0819b85bb9ba7a8a42cfbfb1. Po commit/push czekać na nowe polecenie; nie rozpoczynać następnych etapów. Publikację potwierdza dopiero udany workflow Pages.
+
+---
+
 # Aktualizacja — przygotowana publikacja GitHub Pages
 
 Gałąź feat/preview-gameplay-core, baza a233b302b597ac46d178b399f42d199956850157.
@@ -177,3 +185,5 @@ Dane są uogólnione: hydrografia 1:10m nie zawiera wszystkich cieków/jezior; W
 Nie ma 05/routingu/dróg, nowych miast krajowych, transportów, pojazdów, kierowców, rynku, ekonomii ani multiplayera. Nie dodano płatnego API czy klucza. Kolejny etap wymaga nowego polecenia; kontynuować istniejące warstwy/kamerę, bez nowej aplikacji.
 
 Uruchomienie: `npm ci` (tu opcjonalnie `--cache /tmp/pixelcargo-npm-cache`), `npm run dev`. Python i zewnętrzne domeny są potrzebne tylko do regeneracji, nie gry. Nie regenerować zasobów podczas E2E/HMR.
+
+Końcowa weryfikacja: TypeScript OK; npm test 86/86 (11 plików); standardowy build i build:pages OK; Playwright unified 33/33 (w tym scenariusze gry w obu rozdzielczościach); produkcyjny Pages 1/1. Brak zmian w danych OSM, trasach, silniku i schemacie IndexedDB.

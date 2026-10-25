@@ -1,7 +1,9 @@
 # Roadmap PixelCargo 0.1
 
+- [x] Integracja preview: jeden zegar, główna PolandMap z pojazdem OSM, nawigacja pięciu widoków i rzeczywisty harmonogram tylko do odczytu. Szczegóły docs/UNIFIED_GAME.md. Po zakończeniu czekać na polecenie; pełne etapy poniżej pozostają osobnym zakresem.
+
 Osobna gałąź feat/preview-gameplay-core: stabilizacja zapisu i paliwa preview ukończona w zleconym zakresie; 79/79 unit i 2/2 celowane E2E. Szczegóły docs/PREVIEW_STABILIZATION.md. Nie zmienia to statusu pełnych etapów poniżej.
-Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie oryginalnej specyfikacji, a nie automatyczna zgoda na kolejne zadania. Użytkownik zlecił Fazę II w zakresie 04A i następnie 04B; ukończono także 04C. Aktualne polecenie dopuszcza etap 05A–05D, bez etapu 06.
+Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie oryginalnej specyfikacji, a nie automatyczna zgoda na kolejne zadania. Użytkownik zlecił Fazę II w zakresie 04A i następnie 04B; ukończono także 04C. Historyczne polecenia etapów nie upoważniają do dalszych prac.
 
 - [x] 01 Fundament i architektura
 - [x] 02A Silnik symulacji i zegar
