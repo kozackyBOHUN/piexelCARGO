@@ -1,4 +1,4 @@
-# PixelCargo 0.1 — Faza II, etap 04C
+# PixelCargo 0.1 — mapa 04C i graf drogowy 05A
 
 Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.
 
@@ -58,7 +58,7 @@ Testy E2E używają systemowego `/usr/bin/chromium`, jeśli istnieje. W innym ś
 
 Czas jest liczbą całkowitą milisekund gry od poniedziałku 00:00. Kwoty są w całych groszach, ilości w całych jednostkach. Numer sekwencji komend zapobiega ponownemu naliczeniu, a identyfikatory zdarzeń i powiązanie LedgerEntry.eventId są kontraktem przyszłych jednorazowych rozliczeń. Nie implementujemy teraz ekonomii. RNG Mulberry32 ma jawny stan; zegar nie zużywa losowości. Zapis schematu 1 przyjmuje wyłącznie stan technicznej sesji Fazy I. Rejestr przyszłych migracji jest przygotowany, bez fikcyjnych konwersji.
 
-Grafika i ikony to lokalny CSS/SVG, fonty systemowe obsługują polskie znaki. Geometrie i miasta są commitowanymi plikami lokalnymi, bez zewnętrznych kafelków podczas gry. Granice: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT); miasta: © GeoNames (CC BY 4.0), dystrybucja geonamescache. [Źródła, daty, licencje i odtwarzanie danych](docs/MAP_DATA.md). Etap 04C ukończony. Etap 05 i dalsze wymagają osobnego polecenia.
+Grafika i ikony to lokalny CSS/SVG, fonty systemowe obsługują polskie znaki. Geometrie i miasta są commitowanymi plikami lokalnymi, bez zewnętrznych kafelków podczas gry. Granice: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT); miasta: © GeoNames (CC BY 4.0), dystrybucja geonamescache. [Źródła, daty, licencje i odtwarzanie danych](docs/MAP_DATA.md). Etap 04C ukończony. Etap 05A–05D został zlecony; 06 i dalsze wymagają osobnego polecenia.
 
 Dokumentacja: [roadmapa](docs/ROADMAP.md), [stan prac](docs/HANDOFF.md), [zakres Fazy I](docs/PixelCargo_Faza_I_Codex.md), [oryginalna specyfikacja bez zmian](docs/SPEC_0_1_ORIGINAL.txt).
 
@@ -78,4 +78,4 @@ Warstwy są lokalne: jeden Canvas pod SVG granic/miast/etykiet, wspólna projekc
 
 Weryfikacja końcowa: **64/64 Vitest, 27/27 Playwright**, typecheck i build poprawne; wszystkie pierwotne 52/23 testy pozostają i przechodzą. Produkcyjna aplikacja sprawdzona w Chromium. Pomiar bieżącego headless Chromium: Canvas P95 0,5–0,9 ms, jedna warstwa Canvas, 124–133 elementy SVG. To czas funkcji rysującej, nie gwarancja FPS na każdym urządzeniu; pełne pomiary (w tym odosobniona klatka 100 ms w powtórce) zapisano w galerii.
 
-**Etap 05 nie jest rozpoczęty.** Nadal nie ma dróg, routingu, transportów, rynku ani ekonomii. Wymagają osobnego polecenia.
+**05A: rzeczywisty regionalny graf OSM.** 537460 węzłów, 565817 odcinków i 1102271 krawędzi skierowanych, 19 miast przypiętych do wzajemnie osiągalnej sieci, sześć wymaganych par sprawdzonych. Baza regionalna ma 40,1 MB gzip; jest udostępniona na ODbL razem z geometrią i źródłowymi tagami. [Dane, polityka dostępu, ograniczenia i regeneracja](docs/ROAD_DATA.md), [pełny zakres 05](docs/PixelCargo_Etap_05.md). 05B–05D nie są ukończone. W interfejsie nadal nie ma warstwy dróg ani planera; przygotowany graf nie jest transportem i nie zmienia zapisu gry.

@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "scope": "demo",
+  "requestedUrl": "https://download.geofabrik.de/europe/poland/malopolskie-latest.osm.pbf",
+  "resolvedUrl": "https://download.geofabrik.de/europe/poland/malopolskie-261024.osm.pbf",
+  "lastModified": "Sat, 24 Oct 2026 23:36:18 GMT",
+  "etag": "\"c1b20a8-65e9e904ba35b\"",
+  "sha256": "a0575a3f5bd99f190923818d79bbce882935809bf229792385392a9fa4262cbc",
+  "bytes": 203104424,
+  "officialMd5": "81744c51e49a89d818f22e02cecbaa2f",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors"
+}

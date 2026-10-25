@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "scope": "poland",
+  "requestedUrl": "https://download.geofabrik.de/europe/poland-latest.osm.pbf",
+  "resolvedUrl": "https://download.geofabrik.de/europe/poland-261024.osm.pbf",
+  "lastModified": "Sat, 24 Oct 2026 23:10:56 GMT",
+  "etag": "\"7de3c83a-65e9e3590ae25\"",
+  "sha256": "4d9f766c3e6cbdc4a333608a67058f617ac53c5e89707a606542b46f3ba546cb",
+  "bytes": 2112079930,
+  "officialMd5": "e5ee59b74cbba716fc2e6f60e7a85776",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors"
+}

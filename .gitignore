@@ -3,3 +3,7 @@ dist/
 playwright-report/
 test-results/
 *.local
+
+# Python regeneration helpers and large raw road sources
+__pycache__/
+*.osm.pbf

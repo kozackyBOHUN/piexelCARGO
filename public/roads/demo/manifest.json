@@ -1,0 +1,162 @@
+{
+  "version": "05A-v1-a0575a3f5bd99f19-98733c38",
+  "source": {
+    "format": 1,
+    "scope": "demo",
+    "requestedUrl": "https://download.geofabrik.de/europe/poland/malopolskie-latest.osm.pbf",
+    "resolvedUrl": "https://download.geofabrik.de/europe/poland/malopolskie-261024.osm.pbf",
+    "lastModified": "Sat, 24 Oct 2026 23:36:18 GMT",
+    "etag": "\"c1b20a8-65e9e904ba35b\"",
+    "sha256": "a0575a3f5bd99f190923818d79bbce882935809bf229792385392a9fa4262cbc",
+    "bytes": 203104424,
+    "officialMd5": "81744c51e49a89d818f22e02cecbaa2f",
+    "license": "ODbL-1.0",
+    "attribution": "© OpenStreetMap contributors"
+  },
+  "osmTimestamp": "2026-10-24T20:20:51Z",
+  "nodes": 537460,
+  "ways": 332727,
+  "segments": 565817,
+  "directedEdges": 1102271,
+  "restrictions": 3093,
+  "snaps": [
+    {
+      "cityId": "geonames:3080866",
+      "nodeId": 1853181708,
+      "gapMeters": 3.091904125324079
+    },
+    {
+      "cityId": "geonames:3082722",
+      "nodeId": 1988701599,
+      "gapMeters": 24.467964929563497
+    },
+    {
+      "cityId": "geonames:3084300",
+      "nodeId": 1168669987,
+      "gapMeters": 0.9867104808809647
+    },
+    {
+      "cityId": "geonames:3089658",
+      "nodeId": 1744170406,
+      "gapMeters": 15.41306143943245
+    },
+    {
+      "cityId": "geonames:3090146",
+      "nodeId": 537886993,
+      "gapMeters": 10.058154184882772
+    },
+    {
+      "cityId": "geonames:3091256",
+      "nodeId": 1193673211,
+      "gapMeters": 17.560320716275392
+    },
+    {
+      "cityId": "geonames:3094802",
+      "nodeId": 2419367482,
+      "gapMeters": 314.7786252020131
+    },
+    {
+      "cityId": "geonames:3101547",
+      "nodeId": 201877608,
+      "gapMeters": 6.474643843025745
+    },
+    {
+      "cityId": "geonames:755889",
+      "nodeId": 4164290846,
+      "gapMeters": 7.707360879476435
+    },
+    {
+      "cityId": "geonames:757026",
+      "nodeId": 2225156352,
+      "gapMeters": 13.558148292864834
+    },
+    {
+      "cityId": "geonames:761258",
+      "nodeId": 295674834,
+      "gapMeters": 2.2408246764426725
+    },
+    {
+      "cityId": "geonames:763523",
+      "nodeId": 3386108462,
+      "gapMeters": 6.7248371479859825
+    },
+    {
+      "cityId": "geonames:763534",
+      "nodeId": 1971467681,
+      "gapMeters": 13.809976706359981
+    },
+    {
+      "cityId": "geonames:764917",
+      "nodeId": 5165994734,
+      "gapMeters": 17.596258231043112
+    },
+    {
+      "cityId": "geonames:766301",
+      "nodeId": 4266770532,
+      "gapMeters": 14.395923535313653
+    },
+    {
+      "cityId": "geonames:771804",
+      "nodeId": 8761900801,
+      "gapMeters": 16.436188125877095
+    },
+    {
+      "cityId": "geonames:773569",
+      "nodeId": 1910483194,
+      "gapMeters": 3.931638934580522
+    },
+    {
+      "cityId": "geonames:775183",
+      "nodeId": 581904794,
+      "gapMeters": 22.821400135949737
+    },
+    {
+      "cityId": "geonames:775758",
+      "nodeId": 248788732,
+      "gapMeters": 21.9812382636363
+    }
+  ],
+  "connections": [
+    [
+      "Kraków",
+      "Tarnów",
+      true
+    ],
+    [
+      "Kraków",
+      "Zakopane",
+      true
+    ],
+    [
+      "Kraków",
+      "Nowy Sącz",
+      true
+    ],
+    [
+      "Kraków",
+      "Oświęcim",
+      true
+    ],
+    [
+      "Tarnów",
+      "Nowy Sącz",
+      true
+    ],
+    [
+      "Nowy Targ",
+      "Zakopane",
+      true
+    ]
+  ],
+  "excluded": {
+    "policy": 322860,
+    "borderOrBarrierSegments": 46811
+  },
+  "jsonBytes": 140180397,
+  "gzipBytes": 40081233,
+  "generationSeconds": 169.74366652800018,
+  "borderSha256": "98733c38e14aaa90a5af42e2fd5171065b0465446956269e1e711b679533487e",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "graphSha256": "e67a4d18e39c2894edcab59e7ef776a01ce0d6251a00618ff7b262d330e42c9f"
+}

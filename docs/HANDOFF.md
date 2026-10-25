@@ -1,3 +1,84 @@
+# Stan przekazania — 05A ukończony
+
+Ostatni ukończony podetap: **05A**, osobny commit w bieżącej historii.
+Baza 04C: `0700e01692f3feb70ed42ec855779894cfeccdb1`. Aktualne polecenie
+obejmuje 05A → 05B → 05C → 05D; nie rozpoczynać 06.
+
+## Ukończone 05A
+
+- Rzeczywisty graf OSM Małopolski: **537460 węzłów, 332727 ways, 565817
+  odcinków, 1102271 krawędzi skierowanych**, 3093 zachowane relacje restrykcji.
+- Pełna geometria/tagi, źródłowe IDs, oneway/-1/roundabout/dostęp i bariery,
+  maxweight/height/width jako dane. Wspólne IDs łączą drogi; przecięcia geometrii nie.
+- Granica do filtrowania: kompletna OSM relation 49715 z krajowego PBF, nie
+  uproszczony obrys 04A. Zagraniczne odcinki/gap fragmenty wykluczone, brak
+  syntetycznych napraw. Istniejące dane mapy są niezmienione.
+- 19 miast przypiętych do najbliższego źródłowego punktu głównej silnie spójnej
+  sieci. Pierwsza próba dowolnego najbliższego węzła nie przeszła Kraków–Tarnów;
+  poprawiono dobór odpowiedniej sieci bez dodawania odcinków. Luki 0,99–314,78 m,
+  największa Kraków, nie stanowią drogi ani przejezdnego dystansu.
+- Sześć wskazanych par ma skierowane połączenie. Ponowna generacja sprawdza także
+  wzajemną osiągalność wszystkich 19 przypięć. To topologia, jeszcze bez reguł skrętów.
+- Baza: public/roads/demo/graph.json.gz **40081233 B**, JSON 140180397 B.
+  SHA-256 gzip: e67a4d18e39c2894edcab59e7ef776a01ce0d6251a00618ff7b262d330e42c9f.
+  Wersja 05A-v1-a0575a3f5bd99f19-98733c38. Manifest zawiera źródła/statystyki/sumy.
+- ODbL 1.0, lokalna pełna licencja i opis zmian, bezpośredni dostęp do całej
+  pochodnej bazy/maski/manifestu na stronie źródeł. Format/reguły/regeneracja
+  w docs/ROAD_DATA.md. Dokładne polecenie w docs/PixelCargo_Etap_05.md.
+
+## Dane i środowisko
+
+Pobrane, oficjalna MD5 i SHA-256 zweryfikowane:
+- /tmp/pixelcargo-roads/demo.osm.pbf — 203104424 B, 261024, data OSM 2026-10-24T20:20:51Z;
+- /tmp/pixelcargo-roads/poland.osm.pbf — 2112079930 B, 261024, surowe źródło przyszłego 05D;
+- /tmp/pixelcargo-roads/poland-border.json — poprawna pełna granica z krajowego PBF.
+
+Locki scripts/roads-{demo,poland}-source.json. Nie commitować PBF. Generator
+scripts/prepare-roads.py, ekstraktor extract-road-border.py, pobieranie
+fetch-road-source.py, zależności requirements-roads.txt. Python zainstalowany
+w /tmp/pixelcargo-road-tools i /tmp/pixelcargo-map-tools; używaj obu w PYTHONPATH
+w tej instancji, bo NumPy/Shapely są także w drugim katalogu. Normalna gra i build
+nie wymagają Pythona. Pełna instrukcja odtwarzania w ROAD_DATA.
+
+Początkowe HTTP 403 rozwiązane; po dodaniu download.geofabrik.de do szkicu egress
+sprawdzono rzeczywiste HTTP 200 i pobrano dane. Sam zapis szkicu nie oznacza
+publikacji nowej migawki środowiska. Nie twierdzimy, że sprawdzono nowe zadanie.
+
+## Weryfikacja 05A
+
+- npm test **72/72** (oryginalne 64 + 8 realnego grafu).
+- Python narzędzia **15/15**: integralność, odmowy/przerwania, access/directions,
+  most bez skrzyżowania, wspólne IDs, SCC i przypięcie.
+- typecheck **OK**, build **OK**, Playwright **27/27**; żaden stary test nie usunięty.
+- Produkcyjny Chromium otwiera obecną mapę bez pageerror.
+- Dwie poprawne generacje: 169,74 s i 162,70 s; gzip grafu oraz maski mają
+  identyczne SHA-256. Druga baza w /tmp/pixelcargo-roads/reproduced-demo.
+- Bez zmian w src/core, src/persistence, src/domain, oryginalnej specyfikacji,
+  trzech katalogowych danych 04A i krajobrazie. Zapis nadal schema 1.
+
+## Co dalej — kontynuować istniejący projekt
+
+**05B następny:** A* najkrótszej dozwolonej drogi po metrach, profil furgonu,
+prędkości/tagi, podstawowe no/only turn restrictions (także rozpoznanie/przejrzysty
+raport niewspieranych), dystans/czas/geometria/stabilny ID, punkt i orientacja po
+przejechanym dystansie. Dijkstra referencyjny na kontrolowanych grafach; realne
+sześć tras i testy błędów. Nie traktować hasDirectedConnection jako routingu.
+
+Następnie 05C: wydajny Canvas dróg, planer 19 miast, trasa na tej samej geometrii,
+fit, kierunek, opcjonalne powiększenie mapy z ukryciem timeline. Dalej 05D: pełny
+krajowy graf (sam pobrany PBF NIE oznacza ukończenia), compact/chunks/indeks,
+Worker, pomiary i siedem par krajowych. Regionalny JSON 140 MB wymaga rozdzielenia
+geometrii/topologii przed skalowaniem. Nie ładować go synchronicznie do głównego UI.
+
+W interfejsie nadal **nie ma dróg ani planera**, nie ma wyliczonych dystansów/czasów
+tras, zrzutów 05 ani krajowego grafu. 05B–05D nieukończone. Nie dodano pojazdów,
+transportów, ekonomii, nowych miast ani zmian zapisu. Każdy następny ukończony
+podetap zakończyć testami, HANDOFF/ROADMAP, osobnym commitem i push bez force-push.
+
+---
+
+# Archiwalny raport 04C — stan przed poleceniem 05
+
 # Stan przekazania PixelCargo — 04C ukończony
 
 Ostatni w pełni ukończony etap: **Faza II / 04C**, wszystkie podetapy **04C-1 → 04C-2 → 04C-3 → 04C-4**. Rozwinięto istniejącą aplikację z bazy `217be676ca434fd2a0d730db01f75a0930294f7a`, bez tworzenia projektu od nowa. **Etap 05 nie jest rozpoczęty i wymaga osobnego polecenia.**
