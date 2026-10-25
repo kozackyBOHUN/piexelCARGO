@@ -629,6 +629,7 @@ function PolandMapView({ geography, game }: { geography: GeographyDataset; game?
       <div className="panel-footnote map-attribution">
         <PixelIcon name="map" size={14} />
         <span>
+          {game&&<>Drogi: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a> · </>}
           Krajobraz: © ESA WorldCover 2021 · USGS/NOAA · Natural Earth ·
           Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) · Miasta: © GeoNames (CC BY
           4.0) ·{" "}

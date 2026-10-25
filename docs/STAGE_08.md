@@ -61,3 +61,7 @@ Zachowano stare testy i dodano testy PNG/hash/mapowania, bramek zegara, gotowoś
 Po commit/push tylko na feat/preview-gameplay-core potwierdzić Pages dla konkretnego SHA i zakończyć. Nie uruchamiać następnego etapu ani integrować starszych, odrzuconych paczek.
 
 Końcowe kontrole: TypeScript OK; npm test 105/105 (16 plików); oba buildy OK; Playwright stage08 41/41 plus produkcyjny Pages 1/1 (łącznie 42 scenariusze). Dwa rozmiary okna, wszystkie PNG, pełny samouczek/dostawa do Zakopanego/powrót pusty, zapis częściowego ticka i wcześniejsze regresje zaliczone. SHA-256 katalogu tras zgadza się z raportem. Zrzuty: docs/screenshots/08/.
+
+Kontrola publikacji wykazała Cache-Control: max-age=600 dla routes.json na Pages. Fetch katalogu używa cache:no-cache, aby rewalidować ETag przy starcie i nie uruchamiać starszej siatki z cache przeglądarki. Nie zmienia to samych tras ani zapisu.
+
+Domknięcie publikacji: cache katalogu jest rewalidowany, na mapie widnieje bezpośredni podpis © OpenStreetMap contributors. Ponowne TypeScript/build/build:pages oraz Playwright 41/41 i Pages 1/1 zaliczone; testy jednostkowe nadal 105/105.
