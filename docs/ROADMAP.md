@@ -5,14 +5,14 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
 - [x] 02A Silnik symulacji i zegar
 - [x] 02B Zapis, odczyt i blokada kart
 - [x] 03 Powłoka interfejsu pixel art
-- [ ] 04 Mapa Polski i dane geograficzne (cały etap nie jest jeszcze ukończony)
+- [x] 04 Mapa Polski i dane geograficzne (04A–04C)
   - [x] 04A Podstawowa mapa: prawdziwe granice państwa i 16 województw, 19 miast demonstracyjnych Małopolski, źródła/licencje i warstwy
   - [x] 04B Interaktywna mapa: przeciąganie, zoom pod kursorem, limit 200 m/piksel CSS, wyszukiwarka demo, etykiety i skala odległości
-  - [ ] 04C Krajobraz Polski, pixel art i optymalizacja
+  - [x] 04C Krajobraz Polski, pixel art i optymalizacja
     - [x] 04C-1 Kontrola wizualna i zrzuty przed zmianami
     - [x] 04C-2 Hydrografia
     - [x] 04C-3 Lasy i rzeźba terenu
-    - [ ] 04C-4 Oprawa, optymalizacja, testy i zrzuty końcowe
+    - [x] 04C-4 Oprawa, optymalizacja, testy i zrzuty końcowe
 - [ ] 05 Sieć drogowa i wyznaczanie tras
 - [ ] 06 Start firmy i baza
 - [ ] 07 Pojazd i kierowca
@@ -28,4 +28,4 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
 - [ ] 17 Efekty dźwiękowe
 - [ ] 18 Integracja i walidacja pełnej wersji 0.1
 
-Faza I jest ukończona. Z Fazy II ukończono 04A i 04B. 04C jest w toku. Nie rozpoczynać etapu 05, dróg ani wyznaczania tras bez osobnego polecenia. Pozostałe nazwy etapów są roboczym grupowaniem specyfikacji.
+Faza I jest ukończona. Z Fazy II ukończono 04A, 04B i 04C. Nie rozpoczynać etapu 05, dróg ani wyznaczania tras bez osobnego polecenia. Pozostałe nazwy etapów są roboczym grupowaniem specyfikacji.

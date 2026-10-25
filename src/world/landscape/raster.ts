@@ -12,6 +12,8 @@ export interface RasterManifest {
     height: number;
     terrain: string;
     forests: string;
+    forestPixelCount: number;
+    minForestComponentCells: number;
   }[];
   forestClass: number;
   forestShare: number;

@@ -83,3 +83,13 @@ test("zoomed raster crop uses the same world camera and omits invisible image pi
   const outside = atCenter([0, 0], 0.001, 100, 100);
   expect(rasterWindow(manifest, 100, 100, outside)).toBeNull();
 });
+test("distant forest LOD omits small islands while close view preserves the source sample", () => {
+  const coverage = manifest.levels.map(
+    (level) => level.forestPixelCount / (level.width * level.height),
+  );
+  expect(coverage[0]).toBeLessThan(coverage[2]);
+  expect(manifest.levels.map((level) => level.minForestComponentCells)).toEqual(
+    [25, 6, 1],
+  );
+  expect(manifest.levels[2].forestPixelCount).toBeGreaterThan(500_000);
+});

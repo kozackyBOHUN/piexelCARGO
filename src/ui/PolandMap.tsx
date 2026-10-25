@@ -49,7 +49,7 @@ export const PolandMap = memo(function PolandMap() {
     <section className="panel map-panel" aria-labelledby="map-title">
       <header className="panel-heading">
         <h2 id="map-title">Obszar operacyjny</h2>
-        <span className="module-tag">MAPA · ETAP 04C · W TOKU</span>
+        <span className="module-tag">MAPA · ETAP 04C</span>
       </header>
       <div className="map-loading" aria-live="polite">
         <p>{error || "Wczytywanie lokalnej mapy Polski…"}</p>
@@ -267,7 +267,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
             Obszar demo
           </button>
         </div>
-        <span className="module-tag">MAPA · ETAP 04C · W TOKU</span>
+        <span className="module-tag">MAPA · ETAP 04C</span>
       </header>
       <CitySearch
         cities={geography.cities}

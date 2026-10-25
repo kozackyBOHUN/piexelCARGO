@@ -4,6 +4,7 @@ First acquisition: --initialize-lock. Later runs verify the committed source loc
 TLS and checksums remain enabled. No random geometry or synthetic mountain heights.
 """
 import argparse, concurrent.futures, hashlib, io, json, math, urllib.request
+from collections import deque
 from pathlib import Path
 import numpy as np
 import rasterio
@@ -23,6 +24,23 @@ RES=800
 def digest(data): return hashlib.sha256(data).hexdigest()
 def request(url, method='GET'):
     return urllib.request.urlopen(urllib.request.Request(url,method=method),timeout=45)
+def remove_small_islands(mask, minimum):
+    """Only omit source-covered small components at distant LODs; never invent tree pixels."""
+    if minimum <= 1: return mask
+    result=mask.copy();seen=np.zeros(mask.shape,dtype=bool);height,width=mask.shape
+    for row,column in zip(*np.nonzero(mask)):
+        if seen[row,column]:continue
+        queue=deque([(int(row),int(column))]);seen[row,column]=True;component=[]
+        while queue:
+            y,x=queue.popleft();component.append((y,x))
+            for yy,xx in [(y-1,x),(y+1,x),(y,x-1),(y,x+1)]:
+                if 0<=yy<height and 0<=xx<width and mask[yy,xx] and not seen[yy,xx]:
+                    seen[yy,xx]=True;queue.append((yy,xx))
+        if len(component)<minimum:
+            for y,x in component:result[y,x]=False
+    assert not np.any(result & ~mask)
+    return result
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--cache-dir',default='/tmp/pixelcargo-landscape/raster');parser.add_argument('--initialize-lock',action='store_true');args=parser.parse_args()
     cache=Path(args.cache_dir);cache.mkdir(parents=True,exist_ok=True);OUT.mkdir(parents=True,exist_ok=True)
@@ -94,10 +112,12 @@ def main():
       terrain=terrain_image.resize(size,Image.Resampling.NEAREST);terrain.save(OUT/f'terrain-{factor}.png',optimize=True)
       coverage=Image.fromarray(forests.astype(np.uint8)*255).resize(size,Image.Resampling.BOX)
       selected=np.asarray(coverage)>=(140 if factor==4 else 100 if factor==2 else 128)
+      minimum=25 if factor==4 else 6 if factor==2 else 1
+      selected=remove_small_islands(selected,minimum)
       yy,xx=np.indices(selected.shape);texture=((xx+yy)%4==0).astype(np.uint8)*3
       color=np.stack([18+texture,48+texture,33+texture,selected.astype(np.uint8)*175],axis=2).astype(np.uint8)
       Image.fromarray(color).save(OUT/f'forests-{factor}.png',optimize=True)
-      levels.append({'factor':factor,'width':size[0],'height':size[1],'terrain':f'/landscape/terrain-{factor}.png','forests':f'/landscape/forests-{factor}.png'})
+      levels.append({'factor':factor,'width':size[0],'height':size[1],'terrain':f'/landscape/terrain-{factor}.png','forests':f'/landscape/forests-{factor}.png','forestPixelCount':int(selected.sum()),'minForestComponentCells':minimum})
     samples=[]
     for name,lon,lat in [('Tatry',20.02,49.23),('Beskidy',19.25,49.57),('Bieszczady',22.70,49.10),('Sudety',15.74,50.74),('Wyżyna Krakowsko-Częstochowska',19.60,50.50),('Nizina Mazowiecka',21,52.2)]:
       x,y=transform_bounds('EPSG:4326','EPSG:3857',lon,lat,lon,lat)[:2];row=int((top-y)/RES);col=int((x-left)/RES)

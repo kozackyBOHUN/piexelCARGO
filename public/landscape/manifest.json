@@ -14,21 +14,27 @@
       "width": 349,
       "height": 330,
       "terrain": "/landscape/terrain-4.png",
-      "forests": "/landscape/forests-4.png"
+      "forests": "/landscape/forests-4.png",
+      "forestPixelCount": 23350,
+      "minForestComponentCells": 25
     },
     {
       "factor": 2,
       "width": 698,
       "height": 660,
       "terrain": "/landscape/terrain-2.png",
-      "forests": "/landscape/forests-2.png"
+      "forests": "/landscape/forests-2.png",
+      "forestPixelCount": 146096,
+      "minForestComponentCells": 6
     },
     {
       "factor": 1,
       "width": 1395,
       "height": 1319,
       "terrain": "/landscape/terrain-1.png",
-      "forests": "/landscape/forests-1.png"
+      "forests": "/landscape/forests-1.png",
+      "forestPixelCount": 541460,
+      "minForestComponentCells": 1
     }
   ],
   "forestClass": 10,

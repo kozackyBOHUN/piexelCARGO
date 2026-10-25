@@ -279,7 +279,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
       <footer className="footer">
         <span>
           <span className="tiny-square" />
-          PixelCargo 0.1 · Faza II / 04C w toku
+          PixelCargo 0.1 · Faza II / 04C
         </span>
         <span>
           Zegar działa podczas otwartej sesji. Po powrocie — ostatni zapis, bez

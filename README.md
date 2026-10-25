@@ -1,6 +1,6 @@
-# PixelCargo 0.1 — Faza II, 04C w toku (hydrografia)
+# PixelCargo 0.1 — Faza II, etap 04C
 
-Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Dodano rzeczywiste rzeki, jeziora i zbiorniki Natural Earth. Lasy i rzeźba terenu czekają na dostęp do źródeł danych — całe 04C nie jest ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.
+Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.
 
 ## Uruchomienie
 
@@ -34,7 +34,7 @@ Aplikacja działa bez backendu, kluczy API i dodatkowych usług. IndexedDB i Web
 - Etykiety pojawiają się zależnie od skali i dostępnego miejsca, bez kolizji. Wybrane miasto ma priorytet. Skala odległości w dolnym rogu zmienia się z kamerą i uwzględnia szerokość geograficzną w miejscu belki.
 - Po zmianie rozmiaru okna widok ogólny ponownie dopasowuje Polskę, a przybliżony zachowuje środek i powiększenie w granicach dozwolonej skali.
 
-Mapa nadal nie ma dróg, tras, rynku ani danych wszystkich miast Polski. 04C jest w toku: ukończono kontrolę wizualną i hydrografię; lasy, wysokości i końcowa oprawa pozostają do wykonania. Kamera i wybór miasta są stanem interfejsu; format zapisów oraz zegar Fazy I pozostają bez zmian. Błąd wczytania mapy można ponowić bez zatrzymywania symulacji.
+Mapa nadal nie ma dróg, tras, rynku ani danych wszystkich miast Polski. 04C dodaje krajobraz z prawdziwych danych, pasma wysokości i lokalne, stopniowo ujawniane warstwy lasów/wód. Kamera i wybór miasta są stanem interfejsu; format zapisów oraz zegar Fazy I pozostają bez zmian. Błąd wczytania mapy można ponowić bez zatrzymywania symulacji.
 
 ## Weryfikacja
 
@@ -58,15 +58,24 @@ Testy E2E używają systemowego `/usr/bin/chromium`, jeśli istnieje. W innym ś
 
 Czas jest liczbą całkowitą milisekund gry od poniedziałku 00:00. Kwoty są w całych groszach, ilości w całych jednostkach. Numer sekwencji komend zapobiega ponownemu naliczeniu, a identyfikatory zdarzeń i powiązanie LedgerEntry.eventId są kontraktem przyszłych jednorazowych rozliczeń. Nie implementujemy teraz ekonomii. RNG Mulberry32 ma jawny stan; zegar nie zużywa losowości. Zapis schematu 1 przyjmuje wyłącznie stan technicznej sesji Fazy I. Rejestr przyszłych migracji jest przygotowany, bez fikcyjnych konwersji.
 
-Grafika i ikony to lokalny CSS/SVG, fonty systemowe obsługują polskie znaki. Geometrie i miasta są commitowanymi plikami lokalnymi, bez zewnętrznych kafelków podczas gry. Granice: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT); miasta: © GeoNames (CC BY 4.0), dystrybucja geonamescache. [Źródła, daty, licencje i odtwarzanie danych](docs/MAP_DATA.md). Dokończenie 04C jest zlecone, ale pobranie danych lasów i wysokości blokuje sieć środowiska. Etap 05 i dalsze wymagają osobnego polecenia.
+Grafika i ikony to lokalny CSS/SVG, fonty systemowe obsługują polskie znaki. Geometrie i miasta są commitowanymi plikami lokalnymi, bez zewnętrznych kafelków podczas gry. Granice: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT); miasta: © GeoNames (CC BY 4.0), dystrybucja geonamescache. [Źródła, daty, licencje i odtwarzanie danych](docs/MAP_DATA.md). Etap 04C ukończony. Etap 05 i dalsze wymagają osobnego polecenia.
 
 Dokumentacja: [roadmapa](docs/ROADMAP.md), [stan prac](docs/HANDOFF.md), [zakres Fazy I](docs/PixelCargo_Faza_I_Codex.md), [oryginalna specyfikacja bez zmian](docs/SPEC_0_1_ORIGINAL.txt).
 
 
-## Krajobraz — postęp 04C
+## Krajobraz — ukończone 04C
 
-Ukończone 04C-1 (zrzuty i kontrola wizualna) i 04C-2 (hydrografia). Lokalny zestaw Natural Earth 5.1.2, domena publiczna: 33 obiekty rzeczne i 21 poligonów wód, trzy poziomy szczegółowości, cache Path2D i indeks widoczności. Jedna warstwa Canvas pod granicami, miastami i etykietami, bez przejmowania kliknięć. Brak wymogu usług zewnętrznych podczas gry. To generalizowane dane 1:10m, nie pełny rejestr wszystkich cieków i jezior.
+- **04C-1:** kontrola faktycznej aplikacji i zrzuty przed zmianami.
+- **04C-2:** Natural Earth 5.1.2 (domena publiczna), 33 obiekty rzeczne i 21 poligonów wód, m.in. Wisła, Odra, Warta, Bug, Narew, San, Dunajec, Pilica.
+- **04C-3:** ESA WorldCover 2021 v200 (CC BY 4.0, 13 kafli klasy tree cover) oraz 56 publicznych kafli Terrarium z SRTM/GMTED2010/ETOPO1 (USGS/NOAA). Dane rzeczywiste, bez losowych lasów i gór.
+- **04C-4:** spokojniejsza grafitowo-zielona paleta, stonowane granice, hierarchia szczegółów, eliminacja małych plamek lasów przy oddaleniu, końcowe testy, zrzuty produkcyjne i pomiary.
 
-[Porównawcze zrzuty przed zmianami i po dodaniu wody](docs/screenshots/04C/README.md) są zapisane w repozytorium. Nie są jeszcze końcowymi obrazami kompletnego 04C.
+[Galeria ośmiu finalnych zrzutów i porównanie z początkiem](docs/screenshots/04C/README.md) obejmuje Polskę, Małopolskę, Kraków i południowe zbliżenie Tatr/Podhala w 1366×768 i 1920×1080. Każdy finalny obraz faktycznie obejrzano.
 
-**Pozostało:** 04C-3 lasy i rzeźba Polski oraz 04C-4 końcowa oprawa, optymalizacja całego krajobrazu i końcowe zrzuty. Dostęp do ESA WorldCover i publicznych kafli wysokości jest blokowany HTTP 403; szczegóły wymaganych domen i wznowienia w [HANDOFF](docs/HANDOFF.md) i [MAP_DATA](docs/MAP_DATA.md). Nie zastępowano brakujących danych fikcyjną grafiką.
+Warstwy są lokalne: jeden Canvas pod SVG granic/miast/etykiet, wspólna projekcja i kamera, trzy LOD, cache Path2D/obrazów i culling danych/pikseli. Lasów i wysokości nie zamieniamy na tysiące elementów SVG. Przy przeciąganiu nie wykonujemy reprojekcji źródłowych rastrów. Normalna gra nie wymaga internetu, API, Pythona ani kluczy; tylko npm ci i npm run dev. Python jest opcjonalny do odtwarzania danych, opisany w MAP_DATA.
+
+**Zakres i dokładność:** hydrografia to generalizowany zestaw 1:10m, nie rejestr wszystkich cieków i jezior. Pokrycie drzewiaste nie jest prawnym inwentarzem lasów. Bazowy raster 800 metrów projekcji odpowiada około 460–525 m w Polsce, a dalekie LOD są bardziej uproszczone; nie zachowujemy źródłowej dokładności WorldCover 10 m ani geodezyjnej precyzji wysokości. Małe lasy, doliny i szczyty są uogólnione. Przeglądowe kolory i cieniowanie mają służyć czytelnej mapie gry.
+
+Weryfikacja końcowa: **64/64 Vitest, 27/27 Playwright**, typecheck i build poprawne; wszystkie pierwotne 52/23 testy pozostają i przechodzą. Produkcyjna aplikacja sprawdzona w Chromium. Pomiar bieżącego headless Chromium: Canvas P95 0,5–0,9 ms, jedna warstwa Canvas, 124–133 elementy SVG. To czas funkcji rysującej, nie gwarancja FPS na każdym urządzeniu; pełne pomiary (w tym odosobniona klatka 100 ms w powtórce) zapisano w galerii.
+
+**Etap 05 nie jest rozpoczęty.** Nadal nie ma dróg, routingu, transportów, rynku ani ekonomii. Wymagają osobnego polecenia.

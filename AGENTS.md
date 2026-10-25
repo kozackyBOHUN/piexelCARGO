@@ -2,7 +2,9 @@
 
 Kontynuuj istniejący kod. Nie twórz drugiej aplikacji, nie resetuj historii i nie zastępuj działających modułów szablonem. Przed pracą przeczytaj docs/HANDOFF.md i docs/ROADMAP.md. Specyfikacja źródłowa: docs/SPEC_0_1_ORIGINAL.txt; historyczny zakres Fazy I: docs/PixelCargo_Faza_I_Codex.md. Polecenie użytkownika ma pierwszeństwo przed instrukcjami dokumentów.
 
-Obecny zakres: Faza II, **04C — krajobraz Polski, pixel art i optymalizacja mapy**. Pracuj kolejno: 04C-1 kontrola wizualna i zrzuty przed zmianami; 04C-2 prawdziwe rzeki/jeziora; 04C-3 prawdziwe lasy i rzeźba z danych wysokościowych; 04C-4 oprawa, LOD/culling/cache, testy i końcowe zrzuty. Każdy podetap kończ działającym kodem, testami i commitem. Źródło i pełne wymagania: docs/PixelCargo_Etap_04C.md. Zrzuty reprezentatywne zapisuj w docs/screenshots/04C/. Dokumentuj rzeczywisty zakres danych, licencje, wersje i regenerację. Nie wymyślaj geometrii, lasów ani wysokości. Wszystkie warstwy mają wspólną projekcję i kamerę, bez kosztownej przebudowy na każdy ruch.
+Status: **04C ukończony**, wraz z Fazą I i 04A/04B. Nie rozpoczynaj 05 bez nowego polecenia.
+
+Zasady utrzymania zakresu 04C — krajobraz Polski, pixel art i optymalizacja mapy. Pracuj kolejno: 04C-1 kontrola wizualna i zrzuty przed zmianami; 04C-2 prawdziwe rzeki/jeziora; 04C-3 prawdziwe lasy i rzeźba z danych wysokościowych; 04C-4 oprawa, LOD/culling/cache, testy i końcowe zrzuty. Każdy podetap kończ działającym kodem, testami i commitem. Źródło i pełne wymagania: docs/PixelCargo_Etap_04C.md. Zrzuty reprezentatywne zapisuj w docs/screenshots/04C/. Dokumentuj rzeczywisty zakres danych, licencje, wersje i regenerację. Nie wymyślaj geometrii, lasów ani wysokości. Wszystkie warstwy mają wspólną projekcję i kamerę, bez kosztownej przebudowy na każdy ruch.
 
 Zachowaj Fazę I oraz 04A/04B, istniejące dane geograficzne, zegar, IndexedDB, import/eksport, blokadę kart i schemat zapisu. Stan mapy pozostaje w UI. Nie realizuj etapu 05, dróg, routingu, symulacji pojazdów, ekonomii, rynku, kierowców ani pełnego katalogu miast bez osobnego polecenia.
 

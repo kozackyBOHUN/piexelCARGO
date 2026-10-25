@@ -1,70 +1,59 @@
-# Stan przekazania PixelCargo — 04C w toku
+# Stan przekazania PixelCargo — 04C ukończony
 
-Ostatni ukończony punkt: **04C-3 — rzeczywiste pokrycie drzewiaste i rzeźba terenu**. Baza 217be676ca434fd2a0d730db01f75a0930294f7a, main. 04C-1 w ed2884a, 04C-2 w 8305417.
+Ostatni w pełni ukończony etap: **Faza II / 04C**, wszystkie podetapy **04C-1 → 04C-2 → 04C-3 → 04C-4**. Rozwinięto istniejącą aplikację z bazy `217be676ca434fd2a0d730db01f75a0930294f7a`, bez tworzenia projektu od nowa. **Etap 05 nie jest rozpoczęty i wymaga osobnego polecenia.**
 
-Działają wszystkie wcześniejsze funkcje oraz hydrografia Natural Earth, lasy z ESA WorldCover 2021 v200 (klasa 10, uogólnione pokrycie drzewiaste) i wysokości z 56 publicznych kafli Terrarium (zweryfikowane SRTM/GMTED2010/ETOPO1). Wcześniejszy HTTP 403 rozwiązany: oba źródła odpowiadają HTTP 200, dane pobrane. Nie ma obecnie blokady zewnętrznej.
+## Punkty kontrolne
 
-Lokalny produkt: public/landscape/manifest.json i sześć PNG o łącznym rozmiarze około 0,6 MB, trzy LOD, 800 metrów projekcji w bazowej siatce, jedna kamera EPSG:3857. Krajowa siatka 1395×1319, bez deklaracji dokładności 10 m czy kompletnego inwentarza lasów. Źródła, licencje i zakres w docs/MAP_DATA.md oraz public/map-sources.html. Wszystkie 69 kafli zablokowane wersją/ETag/sumami w scripts/landscape-sources.json; generator scripts/prepare-landscape.py uruchomiony inicjalnie i ponownie z lockiem, oba poprawnie. Narzędzia opcjonalne w scripts/requirements-landscape.txt, nie dodano zależności npm.
+- **04C-1**, `ed2884a`: odczytano dokumentację i sekcje 3–5/19 specyfikacji, zaktualizowano AGENTS, zachowano pełne polecenie w docs/PixelCargo_Etap_04C.md, uruchomiono Chromium i zapisano/obejrzano cztery zrzuty bazowe. Testy 52/52, typecheck/build OK.
+- **04C-2**, `8305417`: rzeczywista lokalna hydrografia Natural Earth 5.1.2, 33 obiekty rzeczne i 21 poligonów jezior/zbiorników, w tym wszystkie osiem wymaganych rzek. Trzy LOD, cache Path2D i indeks siatki do cullingu, jeden Canvas pod istniejącym SVG. Naprawiono zasłonięcie przycisku retry oraz istniejący błąd 404 favicony bez wyłączania asercji. Testy 58/58, E2E 25/25, typecheck/build i produkcyjny Chromium OK.
+- **04C-3**, `92bbca5`: prawdziwe pokrycie drzewiaste ESA WorldCover 2021 v200 (13 kafli, CC BY 4.0) i uogólniona rzeźba z 56 kafli Terrarium (SRTM/GMTED2010/ETOPO1, USGS/NOAA, domena publiczna). Reprojekcja do wspólnej EPSG:3857, trzy lokalne rastry terenu/lasów, źródła zablokowane ETag/SHA-256. Rozszerzono i przemianowano HydrographyCanvas na LandscapeCanvas. Testy 63/63, E2E 27/27, typecheck/build OK.
+- **04C-4**, osobny końcowy commit w historii: filtrowanie drobnych wysp lasu w oddalonych LOD, spokojniejsze obrysy granic, końcowa kontrola wizualna wszystkich ośmiu widoków, pomiary, testy, README/MAP_DATA/HANDOFF/ROADMAP i push bez force-push zgodnie z poleceniem. Dokładny końcowy hash i synchronizację podaje raport po wykonaniu push.
 
-Renderer został rozszerzony/zmieniony nazwą z HydrographyCanvas na **src/ui/LandscapeCanvas.tsx**. Zachowuje wodę i cache Path2D; rysuje pasma wysokości, rzeczywiste drzewa i wodę na jednym canvas pod SVG, pointer-events:none. src/world/landscape/raster.ts: wspólny loader i obcinanie niewidocznych pikseli (rasterWindow), jeden cache danych/obrazów. Nie zmieniono silnika, IndexedDB, schematu ani danych 04A.
+## Co działa
 
-Testy 04C-3: **npm test 63/63**, **typecheck OK**, **build OK**, **E2E 27/27**. Wszystkie istniejące 52/23 wliczone i przechodzą. Nowe testy: prawdziwe źródła/rozmiary/LOD, próbki gór i znanych kompleksów leśnych, crop/reprojekcja, poprawna kolejność i ograniczona liczba SVG oraz awaria/retry rastra bez zatrzymania zegara. Tymczasowe widoki /tmp/pixelcargo-04C3-country.png i /tmp/pixelcargo-04C3-demo.png obejrzane: krajobraz rzeczywisty, miasta czytelne; krajowe drobne plamki lasu i mocne granice wymagają dopracowania w 04C-4.
+Kolejność mapy: teren bazowy → rzeźba → rzeczywiste obszary drzewiaste → jeziora i rzeki → granice województw/państwa → miasta → etykiety i wybór. Wszystkie warstwy używają tej samej kamery i projekcji. Nie ma fotografii, losowych lasów/gór ani dekoracyjnych fikcyjnych dróg.
 
-**Następny krok: 04C-4.** Dopracować krajowy LOD lasów (usunąć drobne wyspy przy oddaleniu, bez zmiany źródłowego położenia), stonować granice, sprawdzić płynność całej mapy, przygotować finalne zrzuty kraj/Małopolska/Kraków/południe dla obu rozdzielczości w docs/screenshots/04C, obejrzeć je. Uaktualnić README i statusy niedostępności, pełne testy + produkcyjny Chromium, commit i push bez force-push. Nie rozpoczynać 05.
+Nawigacja 04B pozostała: przeciąganie, rozróżnienie kliknięcia i gestu, kółko pod kursorem, +/−, Polska/demo, resize, wyszukiwanie 19 miast z polskimi i ASCII nazwami, Enter/strzałki/Escape, wybór klawiaturą/myszą, lista nakładających się miast, priorytet wybranego miasta, dynamiczna skala i limit około 200 m/piksel CSS z korektą Mercatora. Canvas nie przejmuje kliknięć. Awaria hydrografii lub rastrów daje działający przycisk retry bez utraty mapy ani zatrzymania zegara.
 
-Polecenie wznowienia: „Kontynuuj istniejący PixelCargo od 04C-4 zgodnie z docs/PixelCargo_Etap_04C.md. 04C-1..3 działają, źródła są dostępne i przygotowane lokalnie. Nie twórz aplikacji od nowa ani nie regeneruj danych podczas E2E/HMR”.
+Git diff względem bazy potwierdza brak zmian w **src/core, src/persistence, src/domain, trzech oryginalnych plikach danych 04A, docs/SPEC_0_1_ORIGINAL.txt, package.json i package-lock.json**. Centralny zegar, RNG, IndexedDB, SaveEnvelope schemat 1, autosave, import/eksport i Web Locks pozostają zgodne. Firma nadal nieutworzona. Kamera i wybór to stan UI, nie zapis gry.
 
-## Stan bazowy 04B (archiwum)
+## Dane, licencje i istotne pliki
 
-Punkt startowy 04B: `c525e66cc21e77652adeef9cbc195d45383b964b`. Kontynuowano istniejącą aplikację, bez nowego projektu. Faza I oraz 04A zachowane. **Nie rozpoczęto 04C**, dróg, tras ani kolejnych mechanik. Następny krok wymaga osobnego polecenia użytkownika dotyczącego 04C.
+- **docs/MAP_DATA.md**: źródła, wersje, daty, pełne ograniczenia, SHA/ETag i odtwarzanie. W aplikacji działa strona **public/map-sources.html** i kopie licencji w public/licenses.
+- **src/world/data/hydrography.json**, 148 kB / około 30 kB gzip: Natural Earth global+Europe rivers/lakes v5.1.2, przycięte do niezmienionej granicy Polski, trzy kontrolowane poziomy uproszczenia. Generator scripts/prepare-hydrography.py, narzędzia scripts/requirements-map.txt.
+- **public/landscape/**: manifest i sześć PNG, łącznie około 0,6 MB obrazów. EPSG:3857, bazowe 1395×1319 komórek, 800 metrów projekcji (około 460–525 m rzeczywistych w Polsce), trzy LOD. Pełna maska krajowej siatki ma dane; to nie oznacza pełnego rejestru lasów ani dokładności 10 m.
+- **scripts/landscape-sources.json**: dokładne 69 URL, ETag/SHA, wersje i pochodzenie. **scripts/prepare-landscape.py** z **scripts/requirements-landscape.txt**: pobiera przeglądy COG bez gigabajtów całych źródeł, sprawdza blokadę, próbuje klasę tree cover, dekoduje rzeczywiste wysokości Terrarium, reprojektuje i kwantuje paletę. Uruchomiono inicjalnie i ponownie z weryfikacją locka. Nie zmieniać sum, aby ukryć niezgodność; --initialize-lock odmawia nadpisania istniejącego pliku.
+- **src/ui/LandscapeCanvas.tsx**: jeden Canvas i osobne asynchroniczne cache/retry wody oraz krajobrazu. **src/world/landscape/**: typy/loader, współdzielona projekcja geometry.ts, indeks/culling spatial.ts oraz loader/crop rastrów raster.ts. Path2D i obrazy powstają raz, na ruch kamery tylko transformacja, dobór LOD i wycinka. Nie przeliczamy źródłowych danych wysokości na każdy tick/render.
+- **src/ui/PolandMap.tsx**, projection.ts, labels.ts: dotychczasowa kamera, SVG granic/miast i etykiety. Foreground pozostaje czytelny, granice są stonowane. Przy dalekim lesie pomijane są małe spójne komponenty (25 komórek coarse, 6 medium); fine zachowuje źródłową próbkę.
+- **scripts/capture-map.mjs**: odtwarza osiem rzeczywistych zdjęć ekranu z produkcyjnej aplikacji i pomiar. Nie generuje makiet. Południe to zbliżenie Tatr/Podhala przy 200 m/px. Opcja --south-only odtwarza same dwa południowe kadry.
 
-## Wynik 04B
+## Weryfikacja końcowa
 
-- Przeciąganie myszą, kursory grab/grabbing, próg gestu 4 piksele CSS, pointer capture także po wyjściu kursora poza mapę. Kliknięcie miasta jest oddzielone od przeciągnięcia; zakończenie gestu nie wybiera miasta ani nie blokuje następnego kliknięcia kontrolki.
-- Kółko powiększa wokół kursora, z wykładniczą zmianą skali i ograniczeniem pojedynczego skoku; obsługuje deltaMode piksel/linia/strona. Native listener jest niepasywny i zatrzymuje scroll wyłącznie nad mapą. W samych przewijanych nakładkach pozostaje normalne przewijanie.
-- Przyciski +/− względem środka: 150 ms interpolacji, szybkie kliknięcia kumulują docelowy zoom. Respektowana preferencja reduced motion. Nowy gest, reset, resize i kółko przerywają animację. requestAnimationFrame jest używany wyłącznie do animacji kamery, nigdy do zegara symulacji.
-- Minimalny zoom dopasowuje całą Polskę. Maksymalny to około **200 m rzeczywistych na piksel CSS w centrum widoku**. Metryka sferycznej Web Mercator: cos(szerokość) / scale. Przesunięcie na inną szerokość ponownie kontroluje limit. Brak zależności od devicePixelRatio.
-- Ograniczenie przesuwania korzysta z prawdziwego obrysu kraju. Środek poza powierzchnią jest rzutowany na najbliższy odcinek granicy, dzięki czemu nie można zgubić Polski również w narożnikach jej obwiedni. Na minimalnym zoomie kamera wraca do dopasowania kraju. Punkt pod kursorem jest zachowany dokładnie, dopóki nie zadziała ograniczenie nawigacji/zoomu.
-- Przyciski Cała Polska i Obszar demo resetują kadr. Resize zachowuje środek i powiększenie przybliżonego widoku w dozwolonych granicach; widok minimalny dopasowuje ponownie kraj.
-- Wyszukiwarka nad mapą: fragmenty nazw, wielkość liter, polskie znaki i ASCII (w tym jawne ł→l), pełna lista wyników. Strzałki nawigują, Enter wybiera, Escape zamyka; mysz także działa. Wybór centruje i przybliża miasto (do co najmniej regionalnego widoku 500 m/px, z zachowaniem już bliższego zoomu i limitów), podświetla znacznik i aktualizuje podgląd.
-- Katalog nadal obejmuje **tylko 19 miast demo Małopolski**, co widać w UI. Search otrzymuje katalog i województwa z danych, nie ma zakodowanych ręcznie nazw miast ani filtra 19 rekordów. Pełnego katalogu Polski nie dodano.
-- Etykiety: daleki widok do 3 nazw, średni do 9, bliski wszystkie mieszczące się bez kolizji. Wybrane miasto jest pierwsze w rozmieszczaniu i renderowane ponad innymi znacznikami. Znaczniki/hitboxy zachowują rozmiar CSS przy dowolnym zoomie. Nakładające się znaczniki pokazują listę rzeczywistych miast do wyboru. Tab i Enter/Spacja wybierają miasto; fokus poza kadrem przywraca jego widok.
-- Nazwa, województwo i współrzędne pozostają widoczne pod mapą. Swobodne przesunięcie może wyprowadzić wybrane miasto poza kadr — przycisk Pokaż miasto przywraca je bez zmiany danych.
-- Graficzna skala w dolnym rogu jest dynamiczna (1/2/5 × potęga 10, m lub km), uwzględnia szerokość przy samej belce, a nie tylko projekcyjne metry. Zachowano grafitowy styl pixel art.
+- **npm test: 64/64** — wszystkie pierwotne 52 oraz 12 testów danych/LOD/rasterWindow/źródeł/geograficznych próbek i uproszczenia.
+- **npm run typecheck: OK**.
+- **npm run build: OK** — główny JS około 266 kB / 85 kB gzip, źródła w osobnych lokalnych zasobach, bez ostrzeżenia o dużym module.
+- **npm run test:e2e: 27/27** — wszystkie pierwotne 23 oraz 4 nowe: LOD/culling/kolejność warstw i błędy/retry danych. Zachowano oryginalne asercje czasu, autosave, dwóch kart i konsoli. Przeszły 1366×768, 1920×1080, resize, DPR 2 i istniejący mały ekran.
+- **Produkcja Chromium:** Vite preview z końcowego buildu; faktyczne przejście Polska/demo/Kraków/południe w obu rozmiarach, wybór i zoom 200 m/px, brak błędów konsoli/runtime w zapisie scenariuszy. Dodatkowo osobne smoke testy hydrografii i rastrów po wczytaniu.
+- **Kontrola wizualna:** wszystkie osiem końcowych JPEG obejrzano, a wcześniej cztery bazowe i pięć hydrograficznych. Czytelne miasta/teksty/przyciski, rzeczywista woda, leśne kompleksy i dyskretne pasma wysokości. Maksymalny zoom celowo ujawnia piksele uogólnionych danych, nie udaje geodezyjnych szczegółów.
+- **Wydajność:** jeden Canvas, 124–133 elementy SVG w badanych kadrach. Pierwszy pomiar 60 ruchów: Canvas mediana 0,2/0,3 ms, P95 0,5/0,9 ms; rAF mediana 16,7 ms, P95 16,7/33,3 ms. Powtórka Canvas P95 0,6 ms; rAF P95 16,7/16,8 ms, pojedyncza klatka 100 ms w 1920. Oba przebiegi zapisane w performance.json, bez ukrywania odstających wartości. To headless Chromium bieżącej chmury, nie gwarancja FPS na każdym fizycznym laptopie.
 
-## Architektura i ważne pliki
+## Dokładne finalne zrzuty
 
-- `src/world/projection.ts`: istniejąca projekcja i dopasowanie plus unproject/worldPoint/viewportCenter, createNavigationLimits, constrainViewport, zoomViewport, panViewport, resizeViewport, focusViewport, groundMetersPerPixel, distanceScale i viewportTransform. Jedno źródło przeliczeń dla wszystkich warstw.
-- `src/ui/PolandMap.tsx`: kamera, wybór miasta, gest, krótka animacja i grupa nakładających się miast to lokalny stan UI. Nie są częścią GameState ani zapisu. Geometrie granic pozostają cache’owane w bazowej kamerze; podczas interakcji zmienia się transformacja grupy SVG. Etykiety i znaczniki używają tej samej kamery przez screenPoint. Nowe warstwy dróg/tras/pojazdów w przyszłości muszą dołączyć do tego układu.
-- `src/world/labels.ts`: rozmieszczanie z priorytetem wybranego miasta, progami rzeczywistej rozdzielczości i kontrolą kolizji oraz granic widoku.
-- `src/world/search.ts`: czysta normalizacja i filtrowanie katalogu. `src/ui/CitySearch.tsx`: combobox/listbox, sterowanie klawiaturą i wybór wyniku; nazwa województwa pobierana z katalogu.
-- `src/world/navigation.test.ts`: testy matematyki kamery, granic, metryki Mercator, etykiet i wyszukiwania.
-- `e2e/navigation.spec.ts`: interakcje myszy/klawiatury, zoom kotwiczony, przeciąganie, reset, fizyczna skala, DPR 2, resize, nakładanie znaczników i szybkie kolejne kliknięcia.
+Wszystkie w docs/screenshots/04C/ (JPEG quality 82, zwykle 110–180 kB):
 
-## Dane i zachowana Faza I / 04A
+- final-country-1366.jpg i final-country-1920.jpg
+- final-demo-1366.jpg i final-demo-1920.jpg
+- final-krakow-1366.jpg i final-krakow-1920.jpg
+- final-south-1366.jpg i final-south-1920.jpg
 
-Git diff względem c525e66 potwierdza brak zmian w **src/core, src/persistence, src/domain, src/world/data, docs/SPEC_0_1_ORIGINAL.txt, package.json i package-lock.json**. Nie zmieniono rzeczywistych współrzędnych, nie dodano nowych zależności ani danych ogólnopolskich.
+Galeria, baseline i ocena: docs/screenshots/04C/README.md. Pomiary: docs/screenshots/04C/performance.json. Odtworzenie po buildzie i uruchomieniu preview: `node scripts/capture-map.mjs http://127.0.0.1:4173`.
 
-Nadal są prawdziwe granice Polski i 16 województw, 19 miast demo, rozdzielone warstwy i lokalne zasoby bez zewnętrznych kafelków lub API. Źródła i licencje: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT), miasta © GeoNames (CC BY 4.0) przez geonamescache 3.0.2. Przypięte wersje, sumy, daty i generator z 04A pozostają w docs/MAP_DATA.md. Link do źródeł i licencji w mapie działa.
+## Ograniczenia i kolejny krok
 
-Centralny GameSession/updateWorld, start poniedziałek 06:00, 1 s = minuta gry, nadrabianie otwartej sesji w tle, RNG i numerowane komendy pozostają bez zmian. IndexedDB pixelcargo-v1 / saves / current, SaveEnvelope schemat 1, ręczny zapis, autosave co 10 s, import/eksport do 2 MB, brak offline progress oraz Web Locks także pozostają bez zmian. Zapisy poprzednich etapów są zgodne. Firma nadal nieutworzona, brak kredytu i ekonomii.
+Brak nierozwiązanych blockerów wymaganych funkcji 04C. Początkowe HTTP 403 dla ESA/S3 rozwiązane; po dodaniu dwóch domen do szkicu i późniejszej weryfikacji oba źródła odpowiadały 200, dane pozyskano. Sam zapis szkicu nie jest publikacją środowiska; nie twierdzimy, że powstała nowa opublikowana migawka lub zweryfikowano nowe zadanie. Gra korzysta z danych lokalnych i nie wymaga usług zewnętrznych. Ustawienia domen do przyszłego odtwarzania można zachować przez przejrzenie/zapisanie i publikację środowiska.
 
-## Weryfikacja końcowa 04B
+Dane są uogólnione: hydrografia 1:10m nie zawiera wszystkich cieków/jezior; WorldCover tree cover jest szersze od prawnego lasu i nie zachowuje 10 m po próbkowaniu; wysokości z mozaiki z 2017 r. wygładzają małe formy/szczyty. Nie są bieżącym NMT. W masce siatki są także ujemne wartości źródłowej mozaiki (nie poprawiano ich ręcznie). Statystyka pokrycia 0,4177 to wynik konkretnej próbkowanej klasy, nie urzędowa lesistość Polski.
 
-- `npm test` — **52/52**, w tym 37 istniejących testów i 15 nowych: Web Mercator i szerokość geograficzna, kotwiczenie kursora, min/max zoom, różne szerokości, pan i zachowanie Polski, resize, rzeczywista belka skali, polskie/ASCII wyszukiwanie i etykiety bez kolizji.
-- `npm run typecheck` — **OK**, także E2E i konfiguracje narzędzi.
-- `npm run build` — **OK**. Osobne niezmienione pliki geograficzne, główny JS około 260 kB / 83 kB gzip, bez ostrzeżenia o dużym module.
-- `npm run test:e2e` — **23/23 w Chromium**: wszystkie wcześniejsze 17 testów i 6 nowych scenariuszy nawigacji. Weryfikacja 1366×768 i 1920×1080, a także resize między tymi rozmiarami i **DPR 2**. Przeszły regresje zegara, autosave, importu/eksportu i dwóch kart.
-- Build produkcyjny sprawdzony dodatkowo przez Vite preview w Chromium: 16 granic, ASCII wyszukiwanie Oświęcimia, wybór, zoom i skala działają; brak runtime errors.
-- Zrzuty obu rozdzielczości obejrzane; brak nachodzenia paneli. Zrzuty robocze /tmp/pixelcargo-04B-1366.png i /tmp/pixelcargo-04B-1920.png są poza wymaganymi plikami aplikacji. Istniejący test 390×844 także przeszedł.
-- `git diff --check` — OK. W przebiegu roboczym poprawiono selektor testu wyszukiwarki, który obejmował także opcje istniejącego select; nie wyłączano asercji i nie zmieniano istniejących testów silnika/zapisu.
+Nie ma 05/routingu/dróg, nowych miast krajowych, transportów, pojazdów, kierowców, rynku, ekonomii ani multiplayera. Nie dodano płatnego API czy klucza. Kolejny etap wymaga nowego polecenia; kontynuować istniejące warstwy/kamerę, bez nowej aplikacji.
 
-## Uruchomienie, Git i następny krok
-
-Uruchomienie bez zmian: w /workspace/piexelCARGO `npm ci`, potem `npm run dev`. W tym środowisku cache npm: `--cache /tmp/pixelcargo-npm-cache`, Chromium /usr/bin/chromium. Szczegóły w README.md. Nie regenerować JSON w czasie E2E — HMR mógłby zresetować sesję autosave.
-
-Faza I jest na GitHubie: 430aeab, 93b2e1f, 9020a19, 31f83ac. Etap 04A: c525e66cc21e77652adeef9cbc195d45383b964b. Etap 04B jest zapisywany jako osobny commit na main i wysyłany bez force-push, zgodnie z poleceniem użytkownika; dokładny hash i potwierdzenie GitHub podaje raport końcowy. Przed commitem wykonano fetch: main i origin/main były zgodne, bez nowych zmian zdalnych. Push kodu nie oznacza publikacji witryny.
-
-Brak znanych nierozwiązanych błędów wymaganych funkcji 04B. Nie ma 04C, terenu, dróg, routingu, nowych danych krajowych, rynku, aktywnych pojazdów/kierowców ani ekonomii. Cały etap 04 pozostaje nieukończony do realizacji 04C na osobne polecenie. Web Locks/IndexedDB nadal wymagają nowoczesnej przeglądarki i HTTPS/localhost; nagłe zamknięcie może utracić niezapisany odcinek między autosave, a powrót wczytuje ostatni trwały zapis.
-
-**Następny krok:** po osobnym zleceniu przeczytać bieżący HANDOFF, ROADMAP, MAP_DATA i wymagania 04C; rozwijać istniejący komponent i wspólne warstwy. Nie rozpoczynać 04C samodzielnie.
+Uruchomienie: `npm ci` (tu opcjonalnie `--cache /tmp/pixelcargo-npm-cache`), `npm run dev`. Python i zewnętrzne domeny są potrzebne tylko do regeneracji, nie gry. Nie regenerować zasobów podczas E2E/HMR.
