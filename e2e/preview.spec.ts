@@ -4,13 +4,17 @@ const KEY='pixelcargo-0.1-preview-v1';
 async function saved(page:Page):Promise<PreviewState|null>{return page.evaluate(key=>{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):null},KEY)}
 async function readyCompany(page:Page){
  await page.goto('/?preview=1');
- await expect(page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'})).toBeEnabled();
+ await expect(page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'})).toBeDisabled();
  await page.getByLabel('Nazwa firmy').fill('Stabilny Transport');
  await page.getByLabel('Miasto pierwszej bazy').selectOption('geonames:3094802');
  await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'}).click();
- await page.getByRole('button',{name:/KUP FURGON/}).click();
+ await page.getByRole('button',{name:/PARKING, poziom 1, otwarty/}).click();
+ await page.getByRole('tab',{name:'GIEŁDA'}).click();
+ await expect(page.locator('.pv-car-card')).toHaveCount(5);
+ await page.getByRole('button',{name:'KUP POJAZD'}).first().click();
+ await page.getByRole('button',{name:/KADRY, poziom 1, otwarty/}).click();
  await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
- await expect(page.getByText('Zatrudniony • 25 zł/h',{exact:true})).toBeVisible();
+ await expect(page.getByText('KIEROWCA ZATRUDNIONY',{exact:true})).toBeVisible();
 }
 test('preview saves within two seconds and restores company, balance, van and driver',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -18,10 +22,10 @@ test('preview saves within two seconds and restores company, balance, van and dr
  const before=(await saved(page))!;
  expect(before?.company?.name).toBe('Stabilny Transport');
  expect(before.van?.fuelMillilitres).toBe(20000);expect(before.driverHiredAt).not.toBeNull();
- expect(before.company!.balanceGrosze).toBe(800000-before.paidWagesGrosze);
+ expect(before.company!.balanceGrosze).toBe(2000000-before.van!.specs!.priceGrosze-before.paidWagesGrosze);
  await page.reload();
  await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
- await expect(page.getByText('Zatrudniony • 25 zł/h',{exact:true})).toBeVisible();
+ await expect(page.getByText('KIEROWCA ZATRUDNIONY',{exact:true})).toBeVisible();
  await expect.poll(async()=> (await saved(page))?.time??0).toBeGreaterThan(before.time);
  const after=(await saved(page))!;
  expect(after.company?.baseCityId).toBe(before.company?.baseCityId);
@@ -51,18 +55,18 @@ test('reload during driving preserves transport and never pays a delivery twice'
  expect(restored.van!.fuelMillilitres).toBeLessThanOrEqual(before.van!.fuelMillilitres);
  expect(restored.van!.mileageMeters).toBeGreaterThanOrEqual(before.van!.mileageMeters);
  await page.clock.fastForward(120000);await page.clock.runFor(1250);
- await expect(page.getByText('OCZEKIWANIE NA KURS',{exact:true})).toBeVisible();
+ await expect(page.getByText('MAPA GOTOWA',{exact:true})).toBeVisible();
  const delivered=(await saved(page))!;
  expect(delivered.active).toBeNull();expect(delivered.completedOfferIds).toEqual([offer.id]);
  expect(delivered.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
  expect(delivered.van?.cityId).toBe(offer.toCityId);
  expect(delivered.van!.fuelMillilitres).toBeGreaterThanOrEqual(0);
- expect(delivered.company!.balanceGrosze).toBe(800000+offer.payoutGrosze-delivered.paidWagesGrosze);
+ expect(delivered.company!.balanceGrosze).toBe(2000000-delivered.van!.specs!.priceGrosze+offer.payoutGrosze-delivered.paidWagesGrosze);
  await page.reload();await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
  await page.clock.runFor(2250);
  const after=(await saved(page))!;
  expect(after.active).toBeNull();expect(after.completedOfferIds).toEqual([offer.id]);
  expect(after.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
- expect(after.company!.balanceGrosze).toBe(800000+offer.payoutGrosze-after.paidWagesGrosze);
+ expect(after.company!.balanceGrosze).toBe(2000000-after.van!.specs!.priceGrosze+offer.payoutGrosze-after.paidWagesGrosze);
  expect(errors).toEqual([]);
 });
