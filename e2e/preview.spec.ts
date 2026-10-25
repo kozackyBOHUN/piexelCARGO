@@ -1,0 +1,68 @@
+import {test,expect,type Page} from '@playwright/test';
+import type {PreviewState} from '../src/preview/gameplay';
+const KEY='pixelcargo-0.1-preview-v1';
+async function saved(page:Page):Promise<PreviewState|null>{return page.evaluate(key=>{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):null},KEY)}
+async function readyCompany(page:Page){
+ await page.goto('/?preview=1');
+ await expect(page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'})).toBeEnabled();
+ await page.getByLabel('Nazwa firmy').fill('Stabilny Transport');
+ await page.getByLabel('Miasto pierwszej bazy').selectOption('geonames:3094802');
+ await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'}).click();
+ await page.getByRole('button',{name:/KUP FURGON/}).click();
+ await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
+ await expect(page.getByText('Zatrudniony • 25 zł/h',{exact:true})).toBeVisible();
+}
+test('preview saves within two seconds and restores company, balance, van and driver',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await readyCompany(page);await page.waitForTimeout(2100);
+ const before=(await saved(page))!;
+ expect(before?.company?.name).toBe('Stabilny Transport');
+ expect(before.van?.fuelMillilitres).toBe(20000);expect(before.driverHiredAt).not.toBeNull();
+ expect(before.company!.balanceGrosze).toBe(800000-before.paidWagesGrosze);
+ await page.reload();
+ await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
+ await expect(page.getByText('Zatrudniony • 25 zł/h',{exact:true})).toBeVisible();
+ await expect.poll(async()=> (await saved(page))?.time??0).toBeGreaterThan(before.time);
+ const after=(await saved(page))!;
+ expect(after.company?.baseCityId).toBe(before.company?.baseCityId);
+ expect(after.company?.debtGrosze).toBe(before.company?.debtGrosze);
+ expect(after.driverHiredAt).toBe(before.driverHiredAt);expect(after.van).toEqual(before.van);
+ expect(after.company!.balanceGrosze).toBe(before.company!.balanceGrosze-(after.paidWagesGrosze-before.paidWagesGrosze));
+ expect(errors).toEqual([]);
+});
+test('reload during driving preserves transport and never pays a delivery twice',async({page})=>{
+ test.setTimeout(60000);
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.clock.install();await readyCompany(page);
+ const job=page.locator('.pv-job').filter({has:page.getByText('Kraków → Tarnów',{exact:true})});
+ await job.getByRole('button',{name:'PRZYJMIJ'}).click();
+ await page.clock.runFor(17000);
+ await expect(page.getByText('Jazda z ładunkiem',{exact:true})).toBeVisible();
+ const before=(await saved(page))!;expect(before.active?.phase).toBe('loaded');
+ expect(before.van!.mileageMeters).toBeGreaterThan(0);
+ const offer=before.active!.offer;
+ await page.reload();
+ await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
+ await expect(page.getByText('Jazda z ładunkiem',{exact:true})).toBeVisible();
+ await page.clock.runFor(1250);
+ const restored=(await saved(page))!;
+ expect(restored.active?.offer.id).toBe(offer.id);
+ expect(restored.active?.phaseProgressMs).toBeGreaterThanOrEqual(before.active!.phaseProgressMs);
+ expect(restored.van!.fuelMillilitres).toBeLessThanOrEqual(before.van!.fuelMillilitres);
+ expect(restored.van!.mileageMeters).toBeGreaterThanOrEqual(before.van!.mileageMeters);
+ await page.clock.fastForward(120000);await page.clock.runFor(1250);
+ await expect(page.getByText('OCZEKIWANIE NA KURS',{exact:true})).toBeVisible();
+ const delivered=(await saved(page))!;
+ expect(delivered.active).toBeNull();expect(delivered.completedOfferIds).toEqual([offer.id]);
+ expect(delivered.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
+ expect(delivered.van?.cityId).toBe(offer.toCityId);
+ expect(delivered.van!.fuelMillilitres).toBeGreaterThanOrEqual(0);
+ expect(delivered.company!.balanceGrosze).toBe(800000+offer.payoutGrosze-delivered.paidWagesGrosze);
+ await page.reload();await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
+ await page.clock.runFor(2250);
+ const after=(await saved(page))!;
+ expect(after.active).toBeNull();expect(after.completedOfferIds).toEqual([offer.id]);
+ expect(after.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
+ expect(after.company!.balanceGrosze).toBe(800000+offer.payoutGrosze-after.paidWagesGrosze);
+ expect(errors).toEqual([]);
+});

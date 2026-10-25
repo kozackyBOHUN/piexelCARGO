@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import previewRoutes from '../../public/roads/preview/routes.json';
 import { createPreviewState, establishCompany, buyVan, hireDriver, refuelAtCity, dispatchTransport, advancePreview, repayLoan, type TransportRoute, type PreviewOffer } from './gameplay';
 const H = 3_600_000;
 const route = (from: string, to: string, meters: number, seconds: number): TransportRoute => ({id:`osm:${from}:${to}`,fromCityId:from,toCityId:to,meters,seconds,geometry:[[19.93658,50.06143],[20.98698,50.01381]]});
@@ -38,6 +39,33 @@ describe('preview playable transport domain',()=>{
   expect(fine.van!.fuelMillilitres).toBe(coarse.van!.fuelMillilitres);
   expect(fine.van!.mileageMeters).toBeCloseTo(coarse.van!.mileageMeters,6);
   expect(fine.company!.balanceGrosze).toBe(coarse.company!.balanceGrosze);
+ });
+ it('keeps real-route fuel, mileage and settlement identical across steps and a serialized mid-trip save',()=>{
+  const real=previewRoutes.find(r=>r.fromCityId==='geonames:3094802'&&r.toCityId==='geonames:757026')! as unknown as TransportRoute;
+  const start=6*H,finish=start+1_800_000+Math.round(real.seconds*1000);
+  const job:PreviewOffer={...offer,fromCityId:real.fromCityId,toCityId:real.toCityId};
+  const run=(increment:number)=>{
+    let s=createPreviewState(start);s=establishCompany(s,'Fuel test',real.fromCityId);s=buyVan(s);s=hireDriver(s);
+    s=dispatchTransport(s,job,{id:'stationary',fromCityId:real.fromCityId,toCityId:real.fromCityId,meters:0,seconds:0,geometry:[real.geometry[0]]},real);
+    let serialized=false,minFuel=s.van!.fuelMillilitres;
+    while(s.time<finish){
+      s=advancePreview(s,Math.min(finish,s.time+increment));minFuel=Math.min(minFuel,s.van!.fuelMillilitres);
+      if(!serialized&&s.active?.phase==='loaded'&&s.active.phaseProgressMs>100000){s=JSON.parse(JSON.stringify(s));serialized=true;}
+    }
+    expect(s.active).toBeNull();expect(s.completedOfferIds).toEqual([job.id]);expect(minFuel).toBeGreaterThanOrEqual(0);
+    expect(s.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
+    expect(advancePreview(JSON.parse(JSON.stringify(s)),finish)).toEqual(s);
+    return s;
+  };
+  const baseline=run(finish-start);
+  expect(baseline.van!.fuelMillilitres).toBe(20000-Math.ceil(real.meters*.12));
+  for(const increment of [15000,1000,250,17003]){
+    const fine=run(increment);
+    expect(fine.van!.fuelMillilitres).toBe(baseline.van!.fuelMillilitres);
+    expect(fine.van!.mileageMeters).toBeCloseTo(baseline.van!.mileageMeters,6);
+    expect(fine.company!.balanceGrosze).toBe(baseline.company!.balanceGrosze);
+    expect(fine.paidWagesGrosze).toBe(baseline.paidWagesGrosze);
+  }
  });
  it('charges daily interest only once and supports manual debt repayment',()=>{
   const s=ready();const t=advancePreview(s,24*H);expect(t.company?.debtGrosze).toBe(2000000);

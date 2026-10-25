@@ -1,3 +1,22 @@
+# Preview — stabilizacja zapisu ukończona
+
+Gałąź feat/preview-gameplay-core, baza 1b361852066205a2c7139ec9f1a1ff7ae91e1b0e.
+Naprawiono odrzucanie zapisu preview podczas startu (wyścig z odczytem IndexedDB)
+i wznowienie czasu przy różnych częstotliwościach zapisu. Firma, saldo, furgon,
+kierowca i aktywny przewóz zachowują się po reload; dostawa płaci dokładnie raz.
+Poprawka paliwa z bazy potwierdzona, bez zmiany stawek i parametrów.
+
+Typecheck/build OK, unit 79/79, tylko potrzebny Playwright 2/2:
+npx playwright test --config playwright.preview.config.ts.
+Szczegóły i zakres: docs/PREVIEW_STABILIZATION.md.
+Bez zmian tras/grafów/routingu, silnika głównego, schematu IndexedDB i innych etapów.
+Praca w osobnym worktree /workspace/pixelcargo-preview-stabilization; stare szkice
+w /workspace/piexelCARGO nietknięte. Nie scalono do main. Czekać na nowe polecenie.
+
+Poniżej archiwalny raport 05A, sprzed prac nad grywalnym preview.
+
+---
+
 # Stan przekazania — 05A ukończony
 
 Ostatni ukończony podetap: **05A**, osobny commit w bieżącej historii.

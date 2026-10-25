@@ -1,4 +1,6 @@
 # Roadmap PixelCargo 0.1
+
+Osobna gałąź feat/preview-gameplay-core: stabilizacja zapisu i paliwa preview ukończona w zleconym zakresie; 79/79 unit i 2/2 celowane E2E. Szczegóły docs/PREVIEW_STABILIZATION.md. Nie zmienia to statusu pełnych etapów poniżej.
 Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie oryginalnej specyfikacji, a nie automatyczna zgoda na kolejne zadania. Użytkownik zlecił Fazę II w zakresie 04A i następnie 04B; ukończono także 04C. Aktualne polecenie dopuszcza etap 05A–05D, bez etapu 06.
 
 - [x] 01 Fundament i architektura

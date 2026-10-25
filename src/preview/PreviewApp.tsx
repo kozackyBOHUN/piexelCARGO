@@ -22,8 +22,8 @@ function loadSaved(time: number): PreviewState {
     const raw = window.localStorage.getItem(STORAGE);
     if (raw) {
       const saved: PreviewState = JSON.parse(raw);
-      if (Number.isSafeInteger(saved.time) && saved.time <= time && Array.isArray(saved.events)
-          && (!saved.company || typeof saved.company.name === 'string')) return advancePreview(saved, time);
+      if (Number.isSafeInteger(saved.time) && saved.time >= 0 && Array.isArray(saved.events)
+          && (!saved.company || typeof saved.company.name === 'string')) return saved;
     }
   } catch { /* stale or invalid preview save: use a clean preview session */ }
   return createPreviewState(time);
@@ -90,9 +90,19 @@ function PreviewRouteMap({ route, fraction }: { route: TransportRoute; fraction:
   </div>;
 }
 export function PreviewApp({runtime}: {runtime: GameRuntime}) {
+  const status = useSyncExternalStore(runtime.subscribe, runtime.getStatus);
+  // Do not read/write preview state before ownership and IndexedDB restoration.
+  if (status.mode !== 'active') return <div className="pv-app"><p role="status">{status.message}</p></div>;
+  return <ActivePreviewApp runtime={runtime} />;
+}
+function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
   const game = useSyncExternalStore(runtime.session.subscribe, runtime.session.getSnapshot);
   const status = useSyncExternalStore(runtime.subscribe, runtime.getStatus);
   const [state, setState] = useState<PreviewState>(()=>loadSaved(game.time));
+  // Both saves have different cadences. Resume the preview exactly at its own
+  // saved instant, then use deltas from the shared clock; never add offline time.
+  const clockOffset = useRef(state.time - game.time);
+  const previewTime = game.time + clockOffset.current;
   const [routes, setRoutes] = useState<TransportRoute[]>([]);
   const [loadError,setLoadError] = useState('');
   const [error,setError] = useState('');
@@ -112,8 +122,8 @@ export function PreviewApp({runtime}: {runtime: GameRuntime}) {
   },[]);
   useEffect(()=>{
     if(status.mode!=='active')return;
-    setState(s=>game.time >= s.time ? advancePreview(s,game.time) : s);
-  },[game.time,status.mode]);
+    setState(s=>previewTime >= s.time ? advancePreview(s,previewTime) : s);
+  },[previewTime,status.mode]);
   // The game updates every 250ms; debouncing by 500ms never fires while
   // the clock is running. Persist periodically using the latest snapshot,
   // and flush on navigation/unmount to avoid losing recently accepted jobs.
@@ -142,10 +152,10 @@ export function PreviewApp({runtime}: {runtime: GameRuntime}) {
     if(status.mode!=='active') {setError('Ta sesja jest nieaktywna. Zamknij inne karty gry.');return;}
     try{const next = fn(state);setState(next);setError('');}catch(e){setError(e instanceof Error?e.message:String(e));}
   }
-  function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(game.time));setError('');}}
+  function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(previewTime));setError('');}}
   return <div className="pv-app">
     <header className="pv-header"><div><a href="/">← MAPA / PANEL TECHNICZNY</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
-      <div className="pv-clock"><span>{formatGameTime(game.time).day} · DZIEŃ {formatGameTime(game.time).dayNumber}</span><strong>{formatGameTime(game.time).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
+      <div className="pv-clock"><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
     <div className="pv-summary">
       <div><small>FIRMA</small><strong>{state.company?.name ?? 'Nieutworzona'}</strong></div>
       <div><small>SALDO</small><strong>{state.company ? price(state.company.balanceGrosze) : '—'}</strong></div>

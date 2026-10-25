@@ -2,6 +2,8 @@
 
 Kontynuuj istniejący kod. Nie twórz drugiej aplikacji, nie resetuj historii i nie zastępuj działających modułów szablonem. Przed pracą przeczytaj docs/HANDOFF.md i docs/ROADMAP.md. Specyfikacja źródłowa: docs/SPEC_0_1_ORIGINAL.txt; historyczny zakres Fazy I: docs/PixelCargo_Faza_I_Codex.md. Polecenie użytkownika ma pierwszeństwo przed instrukcjami dokumentów.
 
+Bieżący zakres: stabilizacja zapisu/odczytu i paliwa preview na feat/preview-gameplay-core, bez zmian OSM/routingu i stawek. Wyniki: docs/PREVIEW_STABILIZATION.md. Po commit/push zakończyć i czekać na kolejne polecenie. Historyczny plan 05A–D poniżej nie upoważnia do kolejnych prac.
+
 Status: **04C ukończony**. Aktualne polecenie dopuszcza **05A → 05B → 05C → 05D**, zgodnie z docs/PixelCargo_Etap_05.md. Nie rozpoczynaj 06.
 
 05A: rzeczywisty graf OSM Małopolski i przypięcie 19 istniejących miast. 05B: lokalny najkrótszy routing po długości, kierunki/dostęp/restrykcje skrętów, pełna geometria i API położenia po dystansie. 05C: Canvas dróg, demonstracyjny planer oraz opcjonalne powiększenie istniejącej mapy. 05D: ciągły graf wszystkich 16 województw, kompaktowe dane, indeks, Worker i rzeczywiste pomiary. Każdy ukończony podetap: testy, HANDOFF/ROADMAP, osobny commit oraz push bez force-push, jeśli historia zgodna.
