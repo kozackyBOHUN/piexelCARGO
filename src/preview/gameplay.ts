@@ -1,3 +1,4 @@
+import type {CargoUnits,BatchPart} from './cargo10';
 import {simulatePreview,beginCityFuel} from './simulation09';
 import type {DriverState,PlannedStop,ServicePause,ActivityRecord} from './mechanics09';
 import {dispatchReadiness} from './dispatchReadiness';
@@ -17,6 +18,7 @@ export interface TransportRoute {
   readonly geometry: readonly (readonly [number, number])[];
 }
 export interface PreviewOffer {
+  readonly units?:CargoUnits;
   readonly id: string;
   readonly fromCityId: string;
   readonly toCityId: string;
@@ -28,6 +30,7 @@ export interface PreviewOffer {
   readonly expiresAt: GameMs;
 }
 export interface ActiveTransport {
+  readonly batch?:readonly BatchPart[];
   readonly offer: PreviewOffer;
   readonly routeEmpty: TransportRoute;
   readonly routeLoaded: TransportRoute;

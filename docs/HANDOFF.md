@@ -1,3 +1,13 @@
+# Aktualizacja — Etap 10 ukończony
+
+Baza cc8b20e51147e27f99119195ed065ce857950a2d; osobny worktree /workspace/pixelcargo-stage10, lokalna gałąź codex/stage10, docelowo wyłącznie feat/preview-gameplay-core. Implementacja jednostek i postępu ładunków, ładowni, dzielenia i rzeczywistego łączenia partii o wspólnym nadawcy/odbiorcy. Bez zmian OSM i PNG. Dokumentacja zasad/migracji/ograniczeń: docs/STAGE_10.md. Wielopunktowy planer nie jest zaimplementowany; inne miasta wymagają osobnych kursów.
+
+Potwierdzone: TypeScript OK, **133/133** testy jednostkowe, **45/45** pełny Playwright (wszystkie wcześniejsze + oba nowe scenariusze 10), **1/1** produkcyjny Pages, build oraz build:pages OK. Przeglądarki 1366×768 i 1920×1080: mieszany ładunek, osiem palet w trzech kursach po prawdziwych trasach OSM, trzy paski, PNG, reload z towarem w aucie i wypłata raz. Jednostkowo również odrębne limity wszystkich pięciu modeli, kara tylko od niedostarczonej reszty, kroki czasu, paliwo i migracja.
+
+Punkt wznowienia: commit zawierający ten wpis na feat/preview-gameplay-core. Zrealizowane: jednostki paczka/karton/europaleta, rezerwacje odrębne od towaru na pokładzie, fizyczny załadunek/rozładunek, częściowe dostawy, wybór ilości i łączenie zgodnych zleceń, widok ładowni i liczniki Spedycji. Ceny przyjętych zleceń, parametry aut, PNG i 306 relacji OSM zachowane. Ograniczenia: łączenie tylko dla wspólnego miasta odbioru/dostawy; brak planera wielu przystanków. Stara niepaletyzowana partia bez znanej liczby paczek pozostaje niepodzielną partią historyczną. Nie zgadywać jej jednostek. Publikacja przez istniejący workflow Pages po push; sprawdzić sukces dla dokładnego SHA. Po raporcie **czekać na kolejne polecenie**, bez następnych etapów i bez merge do main.
+
+---
+
 # Aktualizacja — Etap 09 ukończony
 
 Praca w osobnym `/workspace/pixelcargo-stage09`, baza `367d153ef5403ddcf92ddd4e4d30b5b8ff7f5bce`, docelowo wyłącznie `feat/preview-gameplay-core`. Kod implementuje: 75 audytowanych odcinków / 306 składanych kierunków / 18 miast, Oświęcim potwierdzony, Gorlice wyłączone, kredyt i odsetki o północy, zmęczenie i niepłatny sen, planowanie odpoczynku i tankowania, kompaktową oś z edycją przyszłych postojów. Stare 135 tras zachowane. Szczegóły, migracja i ograniczenia: docs/STAGE_09.md; raport: docs/reports/09-routes.json.

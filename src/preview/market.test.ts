@@ -19,9 +19,9 @@ describe('persistent freight market',()=>{
   expect(coarse.market).toEqual(fine.market);expect(coarse.market!.offers).toHaveLength(s.market!.offers.length);
   expect(coarse.market!.offers.every(o=>o.expiresAt===15*D)).toBe(true);
  });
- it('rejects expired or oversize offers without mutating the market',()=>{
+ it('rejects expired offers, accepts oversize reservations for splitting and preserves capacity checks',()=>{
   const s=ready(),o=s.market!.offers[0];expect(()=>acceptOrder({...s,time:o.expiresAt},o.id)).toThrow(/wygasła/);
-  const huge={...o,massKg:1201};expect(()=>acceptOrder({...s,market:{...s.market!,offers:[huge]}},o.id)).toThrow(/wielu kursów/);
+  const huge={...o,massKg:1201};expect(acceptOrder({...s,market:{...s.market!,offers:[huge]}},o.id).market!.orders[0].offer.massKg).toBe(1201);
   for(const change of [{volumeM3:13},{pallets:5}])expect(cargoFits(s,{...o,...change})).toBe(false);
  });
  it('reserves three jobs while driving, replaces public slots, rejects duplicate/fourth and lets player choose order',()=>{

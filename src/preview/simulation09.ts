@@ -1,3 +1,4 @@
+import {migrateCargo,loadBatch,unloadBatch,units} from './cargo10';
 import {phaseDuration,recordedPlan,type PreviewState,type ActiveTransport,type Phase} from './gameplay';
 import {M09,type ActivityRecord,type PlannedStop} from './mechanics09';
 import {refreshMarket} from './market';
@@ -40,7 +41,7 @@ function activateStop(s:PreviewState):PreviewState{
 }
 export function simulatePreview(state:PreviewState,newGameTime:number):PreviewState{
  if(!Number.isSafeInteger(newGameTime)||newGameTime<state.time)throw Error('Niepoprawny lub cofnięty czas gry.');if(newGameTime===state.time)return state;
- let s=migrate09(state);
+ let s=migrateCargo(migrate09(state));
  while(s.time<newGameTime){
   const activated=activateStop(s);if(activated!==s){s=activated;continue}
   const a=s.active,paused=!!s.service||!!s.haltedReason,moving=!!a&&!paused&&(a.phase==='empty'||a.phase==='loaded');
@@ -79,11 +80,20 @@ export function simulatePreview(state:PreviewState,newGameTime:number):PreviewSt
   if(!s.service&&s.active&&!s.haltedReason&&s.active.phaseProgressMs>=phaseDuration(s.active)){
    const job=s.active;if(!dt&&phaseDuration(job)===0)s=append(s,job.phase,s.time,s.time,job.offer.id);
    const next:Record<Phase,Phase|'finished'>={empty:'loading',loading:'loaded',loaded:'unloading',unloading:'finished'},phase=job.emptyOnly?'finished':next[job.phase];
-   if(phase==='finished'){
+   if(phase==='finished'&&job.batch){
+    s=unloadBatch(s);
+    s={...s,active:null,lastTransport:{...job,completedAt:s.time},completedPlans:[...(s.completedPlans??[]),recordedPlan(job,s.time)]};
+   }else if(phase==='finished'){
     const value=job.emptyOnly?0:job.offer.payoutGrosze;
     s={...s,active:null,lastTransport:{...job,completedAt:s.time},completedPlans:[...(s.completedPlans??[]),recordedPlan(job,s.time)],completedOfferIds:job.emptyOnly?s.completedOfferIds:[...s.completedOfferIds,job.offer.id],van:{...s.van!,cityId:job.offer.toCityId},company:{...s.company!,balanceGrosze:s.company!.balanceGrosze+value}};
-    if(s.market)s={...s,market:{...s.market,orders:s.market.orders.map(o=>o.offer.id===job.offer.id?{...o,completedAt:s.time}:o)}};s=event(s,job.emptyOnly?`Zakończono przejazd pusty do ${job.offer.toCityId}.`:`Dostarczono ${job.offer.cargo}.`,value);
-   }else s={...s,active:{...job,phase,phaseProgressMs:0},van:phase==='loading'?{...s.van!,cityId:job.offer.fromCityId}:s.van};
+    if(s.market)s={...s,market:{...s.market,orders:s.market.orders.map(o=>o.offer.id===job.offer.id?{...o,completedAt:s.time,cargoProgress:{picked:units(o.offer).count,delivered:units(o.offer).count}}:o)}};s=event(s,job.emptyOnly?`Zakończono przejazd pusty do ${job.offer.toCityId}.`:`Dostarczono ${job.offer.cargo}.`,value);
+   }else {
+    if(phase==='loaded'){
+     if(job.batch)s=loadBatch(s);
+     else if(s.market)s={...s,market:{...s.market,orders:s.market.orders.map(o=>o.offer.id===job.offer.id?{...o,cargoProgress:{picked:units(o.offer).count,delivered:0}}:o)}};
+    }
+    s={...s,active:{...job,phase,phaseProgressMs:0},van:phase==='loading'?{...s.van!,cityId:job.offer.fromCityId}:phase==='unloading'?{...s.van!,cityId:job.offer.toCityId}:s.van};
+   }
   }
   if(to===midnight&&s.company&&s.company.debtGrosze>0){const cost=Math.round(s.company.debtGrosze/100);s={...s,company:{...s.company,balanceGrosze:s.company.balanceGrosze-cost}};s=event(s,'Odsetki od kredytu - 1% dziennie.',-cost)}
  }

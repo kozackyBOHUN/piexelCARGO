@@ -34,5 +34,5 @@ export function projectPlan(s:PreviewState){
  let remaining=0,drive=0;if(s.active){for(const phase of (s.active.emptyOnly?['empty']:['empty','loading','loaded','unloading']) as ('empty'|'loading'|'loaded'|'unloading')[]){const order={empty:0,loading:1,loaded:2,unloading:3};if(order[phase]<order[s.active.phase])continue;const d=phaseDuration({...s.active,phase})-(phase===s.active.phase?s.active.phaseProgressMs:0);remaining+=d;if(phase==='empty'||phase==='loaded')drive+=d}}
  const pending=(s.stops??[]).filter(p=>p.status==='planned'),wait=s.service?Math.max(0,s.service.end-s.time):0;
  const horizon=Math.min(s.time+14*86400000,Math.max(s.time+4*M09.hour,s.time+remaining+wait+pending.reduce((n,p)=>n+p.durationMs,0)+Math.ceil(((s.driverState?.drivingMs??0)+drive)/M09.maxDriveMs)*M09.mandatoryRestMs,...pending.filter(p=>!p.phase).map(p=>p.at+p.durationMs)));
- const future=simulatePreview(s,horizon),eta=s.active&&future.lastTransport?.offer.id===s.active.offer.id?future.lastTransport.completedAt:null;const result={future,eta};cache.set(s,result);return result;
+ const future=simulatePreview(s,horizon),eta=s.active&&future.lastTransport?.offer.id===s.active.offer.id&&future.lastTransport.startedAt===s.active.startedAt?future.lastTransport.completedAt:null;const result={future,eta};cache.set(s,result);return result;
 }
