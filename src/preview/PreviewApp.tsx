@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'reac
 import type { GameRuntime } from '../core/runtime';
 import { formatGameTime } from '../core/engine';
 import {
-  advancePreview, buyVan, createPreviewState, dispatchTransport, establishCompany,
+  advancePreview, buyUsedVan, createPreviewState, dispatchTransport, establishCompany,
   hireDriver, refuelAtCity, repayLoan,
   type PreviewOffer, type PreviewState, type TransportRoute,
 } from './gameplay';
+import { BaseParking } from './BaseParking';
+import { CargoPixel } from './PixelSprites';
 
 /** This preview is independent of the unreleased full-country market and road graph. */
 const STORAGE = 'pixelcargo-0.1-preview-v1';
@@ -106,8 +108,13 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
   const [routes, setRoutes] = useState<TransportRoute[]>([]);
   const [loadError,setLoadError] = useState('');
   const [error,setError] = useState('');
-  const [name,setName] = useState('Moja Firma Transportowa');
+  const [name,setName] = useState('');
+  const [view,setView] = useState<'base'|'map'>(state.active ? 'map' : 'base');
   const [base,setBase] = useState('');
+  useEffect(()=>{
+    // Resuming a transport stays on the map even after the cargo arrives.
+    if(state.active) setView('map');
+  },[Boolean(state.active)]);
   useEffect(()=>{
     let active = true;
     fetch(`${import.meta.env.BASE_URL}roads/preview/routes.json`).then(async response=>{
@@ -152,7 +159,7 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
     if(status.mode!=='active') {setError('Ta sesja jest nieaktywna. Zamknij inne karty gry.');return;}
     try{const next = fn(state);setState(next);setError('');}catch(e){setError(e instanceof Error?e.message:String(e));}
   }
-  function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(previewTime));setError('');}}
+  function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(previewTime));setView('base');setError('');}}
   return <div className="pv-app">
     <header className="pv-header"><div><a href={import.meta.env.BASE_URL}>← MAPA / PANEL TECHNICZNY</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
       <div className="pv-clock"><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
@@ -168,37 +175,49 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
       <section className="pv-panel" aria-label="Zarządzanie firmą">
         <h2>01 / TWOJA FIRMA</h2>
         {!state.company ? <div className="pv-section">
-          <label>Nazwa firmy<input value={name} maxLength={64} onChange={(e: {target:{value:string}})=>setName(e.target.value)} /></label>
+          <label>Nazwa firmy<input value={name} placeholder="Moja Firma Transportowa" maxLength={64} onChange={(e: {target:{value:string}})=>setName(e.target.value)} /></label>
           <label>Miasto pierwszej bazy<select value={base} onChange={(e: {target:{value:string}})=>setBase(e.target.value)}>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
           <p>Otrzymasz 20 000 zł kredytu. Startujesz bez furgonu i kierowcy.</p>
-          <button disabled={!options.length||status.mode!=='active'} onClick={()=>action(s=>establishCompany(s,name,base))}>ZAŁÓŻ FIRMĘ</button>
+          <button disabled={!options.length||!name.trim()||status.mode!=='active'} onClick={()=>{action(s=>establishCompany(s,name,base));setView('base');}}>ZAŁÓŻ FIRMĘ</button>
         </div> : <div className="pv-section">
-          <div className="pv-stat">Baza: <strong>{city(state.company.baseCityId)}</strong></div>
-          {!state.van ? <><p>Używany furgon 1,2 t / 12 m³ / 4 palety, bak 80 l (20 l na start).</p><button onClick={()=>action(buyVan)}>KUP FURGON • 12 000 ZŁ</button></>:
-            !state.driverHiredAt ? <><p>Furgon kupiony. Zatrudnij kierowcę kategorii B.</p><button onClick={()=>action(hireDriver)}>ZATRUDNIJ KIEROWCĘ</button></>:
-            <><div className="pv-stat">Kierowca: <strong>Zatrudniony • 25 zł/h</strong></div>
-              <div className="pv-stat">Przebieg: <strong>{(state.van.mileageMeters/1000).toFixed(1)} km</strong></div>
-              <div className="pv-actions"><button disabled={!!state.active} onClick={()=>action(s=>refuelAtCity(s,10))}>TANKUJ 10 L</button><button disabled={!!state.active} onClick={()=>action(repayLoan)}>SPŁAĆ 1 000 ZŁ</button></div>
-            </>}
+          <div className="pv-stat">Baza: <strong>{city(state.company.baseCityId)} · poziom 1</strong></div>
+          <div className="pv-stat">Parking: <strong>{state.van?'1/1 zajęte':'0/1 pojazdów'}</strong></div>
+          <div className="pv-stat">Kierowca: <strong>{state.driverHiredAt!==null?'Zatrudniony':'Brak'}</strong></div>
+          {state.van&&<div className="pv-stat">Pojazd: <strong>{state.van.specs?.model??'Furgon'} · {(state.van.mileageMeters/1000).toLocaleString('pl-PL',{maximumFractionDigits:0})} km</strong></div>}
+          <div className="pv-actions">
+            <button className="pv-menu-link" onClick={()=>setView('base')}>◈ WRÓĆ DO BAZY</button>
+            {state.driverHiredAt!==null&&<button onClick={()=>setView('map')}>MAPA</button>}
+            {state.van&&<button disabled={!!state.active} onClick={()=>action(s=>refuelAtCity(s,10))}>TANKUJ 10 L</button>}
+            <button disabled={!!state.active} onClick={()=>action(repayLoan)}>SPŁAĆ 1 000 ZŁ</button>
+          </div>
         </div>}
         <h2>02 / RYNEK ZLECEŃ</h2>
-        <div className="pv-section"><p>Wersja demonstracyjna: tylko zweryfikowane kierunki OSM. Zlecenia dostępne w bieżącym mieście furgonu.</p>
+        <div className="pv-section">{state.driverHiredAt===null ?
+          <div className="pv-gate-hint">🔒 SPEDYCJA ZABLOKOWANA. {!state.van?'Kup pierwszy pojazd w bazie: PARKING → GIEŁDA.':'Zatrudnij kierowcę w budynku KADRY.'}</div> :
+          <><p>Wersja demonstracyjna: tylko zweryfikowane kierunki OSM. Zlecenia dostępne w bieżącym mieście furgonu.</p>
           {!offers.length && <p>Brak dostępnych kursów z tej lokalizacji.</p>}
           {offers.map(({route,offer})=><article className="pv-job" key={offer.id}>
             <strong>{city(route.fromCityId)} → {city(route.toCityId)}</strong>
-            <span>{offer.cargo} • {offer.massKg} kg • {offer.volumeM3} m³ • {offer.pallets} pal.</span>
+            <div className="pv-cargo-row"><CargoPixel cargo={offer.cargo}/><span>{offer.cargo}<small>{offer.massKg} kg · {offer.volumeM3} m³ · {offer.pallets} palety</small></span></div>
             <span>{(route.meters/1000).toFixed(1)} km • {duration(route.seconds)}</span>
-            <div><b>{price(offer.payoutGrosze)}</b><button disabled={!!state.active||!state.van||state.driverHiredAt===null||status.mode!=='active'} onClick={()=>action(s=>dispatchTransport(s,offer,stationaryRoute(route.fromCityId,route.geometry[0]),route))}>PRZYJMIJ</button></div>
-          </article>)}
+            <div><b>{price(offer.payoutGrosze)}</b><button disabled={!!state.active||!state.van||state.driverHiredAt===null||status.mode!=='active'} onClick={()=>{action(s=>dispatchTransport(s,offer,stationaryRoute(route.fromCityId,route.geometry[0]),route));setView('map');}}>PRZYJMIJ</button></div>
+          </article>)}</>}
         </div>
       </section>
       <section className="pv-panel pv-world" aria-label="Transport i historia">
-        <h2>03 / MONITOR TRANSPORTU</h2>
-        {activeRoute ? <><PreviewRouteMap route={activeRoute} fraction={active?.phase==='loaded'? percent/100:active?.phase==='empty'? percent/100:active?.phase==='unloading'?1:0}/>
+        <h2>03 / {state.company&&view==='base'&&!activeRoute?'BAZA TWOJEJ FIRMY':'MONITOR TRANSPORTU'}</h2>
+        {state.company&&view==='base'&&!activeRoute ?
+          <BaseParking state={state} cityName={city(state.company.baseCityId)}
+            onBuy={(id)=>action(s=>buyUsedVan(s,id))}
+            onHire={()=>action(hireDriver)}
+            onShowMap={()=>setView('map')} money={price}/> :
+          activeRoute ? <><PreviewRouteMap route={activeRoute} fraction={active?.phase==='loaded'? percent/100:active?.phase==='empty'? percent/100:active?.phase==='unloading'?1:0}/>
           <div className="pv-section"><div className="pv-stat">Aktywny kurs: <strong>{city(active!.offer.fromCityId)} → {city(active!.offer.toCityId)}</strong></div>
             <div className="pv-stat">Etap: <strong>{({empty:'Dojazd pusty',loading:'Załadunek',loaded:'Jazda z ładunkiem',unloading:'Rozładunek'})[active!.phase]}</strong></div>
             <div className="pv-progress"><div style={{width:`${percent}%`}} /></div><small>{percent.toFixed(0)}% bieżącego etapu</small></div></>:
-          <div className="pv-placeholder"><strong>OCZEKIWANIE NA KURS</strong><p>Załóż firmę, kup furgon, zatrudnij kierowcę i przyjmij zlecenie. Mapa pokaże trasę OSM i ruch pojazdu.</p></div>}
+          <div className="pv-placeholder"><strong>{state.company?'MAPA GOTOWA':'WITAJ W PIXELCARGO'}</strong>
+            <p>{state.company?'Wybierz zlecenie lub wróć do swojej bazy.':'Załóż firmę, wybierz miasto bazy i rozpocznij samouczek. Pierwszym krokiem będzie zakup pojazdu na giełdzie.'}</p>
+            {state.company&&<button onClick={()=>setView('base')}>WEJDŹ DO BAZY</button>}</div>}
         <h2>04 / HISTORIA OPERACJI</h2>
         <div className="pv-events">{[...state.events].reverse().slice(0,12).map(event=><div key={event.id}><span>{formatGameTime(event.at).hour}</span><span>{event.message}</span><strong>{event.changeGrosze ? price(event.changeGrosze) : '—'}</strong></div>)}
           {!state.events.length && <p>Brak operacji.</p>}
