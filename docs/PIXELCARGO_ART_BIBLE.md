@@ -1,5 +1,7 @@
 # PIXELCARGO - ART BIBLE / produkcja assetów v0.1
 
+**OBOWIĄZKOWO PRZED KAŻDĄ NOWĄ PACZKĄ:** przeczytaj również [PIXELCARGO_ASSET_BACKLOG.md](./PIXELCARGO_ASSET_BACKLOG.md). Nie wymyślaj losowych pojazdów ani ładunków spoza listy; pracuj według kolejnych numerowanych ID. Po akceptacji listy przygotowuj większe paczki (np. 10 aut + 20 ikon ładunków) z PNG i manifestem, zamiast przekazywać pojedyncze assety. Kod gry pozostaje nietknięty.
+
 ## Kierunek zatwierdzony przez właściciela
 Referencja: zatwierdzony przez użytkownika ekran gry z dużą szczegółową izometryczną bazą, pięcioma realistycznymi pixelartowymi furgonami w przewijanej giełdzie, grafitowo-granatowym HUD-em i bursztynowymi akcentami.
 
