@@ -1,0 +1,27 @@
+import {test,expect} from '@playwright/test';
+import type {PreviewState} from '../src/preview/gameplay';
+test('market reservations, selected order, reload, deadlines and expiry persist on the common clock',async({page})=>{
+ test.setTimeout(90000);await page.clock.install();await page.goto('/');
+ const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('pixelcargo-0.1-preview-v1')!) as PreviewState);
+ await page.getByLabel('Nazwa firmy').fill('Rynek browser');await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'}).click();
+ await page.getByRole('button',{name:/PARKING, poziom 1, otwarty/}).click();await page.getByRole('tab',{name:'GIEŁDA',exact:true}).click();await page.getByRole('button',{name:'KUP POJAZD',exact:true}).first().click();
+ await page.getByRole('button',{name:/KADRY, poziom 1, otwarty/}).click();await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
+ await page.getByRole('navigation',{name:'Widoki gry'}).getByRole('button',{name:'Rynek zleceń',exact:true}).click();
+ await page.getByLabel('Miejsce nadania',{exact:true}).selectOption('geonames:3094802');await page.getByLabel('Wielkość ładunku',{exact:true}).selectOption('fits');await page.getByLabel('Sortowanie',{exact:true}).selectOption('price');
+ for(let i=0;i<3;i++)await page.locator('[data-offer-id] button:enabled').first().click();
+ await expect(page.locator('[data-order-id]')).toHaveCount(3);expect((await saved()).active).toBeNull();
+ expect(await page.locator('[data-offer-id] button:enabled').count()).toBe(0);
+ const reserved=(await saved()).market!;await page.reload();await expect(page.locator('[data-order-id]')).toHaveCount(3);
+ expect((await saved()).market).toEqual(reserved);
+ const chosen=page.locator('[data-order-id]').nth(1),id=await chosen.getAttribute('data-order-id');await chosen.getByRole('button',{name:'ROZPOCZNIJ KURS'}).click();
+ await page.clock.runFor(17000);await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');
+ expect((await saved()).active!.offer.id).toBe(id);await page.reload();await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');
+ await page.clock.fastForward(3*1440*1000+5000);await page.clock.runFor(1250);
+ const late=await saved();expect(late.completedOfferIds).toEqual([id]);expect(late.market!.orders.filter(o=>o.penalized)).toHaveLength(2);
+ expect(late.events.filter(e=>e.message.startsWith('Kara'))).toHaveLength(2);expect(late.events.filter(e=>e.message.startsWith('Dostarczono'))).toHaveLength(1);
+ await page.reload();await expect(page.getByTestId('canonical-clock')).toBeVisible();await page.clock.runFor(1250);
+ expect((await saved()).events.filter(e=>e.message.startsWith('Kara'))).toHaveLength(2);
+ const oldIds=reserved.offers.map(o=>o.id);await page.clock.fastForward(2*1440*1000+5000);await page.clock.runFor(1250);
+ const expired=await saved();expect(expired.market!.offers).toHaveLength(reserved.offers.length);expect(expired.market!.offers.some(o=>oldIds.includes(o.id))).toBe(false);
+ expect(expired.market!.orders.filter(o=>o.completedAt===null)).toHaveLength(2);
+});

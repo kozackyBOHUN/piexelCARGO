@@ -1,3 +1,4 @@
+import {takeTarnow} from './helpers/freight';
 import {test,expect,type Page} from '@playwright/test';
 import type {PreviewState} from '../src/preview/gameplay';
 const saved=(page:Page)=>page.evaluate(()=>JSON.parse(localStorage.getItem('pixelcargo-0.1-preview-v1')??'null') as PreviewState|null);
@@ -29,7 +30,7 @@ for(const viewport of [{width:1366,height:768},{width:1920,height:1080}])test(`o
  await page.getByRole('button',{name:/KADRY, poziom 1, otwarty/}).click();
  await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
  await nav(page,'Rynek zleceń').click();
- await page.locator('.pv-job').filter({has:page.getByText('Kraków → Tarnów',{exact:true})}).getByRole('button',{name:'PRZYJMIJ'}).click();
+ await takeTarnow(page);
  await page.clock.runFor(500);
  await expect(page.getByTestId('osm-route')).toBeVisible();await expect(page.getByTestId('game-vehicle')).toBeVisible();
  await expect(page.getByTestId('transport-phase')).toHaveText('Załadunek');await assertCanonical(page);await assertMarkerProjection(page);

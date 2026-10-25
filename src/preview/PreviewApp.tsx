@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import type { GameRuntime } from '../core/runtime';
 import { formatGameTime } from '../core/engine';
 import {
-  buyUsedVan, dispatchTransport, establishCompany,
+  buyUsedVan, establishCompany,
   hireDriver, refuelAtCity, repayLoan,
-  type PreviewOffer, type PreviewState, type TransportRoute,
+  type PreviewState, type TransportRoute,
 } from './gameplay';
 import { BaseParking } from './BaseParking';
 import { CargoPixel } from './PixelSprites';
+import {ensureMarket,acceptOrder,startOrder,cargoFits} from './market';
 import { PreviewSession } from './session';
 import { mapState, PHASE_LABELS } from './transport';
 import { PolandMap } from '../ui/PolandMap';
@@ -18,7 +19,6 @@ const CITIES: Record<string,string> = {
   'geonames:3094802': 'Kraków', 'geonames:757026': 'Tarnów',
   'geonames:3080866': 'Zakopane', 'geonames:775758': 'Bochnia',
 };
-const GOODS = ['Książki', 'Odzież', 'Zabawki', 'Elektronika', 'Karma dla zwierząt'];
 const price = (grosze: number) => `${(grosze / 100).toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2})} zł`;
 const city = (id: string) => CITIES[id] ?? id;
 const duration = (secs: number) => `${Math.floor(secs / 3600)} h ${Math.round((secs % 3600) / 60)} min`;
@@ -31,18 +31,6 @@ function isRoute(v: unknown): v is TransportRoute {
     && r.geometry.every(c => Array.isArray(c) && c.length === 2 && c.every(Number.isFinite));
 }
 function routeKey(r: TransportRoute) { return `${r.fromCityId}|${r.toCityId}`; }
-/** A stationary vehicle has a real snap coordinate, not a fabricated road connection. */
-function stationaryRoute(at: string, starting: readonly [number, number]): TransportRoute {
-  return { id: `stationary:${at}`, fromCityId: at, toCityId: at,
-    meters: 0, seconds: 0, geometry: [starting] };
-}
-function availableOffer(r: TransportRoute, s: PreviewState): PreviewOffer {
-  const completedCount = s.completedOfferIds.filter(id => id.startsWith(`preview:${r.id}:`)).length;
-  const index = completedCount % GOODS.length;
-  return { id: `preview:${r.id}:${completedCount + 1}`, fromCityId: r.fromCityId, toCityId: r.toCityId,
-    cargo: GOODS[index], massKg: 300 + index * 110, volumeM3: 2.5 + index, pallets: index % 3,
-    payoutGrosze: Math.max(30_000, Math.round(r.meters * 0.8)), expiresAt: s.time + 5 * 86_400_000 };
-}
 export function PreviewApp({runtime,session}: {runtime: GameRuntime;session:PreviewSession}) {
   const status = useSyncExternalStore(runtime.subscribe, runtime.getStatus);
   // Do not read/write preview state before ownership and IndexedDB restoration.
@@ -80,7 +68,13 @@ function ActivePreviewApp({runtime,session}: {runtime: GameRuntime;session:Previ
     return ()=>{active=false;};
   },[]);
   const options = useMemo(()=>[...new Set(routes.map(r=>r.fromCityId))], [routes]);
-  const offers = useMemo(()=>routes.filter(r=>r.fromCityId===state.van?.cityId && routes.some(back=>back.fromCityId===r.toCityId)).map(r=>({route:r,offer:availableOffer(r,state)})),[routes,state]);
+  useEffect(()=>{if(state.company&&!state.market&&routes.length)session.update(s=>ensureMarket(s,routes));},[state.company,state.market,routes,session]);
+  const [origin,setOrigin]=useState('');
+  const [size,setSize]=useState('all');
+  const [sort,setSort]=useState('expiry');
+  const offers=useMemo(()=>[...(state.market?.offers??[])].filter(o=>(!origin||o.fromCityId===origin)&&(size==='all'||(size==='fits'?cargoFits(state,o):size==='small'?o.massKg<=500&&o.volumeM3<=5&&o.pallets<=2:!cargoFits(state,o)))).sort((a,b)=>sort==='price'?b.payoutGrosze-a.payoutGrosze:sort==='size'?a.massKg-b.massKg: a.expiresAt-b.expiresAt),[state.market,state.van,origin,size,sort]);
+  const remaining=(end:number)=>{const minutes=Math.max(0,Math.ceil((end-state.time)/60000));return `${Math.floor(minutes/1440)} d ${Math.floor(minutes%1440/60)} h ${minutes%60} min`;};
+  const canReach=(from:string)=>!!state.van&&(state.van.cityId===from||routes.some(r=>r.fromCityId===state.van!.cityId&&r.toCityId===from));
   const active = state.active;
   const percent = active ? Math.min(100,Math.max(0,active.phaseProgressMs / (active.phase==='empty' ? active.routeEmpty.seconds*1000||1 : active.phase==='loaded' ? active.routeLoaded.seconds*1000||1 : 900_000) * 100)) : 0;
   const locationLabel = active ? `${city(active.offer.fromCityId)} → ${city(active.offer.toCityId)}` : state.van ? city(state.van.cityId) : 'Brak pojazdu';
@@ -97,18 +91,30 @@ function ActivePreviewApp({runtime,session}: {runtime: GameRuntime;session:Previ
     setError('');
   }
   const overlay=mapState(state,routes);
-  const market=<>{/* Existing dispatch/offer logic is shared by both presentations. */}        <h2>02 / RYNEK ZLECEŃ</h2>
-        <div className="pv-section">{state.driverHiredAt===null ?
-          <div className="pv-gate-hint">🔒 SPEDYCJA ZABLOKOWANA. {!state.van?'Kup pierwszy pojazd w bazie: PARKING → GIEŁDA.':'Zatrudnij kierowcę w budynku KADRY.'}</div> :
-          <><p>Wersja demonstracyjna: tylko zweryfikowane kierunki OSM. Zlecenia dostępne w bieżącym mieście furgonu.</p>
-          {!offers.length && <p>Brak dostępnych kursów z tej lokalizacji.</p>}
-          {offers.map(({route,offer})=><article className="pv-job" key={offer.id}>
-            <strong>{city(route.fromCityId)} → {city(route.toCityId)}</strong>
-            <div className="pv-cargo-row"><CargoPixel cargo={offer.cargo}/><span>{offer.cargo}<small>{offer.massKg} kg · {offer.volumeM3} m³ · {offer.pallets} palety</small></span></div>
-            <span>{(route.meters/1000).toFixed(1)} km • {duration(route.seconds)}</span>
-            <div><b>{price(offer.payoutGrosze)}</b><button disabled={!!state.active||!state.van||state.driverHiredAt===null||status.mode!=='active'} onClick={()=>{action(s=>dispatchTransport(s,offer,stationaryRoute(route.fromCityId,route.geometry[0]),route));setView('map');}}>PRZYJMIJ</button></div>
-          </article>)}</>}
-        </div></>;
+  const market=<><h2>02 / RYNEK ZLECEŃ</h2><div className="pv-section">
+    <p>Tylko zatwierdzone trasy OSM. Suche towary do furgonu. Przyjęcie rezerwuje zlecenie; kolejność przewozów wybierasz samodzielnie.</p>
+    <h3>Przyjęte zlecenia ({state.market?.orders.filter(o=>o.completedAt===null).length??0}/3)</h3>
+    {state.market?.orders.filter(o=>o.completedAt===null).map(o=><article className="pv-job" key={o.offer.id} data-order-id={o.offer.id}>
+      <strong>{city(o.offer.fromCityId)} → {city(o.offer.toCityId)}</strong><span>{o.offer.cargo} · {price(o.offer.payoutGrosze)}</span>
+      <span>{state.active?.offer.id===o.offer.id?PHASE_LABELS[state.active.phase]:'Oczekuje na realizację'} · Termin: dzień {formatGameTime(o.deadline).dayNumber}, {formatGameTime(o.deadline).hour} · {state.time>o.deadline?'PO TERMINIE — zlecenie pozostaje aktywne':remaining(o.deadline)}</span>
+      {o.penalized&&<span>Kara naliczona: {price(o.penaltyGrosze)}</span>}
+      <button disabled={!!state.active||state.driverHiredAt===null||!canReach(o.offer.fromCityId)} onClick={()=>action(s=>startOrder(s,o.offer.id,routes))}>ROZPOCZNIJ KURS</button>
+      {!canReach(o.offer.fromCityId)&&<small>Brak zatwierdzonego dojazdu z obecnej lokalizacji.</small>}
+    </article>)}
+    <h3>Dostępne oferty</h3>
+    <label>Miejsce nadania<select aria-label="Miejsce nadania" value={origin} onChange={e=>setOrigin(e.target.value)}><option value="">Wszystkie miasta</option>{options.map(id=><option key={id} value={id}>{city(id)}</option>)}</select></label>
+    <label>Wielkość ładunku<select aria-label="Wielkość ładunku" value={size} onChange={e=>setSize(e.target.value)}><option value="all">Wszystkie</option><option value="small">Do 500 kg, 5 m³, 2 palet</option><option value="fits">Mieści się w moim furgonie</option><option value="large">Nie mieści się w moim furgonie</option></select></label>
+    <label>Sortowanie<select aria-label="Sortowanie" value={sort} onChange={e=>setSort(e.target.value)}><option value="expiry">Czas do wygaśnięcia</option><option value="price">Cena malejąco</option><option value="size">Masa rosnąco</option></select></label>
+    <p>{offers.length} ofert · wyświetlane maksymalnie 30</p>
+    {offers.slice(0,30).map(offer=>{const route=routes.find(r=>r.fromCityId===offer.fromCityId&&r.toCityId===offer.toCityId)!;const fits=cargoFits(state,offer);return <article className="pv-job" key={offer.id} data-offer-id={offer.id}>
+      <strong>{city(offer.fromCityId)} → {city(offer.toCityId)}</strong>
+      <div className="pv-cargo-row"><CargoPixel cargo={offer.cargo}/><span>{offer.cargo}<small>{offer.massKg} kg · {offer.volumeM3} m³ · {offer.pallets?`${offer.pallets} palety`:'palety: nie dotyczy (paczki)'}</small></span></div>
+      <span>{((route?.meters??0)/1000).toFixed(1)} km · {duration(route?.seconds??0)} · wygasa za {remaining(offer.expiresAt)}</span>
+      <small>{!state.van?'Kup furgon, aby sprawdzić pojemność.':fits?'Ładunek mieści się we furgonie.':'Za duży: wymaga innego furgonu lub kilku kursów (nieobsługiwane).'} {!canReach(offer.fromCityId)&&state.van?'Brak zatwierdzonego dojazdu pustego.':''}</small>
+      <div><b>{price(offer.payoutGrosze)}</b><button disabled={!fits||!canReach(offer.fromCityId)||(state.market?.orders.filter(o=>o.completedAt===null).length??0)>=3||offer.expiresAt<=state.time} onClick={()=>action(s=>acceptOrder(s,offer.id))}>PRZYJMIJ</button></div>
+    </article>})}
+    {!offers.length&&<p>Brak ofert spełniających filtry.</p>}
+  </div></>;
   return <div className="pv-app">
     <header className="pv-header"><div><a href={`${import.meta.env.BASE_URL}?dev=1`}>WIDOK DEVELOPERSKI</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
       <div className="pv-clock" data-testid="canonical-clock" data-time={state.time}><button type="button" className="pv-restart-button" onClick={reset} aria-label="RESTART FIRMY">↺ RESTART FIRMY</button><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
@@ -153,7 +159,7 @@ function ActivePreviewApp({runtime,session}: {runtime: GameRuntime;session:Previ
         {view==='market'&&market}
         <div hidden={view!=='map'&&view!=='timeline'}><Timeline time={previewTime} state={state}/></div>
         <h2>04 / HISTORIA OPERACJI</h2>
-        <div className="pv-events">{[...state.events].reverse().slice(0,12).map(event=><div key={event.id}><span>{formatGameTime(event.at).hour}</span><span>{event.message}</span><strong>{event.changeGrosze ? price(event.changeGrosze) : '—'}</strong></div>)}
+        <div className="pv-events">{[...state.events].reverse().map(event=><div key={event.id}><span>{formatGameTime(event.at).hour}</span><span>{event.message}</span><strong>{event.changeGrosze ? price(event.changeGrosze) : '—'}</strong></div>)}
           {!state.events.length && <p>Brak operacji.</p>}
         </div>
         <div className="pv-foot"><span>Jeden zapis firmy i wspólny czas gry we wszystkich widokach. RESTART FIRMY rozpoczyna nową rozgrywkę.</span></div>

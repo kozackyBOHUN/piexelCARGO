@@ -1,3 +1,4 @@
+import {refreshMarket,type FreightMarket} from './market';
 /** Independent, deterministic preview domain. No React, global timers, APIs or implicit simulation. */
 export type Grosze = number;
 export type GameMs = number;
@@ -72,6 +73,7 @@ export interface PreviewEvent {
 }
 export interface PreviewState {
   readonly time: GameMs;
+  readonly market?: FreightMarket;
   readonly company: PreviewCompany | null;
   readonly van: PreviewVan | null;
   /** Market is rolled once at company formation and saved across reloads. */
@@ -193,7 +195,8 @@ function validRoute(route: TransportRoute, from: string, to: string): boolean {
 export function dispatchTransport(state: PreviewState, offer: PreviewOffer,
   emptyRoute: TransportRoute, loadedRoute: TransportRoute): PreviewState {
   if (!state.company || !state.van || state.driverHiredAt === null || state.active) throw new Error('Firma nie jest gotowa do kursu.');
-  if (state.completedOfferIds.includes(offer.id) || offer.expiresAt <= state.time) throw new Error('Oferta niedostępna.');
+  if(state.market&&!state.market.orders.some(o=>o.offer.id===offer.id&&o.completedAt===null))throw new Error('Najpierw przyjmij zlecenie z rynku.');
+  if (state.completedOfferIds.includes(offer.id) || (!state.market?.orders.some(o=>o.offer.id===offer.id&&o.completedAt===null) && offer.expiresAt <= state.time)) throw new Error('Oferta niedostępna.');
   if (!offer.id || !offer.cargo || !Number.isSafeInteger(offer.payoutGrosze) || offer.payoutGrosze <= 0 ||
       !Number.isFinite(offer.massKg) || offer.massKg <= 0 || offer.massKg > (state.van.specs?.capacityKg ?? CAPACITY_KG) ||
       !Number.isFinite(offer.volumeM3) || offer.volumeM3 <= 0 || offer.volumeM3 > (state.van.specs?.volumeM3 ?? CAPACITY_M3) ||
@@ -245,7 +248,8 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
     const nextWageAt = current.driverHiredAt === null ? Infinity :
       current.driverHiredAt +
         (Math.floor(Math.max(0, current.time - current.driverHiredAt) / HOUR) + 1) * HOUR;
-    const to = Math.min(newGameTime, startOfNextDay, phaseEnd, nextWageAt);
+    const deadlineAt = Math.min(Infinity,...(current.market?.orders.filter(o=>o.completedAt===null&&!o.penalized).map(o=>Math.max(current.time,o.deadline+1))??[]));
+    const to = Math.min(newGameTime, startOfNextDay, phaseEnd, nextWageAt, deadlineAt);
     const dt = to - current.time;
     if (dt > 0 && a && current.van && (a.phase === 'empty' || a.phase === 'loaded')) {
       const duration = phaseDuration(a);
@@ -264,6 +268,7 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
         mileageMeters: current.van.mileageMeters + meters } };
     }
     step(to);
+    current=refreshMarket(current);
     if (current.active) {
       const job = current.active;
       const progress = job.phaseProgressMs + dt;
@@ -277,6 +282,7 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
             completedOfferIds: [...current.completedOfferIds, job.offer.id],
             van: { ...current.van!, cityId: job.offer.toCityId },
             company: { ...current.company!, balanceGrosze: current.company!.balanceGrosze + value } };
+          if(current.market)current={...current,market:{...current.market,orders:current.market.orders.map(o=>o.offer.id===job.offer.id?{...o,completedAt:current.time}:o)}};
           current = record(current, `Dostarczono ${job.offer.cargo}.`, value);
         } else {
           if (nextPhase === 'loading') current = { ...current, van: { ...current.van!, cityId: job.offer.fromCityId } };

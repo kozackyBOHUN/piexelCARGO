@@ -1,3 +1,4 @@
+import {takeTarnow} from './helpers/freight';
 import {test,expect,type Page} from '@playwright/test';
 import type {PreviewState} from '../src/preview/gameplay';
 const KEY='pixelcargo-0.1-preview-v1';
@@ -88,8 +89,7 @@ test('reload during driving preserves transport and never pays a delivery twice'
  test.setTimeout(60000);
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.clock.install();await readyCompany(page);
- const job=page.locator('.pv-job').filter({has:page.getByText('Kraków → Tarnów',{exact:true})});
- await job.getByRole('button',{name:'PRZYJMIJ'}).click();
+ await takeTarnow(page);
  await page.clock.runFor(17000);
  await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');
  const before=(await saved(page))!;expect(before.active?.phase).toBe('loaded');

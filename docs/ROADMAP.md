@@ -1,3 +1,9 @@
+# Aktualizacja — rynek zleceń preview
+
+Rozbudowano deterministyczny rynek dziesięciu towarów, trwałe oferty (5 dni), trzy rezerwacje, ręczne rozpoczęcie, terminy 3 dni i jednorazowe kary/wypłaty. Zachowano wspólny zegar, mapę, paliwo, pensje i stare zapisy; brak zmian CSS/grafik/OSM. Szczegóły i jawne ograniczenia puli/danych ludnościowych: docs/FREIGHT_MARKET.md. Baza 15e64015b1322fa96aafd45b06af4add7f30dfb0; gałąź feat/preview-gameplay-core. Po commit/push czekać na polecenie. Nie rozpoczynać dalszych etapów ani ingerować w feat/pixelcargo-art-assets.
+
+---
+
 # Roadmap PixelCargo 0.1
 
 - [x] Integracja preview: jeden zegar, główna PolandMap z pojazdem OSM, nawigacja pięciu widoków i rzeczywisty harmonogram tylko do odczytu. Szczegóły docs/UNIFIED_GAME.md. Po zakończeniu czekać na polecenie; pełne etapy poniżej pozostają osobnym zakresem.

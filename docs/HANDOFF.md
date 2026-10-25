@@ -1,3 +1,9 @@
+# Aktualizacja — rynek zleceń preview
+
+Rozbudowano deterministyczny rynek dziesięciu towarów, trwałe oferty (5 dni), trzy rezerwacje, ręczne rozpoczęcie, terminy 3 dni i jednorazowe kary/wypłaty. Zachowano wspólny zegar, mapę, paliwo, pensje i stare zapisy; brak zmian CSS/grafik/OSM. Szczegóły i jawne ograniczenia puli/danych ludnościowych: docs/FREIGHT_MARKET.md. Baza 15e64015b1322fa96aafd45b06af4add7f30dfb0; gałąź feat/preview-gameplay-core. Po commit/push czekać na polecenie. Nie rozpoczynać dalszych etapów ani ingerować w feat/pixelcargo-art-assets.
+
+---
+
 # Aktualizacja — jedna grywalna aplikacja
 
 Połączono mapę, firmę, bazę, flotę, rynek i prawdziwy harmonogram. Jeden zegar GameRuntime.session.time, obsługiwany przez PreviewSession; stary zapis firmy zostaje zachowany. / oraz /?preview=1 otwierają tę samą grę; diagnostyka tylko /?dev=1. Pojazd porusza się po gotowej geometrii OSM i pozostaje w celu. Bez zmian ekonomii, tras i IndexedDB.
@@ -187,3 +193,5 @@ Nie ma 05/routingu/dróg, nowych miast krajowych, transportów, pojazdów, kiero
 Uruchomienie: `npm ci` (tu opcjonalnie `--cache /tmp/pixelcargo-npm-cache`), `npm run dev`. Python i zewnętrzne domeny są potrzebne tylko do regeneracji, nie gry. Nie regenerować zasobów podczas E2E/HMR.
 
 Końcowa weryfikacja: TypeScript OK; npm test 86/86 (11 plików); standardowy build i build:pages OK; Playwright unified 33/33 (w tym scenariusze gry w obu rozdzielczościach); produkcyjny Pages 1/1. Brak zmian w danych OSM, trasach, silniku i schemacie IndexedDB.
+
+Końcowe kontrole: npm run typecheck OK; npm test 93/93 (12 plików); npm run build i build:pages OK; Playwright unified 33/33, freight 1/1, Pages 1/1 (łącznie 35). Pełna płatna dostawa, zapis w trasie, ruch auta, harmonogram i restart potwierdzone.

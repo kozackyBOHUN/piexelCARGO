@@ -1,3 +1,4 @@
+import {takeTarnow} from './helpers/freight';
 import {test,expect} from '@playwright/test';
 test('production Pages base serves assets, routes and persistent preview',async({page})=>{
  const errors:string[]=[],failed:string[]=[],requests:string[]=[];
@@ -20,7 +21,7 @@ test('production Pages base serves assets, routes and persistent preview',async(
  const before=await readSaved();expect(before?.company?.name).toBe('Firma GitHub Pages');expect(before.van).not.toBeNull();expect(before.driverHiredAt).not.toBeNull();
  await page.reload();await expect(page.locator('.pv-summary')).toContainText('Firma GitHub Pages');
  await expect(page.locator('.pv-stat').filter({hasText:'Kierowca:'})).toContainText('Zatrudniony');
- await page.locator('.pv-job').filter({has:page.getByText('Kraków → Tarnów',{exact:true})}).getByRole('button',{name:'PRZYJMIJ'}).click();
+ await takeTarnow(page);
  await expect(page.getByTestId('osm-route')).toBeVisible();
  expect((await page.getByTestId('osm-route').getAttribute('d'))!.split('L').length).toBeGreaterThan(1000);
  expect(requests.some(u=>u.endsWith('/piexelCARGO/roads/preview/routes.json'))).toBe(true);
