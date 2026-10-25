@@ -54,3 +54,21 @@ Najbliższa minimalna czynność zlecona Codexowi: tylko `npm run typecheck`, te
 5. Dopiero po poprawkach i pełnych testach zaktualizuj `docs/HANDOFF.md` i `docs/ROADMAP.md` na `main`, oznacz 05B ukończony i zintegruj.
 
 **Uwaga:** historyczne niezapisane pliki 05B z lokalnego Codexa nie zostały odzyskane. To niezależnie przygotowana implementacja, nie kopia oryginalnych szkiców.
+
+
+## Poprawka 05B via-way - kontynuacja poza Codexem
+
+Nowe commity na `feat/05b-routing-prep` modyfikują `routing.ts` i `routing.test.ts`. Konserwatywne zamknięcie wszystkich skrętów `from-way → first-via-way` zostało zastąpione stanowym rozpoznawaniem *pełnej* sekwencji `from → via-way(s) → to` z kontrolą wspólnych węzłów skrzyżowań.
+
+- `no_*` zabrania ukończenia zakazanego manewru, nie wejścia na cały łącznik; dozwolone wcześniejsze zjazdy zachowano.
+- `only_*` wymaga kontynuowania odpowiednią sekwencją przez kolejne via-way, jeśli restrykcja została rozpoczęta na jej właściwym węźle.
+- Stan A*/Dijkstry rozróżnia dotarcie do *tej samej krawędzi* z inną historią restrykcji, bez alokowania wielkiej tablicy stanów dodatkowych dla całego grafu.
+- Nieważne lub rozłączone relacje nadal korzystają z dawnej blokady konserwatywnej i są jawnie raportowane; `handledViaWayRestrictions` wyróżnia relacje rozpoznawane sekwencyjnie.
+- Cztery dodatkowe testy w Vitest obejmują no/only, kilka via-way oraz porównanie A* z Dijkstrą.
+
+**Weryfikacja lokalna w tym środowisku:** TypeScript kodu i testu z typami Vitest-stub przechodzi, 9 starszych syntetycznych scenariuszy + 5 niezależnych scenariuszy via-way w Node przechodzi. **Nie uruchomiono jeszcze prawdziwego Vitest ani OSM na tej wersji**. Wyniki z wcześniejszego benchmarku Kraków–Tarnów / Kraków–Zakopane dotyczą *poprzedniej* wersji routingu. Zmiany restrykcji mogą zmienić wyniki, co wymaga testu regresji.
+
+**Najmniejsze kolejne zadanie Codexa:** na tej gałęzi wykonać `npm run typecheck`, `npx vitest run src/world/roads/routing.test.ts`; następnie *wyłącznie* Kraków–Tarnów i Kraków–Zakopane na rzeczywistym grafie 05A, z krótkim raportem tras, czasów, RSS, liczby `handledViaWayRestrictions`/`conservativeViaWayRestrictions`/`unsupportedRestrictions`. Bez napraw, commitów, merge, Playwright i zmiany danych OSM.
+
+**Uwaga:** precyzyjne wymuszenie restrykcji wymaga jeszcze diagnostyki rzeczywistych relacji OSM (np. nietypowe punkty wspólne i drogi nieobecne po filtracji). Nie oznaczać 05B jako zakończonego przed tym sprawdzeniem.
+
