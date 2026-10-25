@@ -37,10 +37,29 @@ export interface PreviewCompany {
   readonly balanceGrosze: Grosze;
   readonly debtGrosze: Grosze;
 }
+export interface UsedVanOffer {
+  readonly id: string;
+  readonly model: string;
+  readonly priceGrosze: number;
+  readonly mileageMeters: number;
+  readonly conditionPercent: number;
+  readonly engineLitres: number;
+  readonly horsepower: number;
+  readonly engine: 'diesel';
+  readonly capacityKg: number;
+  readonly volumeM3: number;
+  readonly pallets: number;
+  readonly emptyLitresPer100Km: number;
+  readonly loadedLitresPer100Km: number;
+  readonly color: string;
+}
 export interface PreviewVan {
   readonly cityId: string;
   readonly fuelMillilitres: number;
+  /** Lifetime odometer, including the mileage on the used vehicle at purchase. */
   readonly mileageMeters: number;
+  /** Undefined only in legacy saves / older automated fixtures. */
+  readonly specs?: UsedVanOffer;
 }
 export interface PreviewEvent {
   readonly id: string;
@@ -52,6 +71,8 @@ export interface PreviewState {
   readonly time: GameMs;
   readonly company: PreviewCompany | null;
   readonly van: PreviewVan | null;
+  /** Market is rolled once at company formation and saved across reloads. */
+  readonly usedVanMarket?: readonly UsedVanOffer[];
   readonly driverHiredAt: GameMs | null;
   readonly paidWagesGrosze: Grosze;
   readonly wagesLoggedGrosze: Grosze;
@@ -75,6 +96,53 @@ const PRICE_PER_LITRE_GROSZE = 750;
 function assertNatural(n: number, label: string) {
   if (!Number.isSafeInteger(n) || n < 0) throw new Error(`Niepoprawna wartość: ${label}`);
 }
+/** Five deterministically randomized listings. Persisted at company formation. */
+export function makeUsedVanMarket(companyName: string, baseCityId: string): UsedVanOffer[] {
+  let seed=2166136261;
+  for(const char of companyName + '|' + baseCityId) {
+    seed = Math.imul(seed ^ char.charCodeAt(0), 16777619) >>> 0;
+  }
+  const rand=()=>{ seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296; };
+  const models=['Vektor F90','Żubr Dostawczy','Nord Cargo','Atlas D-210','Vektor ProMax'];
+  const prices=[6000,10500,16500,41500,96000];
+  const mileages=[480000,310000,190000,65000,9500];
+  const conditions=[17,41,62,86,97];
+  const engines=[1.6,1.9,2,2.2,2.3];
+  const colors=['#be845c','#8da5bc','#7fa78e','#bca876','#8ea9ce'];
+  return models.map((model,i)=>{
+    const variance=0.88+rand()*0.24;
+    const engineLitres=engines[i];
+    const horsepower=[78,95,122,148,178][i]+Math.floor(rand()*15);
+    return {
+      id:`van-used-${i+1}`, model, priceGrosze:Math.max(500000,Math.round(prices[i]*variance)*100),
+      mileageMeters:(mileages[i]+Math.floor(rand()*15000))*1000,
+      conditionPercent:Math.min(99,conditions[i]+Math.floor(rand()*9)),
+      engineLitres,horsepower,engine:'diesel' as const,
+      capacityKg:[850,1000,1200,1350,1500][i],
+      volumeM3:[9,10,12,13,15][i],
+      pallets:[3,3,4,4,4][i],
+      emptyLitresPer100Km:Number((9.1+engineLitres*.65+rand()*.65).toFixed(1)),
+      loadedLitresPer100Km:Number((11+engineLitres*.55+rand()*.7).toFixed(1)),
+      color:colors[i],
+    };
+  });
+}
+export function listUsedVans(state: PreviewState): readonly UsedVanOffer[] {
+  return state.usedVanMarket ?? (state.company ?
+    makeUsedVanMarket(state.company.name,state.company.baseCityId) : []);
+}
+export function buyUsedVan(state: PreviewState, offerId: string): PreviewState {
+  if(!state.company || state.van) throw new Error('Parking poziom 1 mieści tylko jeden pojazd.');
+  const listing=listUsedVans(state).find(v=>v.id===offerId);
+  if(!listing) throw new Error('Wybrany pojazd nie jest już dostępny.');
+  if(state.company.balanceGrosze < listing.priceGrosze) throw new Error('Brak środków na wybrany pojazd.');
+  return record({...state,
+    company:{...state.company,balanceGrosze:state.company.balanceGrosze-listing.priceGrosze},
+    van:{cityId:state.company.baseCityId,fuelMillilitres:START_FUEL_ML,
+      mileageMeters:listing.mileageMeters,specs:listing},
+    usedVanMarket:listUsedVans(state).filter(v=>v.id!==offerId),
+  },`Kupiono ${listing.model} na giełdzie aut używanych.`,-listing.priceGrosze);
+}
 function record(state: PreviewState, message: string, changeGrosze: number): PreviewState {
   return { ...state, events: [...state.events, { id: `preview:${state.events.length + 1}`, at: state.time, message, changeGrosze }] };
 }
@@ -87,7 +155,8 @@ export function establishCompany(state: PreviewState, name: string, baseCityId: 
   if (state.company) throw new Error('Firma już istnieje.');
   if (!name.trim() || !baseCityId) throw new Error('Podaj nazwę firmy i miasto bazy.');
   return record({ ...state, company: { name: name.trim(), baseCityId,
-    balanceGrosze: LOAN, debtGrosze: LOAN } }, 'Utworzono firmę i zaciągnięto kredyt 20 000 zł.', LOAN);
+    balanceGrosze: LOAN, debtGrosze: LOAN },
+    usedVanMarket: makeUsedVanMarket(name.trim(),baseCityId) }, 'Utworzono firmę i zaciągnięto kredyt 20 000 zł.', LOAN);
 }
 export function buyVan(state: PreviewState): PreviewState {
   if (!state.company || state.van) throw new Error('Nie można kupić furgonu.');
@@ -121,14 +190,15 @@ export function dispatchTransport(state: PreviewState, offer: PreviewOffer,
   if (!state.company || !state.van || state.driverHiredAt === null || state.active) throw new Error('Firma nie jest gotowa do kursu.');
   if (state.completedOfferIds.includes(offer.id) || offer.expiresAt <= state.time) throw new Error('Oferta niedostępna.');
   if (!offer.id || !offer.cargo || !Number.isSafeInteger(offer.payoutGrosze) || offer.payoutGrosze <= 0 ||
-      !Number.isFinite(offer.massKg) || offer.massKg <= 0 || offer.massKg > CAPACITY_KG ||
-      !Number.isFinite(offer.volumeM3) || offer.volumeM3 <= 0 || offer.volumeM3 > CAPACITY_M3 ||
-      !Number.isSafeInteger(offer.pallets) || offer.pallets < 0 || offer.pallets > CAPACITY_PALLETS)
+      !Number.isFinite(offer.massKg) || offer.massKg <= 0 || offer.massKg > (state.van.specs?.capacityKg ?? CAPACITY_KG) ||
+      !Number.isFinite(offer.volumeM3) || offer.volumeM3 <= 0 || offer.volumeM3 > (state.van.specs?.volumeM3 ?? CAPACITY_M3) ||
+      !Number.isSafeInteger(offer.pallets) || offer.pallets < 0 || offer.pallets > (state.van.specs?.pallets ?? CAPACITY_PALLETS))
     throw new Error('Ładunek nie mieści się we furgonie.');
   if (!validRoute(emptyRoute, state.van.cityId, offer.fromCityId) ||
       !validRoute(loadedRoute, offer.fromCityId, offer.toCityId))
     throw new Error('Brak poprawnej trasy drogowej. Nie można teleportować pojazdu.');
-  const neededMl = Math.ceil(emptyRoute.meters * 0.1 + loadedRoute.meters * 0.12);
+  const neededMl = Math.ceil(emptyRoute.meters*(state.van.specs?.emptyLitresPer100Km ?? 10)/100
+    +loadedRoute.meters*(state.van.specs?.loadedLitresPer100Km ?? 12)/100);
   if (state.van.fuelMillilitres < neededMl) throw new Error('Za mało paliwa na całą trasę.');
   const active: ActiveTransport = { offer, routeEmpty: emptyRoute, routeLoaded: loadedRoute,
     startedAt: state.time, phase: 'empty', phaseProgressMs: 0 };
@@ -166,7 +236,9 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
     if (dt > 0 && a && current.van && (a.phase === 'empty' || a.phase === 'loaded')) {
       const duration = phaseDuration(a);
       const routeMeters = a.phase === 'empty' ? a.routeEmpty.meters : a.routeLoaded.meters;
-      const rate = a.phase === 'empty' ? 0.1 : 0.12; // ml per metre
+      const rate = (a.phase === 'empty' ?
+        (current.van.specs?.emptyLitresPer100Km ?? 10):
+        (current.van.specs?.loadedLitresPer100Km ?? 12)) / 100; // ml per metre
       const fraction = duration ? dt / duration : 1;
       const meters = routeMeters * fraction;
       // Charge the difference of cumulative consumption. Rounding each tick
