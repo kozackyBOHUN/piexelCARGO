@@ -1,5 +1,5 @@
 # Roadmap PixelCargo 0.1
-Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie oryginalnej specyfikacji, a nie automatyczna zgoda na kolejne zadania. Użytkownik zlecił Fazę II wyłącznie w zakresie 04A.
+Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie oryginalnej specyfikacji, a nie automatyczna zgoda na kolejne zadania. Użytkownik zlecił Fazę II w zakresie 04A i następnie 04B; 04C pozostaje poza bieżącym zakresem.
 
 - [x] 01 Fundament i architektura
 - [x] 02A Silnik symulacji i zegar
@@ -7,7 +7,7 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
 - [x] 03 Powłoka interfejsu pixel art
 - [ ] 04 Mapa Polski i dane geograficzne (cały etap nie jest jeszcze ukończony)
   - [x] 04A Podstawowa mapa: prawdziwe granice państwa i 16 województw, 19 miast demonstracyjnych Małopolski, źródła/licencje i warstwy
-  - [ ] 04B Nie rozpoczęto — zakres wymaga osobnego polecenia
+  - [x] 04B Interaktywna mapa: przeciąganie, zoom pod kursorem, limit 200 m/piksel CSS, wyszukiwarka demo, etykiety i skala odległości
   - [ ] 04C Nie rozpoczęto — zakres wymaga osobnego polecenia
 - [ ] 05 Sieć drogowa i wyznaczanie tras
 - [ ] 06 Start firmy i baza
@@ -24,4 +24,4 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
 - [ ] 17 Efekty dźwiękowe
 - [ ] 18 Integracja i walidacja pełnej wersji 0.1
 
-Faza I jest ukończona. Z Fazy II ukończono wyłącznie 04A. Nie rozpoczynać 04B, 04C, dróg ani wyznaczania tras bez osobnego polecenia. Pozostałe nazwy etapów są roboczym grupowaniem specyfikacji.
+Faza I jest ukończona. Z Fazy II ukończono 04A i 04B. Nie rozpoczynać 04C, dróg ani wyznaczania tras bez osobnego polecenia. Pozostałe nazwy etapów są roboczym grupowaniem specyfikacji.

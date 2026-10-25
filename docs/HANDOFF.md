@@ -1,55 +1,56 @@
 # Stan przekazania PixelCargo
 
-Ostatni w pełni ukończony punkt: **Faza II, etap 04A — podstawowa mapa Polski**.
-Faza I (01 → 02A → 02B → 03) pozostaje ukończona. Nie rozpoczęto 04B, 04C ani wyznaczania tras. Następny krok: otrzymać osobny zakres 04B od użytkownika i kontynuować istniejące moduły, bez tworzenia aplikacji od nowa.
+Ostatni w pełni ukończony punkt: **Faza II, etap 04B — interaktywna obsługa mapy Polski**.
 
-## Etap 04A — wynik
+Punkt startowy 04B: `c525e66cc21e77652adeef9cbc195d45383b964b`. Kontynuowano istniejącą aplikację, bez nowego projektu. Faza I oraz 04A zachowane. **Nie rozpoczęto 04C**, dróg, tras ani kolejnych mechanik. Następny krok wymaga osobnego polecenia użytkownika dotyczącego 04C.
 
-- Placeholder zastąpiono rzeczywistą wektorową mapą Polski i wszystkich 16 województw. Źródło granic: PRG/GUGiK według opracowania ppatrzyk/polska-geojson na licencji MIT. Granica państwa to geometryczna suma województw z tego samego źródła.
-- Warstwa demonstracyjna: **19 rzeczywistych miast Małopolski** z GeoNames/cities500, dystrybucja geonamescache 3.0.2. Dane GeoNames: CC BY 4.0; pakiet: MIT. Nazwy, współrzędne i geonameid pochodzą ze źródła, nie z ręcznego rozmieszczenia.
-- Źródła, przypięte wersje, sumy SHA-256, daty pobrania i instrukcja regeneracji: **docs/MAP_DATA.md**. Kopie licencji w public/licenses. W aplikacji działający link „Źródła i licencje” prowadzi do public/map-sources.html. Źródła nie podają daty stanu administracyjnego / pojedynczych rekordów; nie deklarujemy aktualnego urzędowego PRG ani ludności spisowej.
-- Dane są lokalne i commitowane. Przeglądarka pobiera JSON z własnego originu, bez kafelków zewnętrznych, API i kluczy. Główny bundle JS ok. 251 kB (ok. 80 kB gzip); dane granic to oddzielne zasoby, nie gigantyczny moduł JS. Wspólna obietnica loadera zapobiega ponownemu pobieraniu przy renderach. Błąd danych daje polski komunikat i przycisk ponowienia, bez zatrzymywania zegara.
-- Stałe kadry: Polska i obszar demonstracyjny. To podstawowy przegląd danych 04A; brak swobodnego pan/zoom, wyszukiwania, dróg i routingu. Kliknięcie lub wybór miasta z listy pokazuje tylko nazwę, województwo i rzeczywiste współrzędne. Znaczniki obsługują klawiaturę. Nie otwierają fikcyjnych ofert.
-- Grafitowy styl, pikselowe kwadratowe znaczniki, wyróżnienie Małopolski, oddzielne obrysy państwa i województw. W krajowym kadrze etykiety miast są ukryte; w demo są rozmieszczane bez kolizji. Pełna lista 19 miast jest zawsze dostępna. UI wyraźnie mówi, że to demo, a nie komplet miast Polski.
-- AGENTS.md zaktualizowany do autoryzowanego zakresu 04A. ROADMAP ma ukończone 04A, a cały etap 04 oraz 04B/04C pozostają nieukończone. Specyfikacja źródłowa bez zmian.
+## Wynik 04B
 
-## Architektura / ważne API
+- Przeciąganie myszą, kursory grab/grabbing, próg gestu 4 piksele CSS, pointer capture także po wyjściu kursora poza mapę. Kliknięcie miasta jest oddzielone od przeciągnięcia; zakończenie gestu nie wybiera miasta ani nie blokuje następnego kliknięcia kontrolki.
+- Kółko powiększa wokół kursora, z wykładniczą zmianą skali i ograniczeniem pojedynczego skoku; obsługuje deltaMode piksel/linia/strona. Native listener jest niepasywny i zatrzymuje scroll wyłącznie nad mapą. W samych przewijanych nakładkach pozostaje normalne przewijanie.
+- Przyciski +/− względem środka: 150 ms interpolacji, szybkie kliknięcia kumulują docelowy zoom. Respektowana preferencja reduced motion. Nowy gest, reset, resize i kółko przerywają animację. requestAnimationFrame jest używany wyłącznie do animacji kamery, nigdy do zegara symulacji.
+- Minimalny zoom dopasowuje całą Polskę. Maksymalny to około **200 m rzeczywistych na piksel CSS w centrum widoku**. Metryka sferycznej Web Mercator: cos(szerokość) / scale. Przesunięcie na inną szerokość ponownie kontroluje limit. Brak zależności od devicePixelRatio.
+- Ograniczenie przesuwania korzysta z prawdziwego obrysu kraju. Środek poza powierzchnią jest rzutowany na najbliższy odcinek granicy, dzięki czemu nie można zgubić Polski również w narożnikach jej obwiedni. Na minimalnym zoomie kamera wraca do dopasowania kraju. Punkt pod kursorem jest zachowany dokładnie, dopóki nie zadziała ograniczenie nawigacji/zoomu.
+- Przyciski Cała Polska i Obszar demo resetują kadr. Resize zachowuje środek i powiększenie przybliżonego widoku w dozwolonych granicach; widok minimalny dopasowuje ponownie kraj.
+- Wyszukiwarka nad mapą: fragmenty nazw, wielkość liter, polskie znaki i ASCII (w tym jawne ł→l), pełna lista wyników. Strzałki nawigują, Enter wybiera, Escape zamyka; mysz także działa. Wybór centruje i przybliża miasto (do co najmniej regionalnego widoku 500 m/px, z zachowaniem już bliższego zoomu i limitów), podświetla znacznik i aktualizuje podgląd.
+- Katalog nadal obejmuje **tylko 19 miast demo Małopolski**, co widać w UI. Search otrzymuje katalog i województwa z danych, nie ma zakodowanych ręcznie nazw miast ani filtra 19 rekordów. Pełnego katalogu Polski nie dodano.
+- Etykiety: daleki widok do 3 nazw, średni do 9, bliski wszystkie mieszczące się bez kolizji. Wybrane miasto jest pierwsze w rozmieszczaniu i renderowane ponad innymi znacznikami. Znaczniki/hitboxy zachowują rozmiar CSS przy dowolnym zoomie. Nakładające się znaczniki pokazują listę rzeczywistych miast do wyboru. Tab i Enter/Spacja wybierają miasto; fokus poza kadrem przywraca jego widok.
+- Nazwa, województwo i współrzędne pozostają widoczne pod mapą. Swobodne przesunięcie może wyprowadzić wybrane miasto poza kadr — przycisk Pokaż miasto przywraca je bez zmiany danych.
+- Graficzna skala w dolnym rogu jest dynamiczna (1/2/5 × potęga 10, m lub km), uwzględnia szerokość przy samej belce, a nie tylko projekcyjne metry. Zachowano grafitowy styl pixel art.
 
-- `src/world/geography.ts`: WGS84 w kolejności [długość, szerokość], typy BoundaryGeometry, BoundaryFeature, MapCity, GeographyDataset. Województwa: PL- + dwucyfrowy kod TERYT. Miasta: geonames: + identyfikator źródła.
-- `src/world/data/*.json`: geometrie i 19 miast. `data.ts` udostępnia katalog synchroniczny do testów; `loader.ts` ładuje te same dane jako statyczne zasoby aplikacji.
-- `src/world/projection.ts`: projekcja Web Mercator EPSG:3857 z osią Y SVG skierowaną w dół, obwiednie, proporcjonalne dopasowanie do kontenera, `screenPoint` / `geometryPath`. Wspólne współrzędne dla przyszłych warstw dróg, pojazdów i tras.
-- `src/world/labels.ts`: deterministyczne etykiety w pikselach CSS, bez nakładania tekstów i znaczników.
-- `src/ui/PolandMap.tsx`: osobny memoizowany komponent, ResizeObserver, oddzielne grupy SVG: voivodeships, country, cities, city-labels. Stan prezentacji mapy nie jest stanem symulacji ani częścią zapisu gry. Rozszerzać grupy i dane, nie tworzyć osobnego zegara lub drugiej mapy.
-- `scripts/prepare-map.py`: opcjonalny generator danych z kontrolą SHA-256, naprawą topologii przez Shapely.make_valid, sumą województw i kontrolą położenia miast. Nie jest wymagany do zwykłego uruchomienia. Przypięte narzędzia w scripts/requirements-map.txt. Źródłowy uproszczony GeoJSON zawierał 10 niepoprawnych geometrii; naprawa i zmiany są jawnie opisane w docs/MAP_DATA.md.
+## Architektura i ważne pliki
 
-## Zachowana Faza I
+- `src/world/projection.ts`: istniejąca projekcja i dopasowanie plus unproject/worldPoint/viewportCenter, createNavigationLimits, constrainViewport, zoomViewport, panViewport, resizeViewport, focusViewport, groundMetersPerPixel, distanceScale i viewportTransform. Jedno źródło przeliczeń dla wszystkich warstw.
+- `src/ui/PolandMap.tsx`: kamera, wybór miasta, gest, krótka animacja i grupa nakładających się miast to lokalny stan UI. Nie są częścią GameState ani zapisu. Geometrie granic pozostają cache’owane w bazowej kamerze; podczas interakcji zmienia się transformacja grupy SVG. Etykiety i znaczniki używają tej samej kamery przez screenPoint. Nowe warstwy dróg/tras/pojazdów w przyszłości muszą dołączyć do tego układu.
+- `src/world/labels.ts`: rozmieszczanie z priorytetem wybranego miasta, progami rzeczywistej rozdzielczości i kontrolą kolizji oraz granic widoku.
+- `src/world/search.ts`: czysta normalizacja i filtrowanie katalogu. `src/ui/CitySearch.tsx`: combobox/listbox, sterowanie klawiaturą i wybór wyniku; nazwa województwa pobierana z katalogu.
+- `src/world/navigation.test.ts`: testy matematyki kamery, granic, metryki Mercator, etykiet i wyszukiwania.
+- `e2e/navigation.spec.ts`: interakcje myszy/klawiatury, zoom kotwiczony, przeciąganie, reset, fizyczna skala, DPR 2, resize, nakładanie znaczników i szybkie kolejne kliknięcia.
 
-`src/core` i `src/persistence` pozostają niezmienione w 04A, potwierdzone przez Git diff i testy regresji. Nadal działa centralny GameSession i czysty updateWorld, start poniedziałek 06:00, 1 sekunda realna = minuta gry, nadrabianie tła otwartej sesji, RNG Mulberry32 z jawnym stanem oraz numerowane komendy. Brak firmy i kredytu.
+## Dane i zachowana Faza I / 04A
 
-IndexedDB pixelcargo-v1 / saves / current, SaveEnvelope schemat 1, zapis/import serializowane, ręczny zapis, autosave co 10 s, eksport/import do 2 MB, brak postępu offline i wyłączna własność Web Locks. Druga karta czeka bez ticków i zapisów, potem przejmuje zapis. Nie zmieniono schematu, więc zapisy Fazy I pozostają zgodne. Grosze to liczby całkowite, czas to całkowite milisekundy gry, ilości to całe jednostki.
+Git diff względem c525e66 potwierdza brak zmian w **src/core, src/persistence, src/domain, src/world/data, docs/SPEC_0_1_ORIGINAL.txt, package.json i package-lock.json**. Nie zmieniono rzeczywistych współrzędnych, nie dodano nowych zależności ani danych ogólnopolskich.
 
-## Weryfikacja 04A
+Nadal są prawdziwe granice Polski i 16 województw, 19 miast demo, rozdzielone warstwy i lokalne zasoby bez zewnętrznych kafelków lub API. Źródła i licencje: PRG/GUGiK według opracowania ppatrzyk/polska-geojson (MIT), miasta © GeoNames (CC BY 4.0) przez geonamescache 3.0.2. Przypięte wersje, sumy, daty i generator z 04A pozostają w docs/MAP_DATA.md. Link do źródeł i licencji w mapie działa.
 
-- `npm test`: **37/37**. W tym 27 istniejących testów oraz 10 testów geograficznych: 16 identyfikatorów, rzeczywisty zasięg Polski, zamknięte i skończone pierścienie WGS84, 19 unikalnych miast wewnątrz Małopolski i znane współrzędne Krakowa/Tarnowa, kierunki i punkt zerowy projekcji, dopasowanie do 3 rozmiarów, stabilne etykiety bez kolizji.
-- `npm run typecheck`: **OK**, także dla E2E i konfiguracji narzędzi.
-- `npm run build`: **OK**, bez ostrzeżenia o dużym module JS po wydzieleniu JSON jako zasobów.
-- `npm run test:e2e`: końcowo **17/17 w Chromium**. Wszystkie regresje Fazy I plus faktyczne warstwy 16/19, dwa kadry, wybór miasta myszą/listą/klawiaturą, brak żądań do serwisów map zewnętrznych, licencje oraz błąd danych mapy i ponowienie bez zatrzymania zegara.
-- Układ 1366×768 i 1920×1080 sprawdzony testami i wizualnie na zrzutach; test małego ekranu 390×844 także przeszedł. Brak krytycznych błędów konsoli w kontrolowanych scenariuszach. Zrzuty robocze: /tmp/pixelcargo-04A-country-1366.png, /tmp/pixelcargo-04A-demo-1366.png i odpowiedniki 1920, poza wymaganymi plikami aplikacji.
-- Build produkcyjny sprawdzony oddzielnie w Chromium przez Vite preview: 16 granic województw, 19 miast, kadr demo i wybór Krakowa działają bez runtime errors.
-- Generator uruchomiono ponownie na przypiętym źródle; SHA-256 wszystkich trzech wygenerowanych JSON pozostały identyczne.
+Centralny GameSession/updateWorld, start poniedziałek 06:00, 1 s = minuta gry, nadrabianie otwartej sesji w tle, RNG i numerowane komendy pozostają bez zmian. IndexedDB pixelcargo-v1 / saves / current, SaveEnvelope schemat 1, ręczny zapis, autosave co 10 s, import/eksport do 2 MB, brak offline progress oraz Web Locks także pozostają bez zmian. Zapisy poprzednich etapów są zgodne. Firma nadal nieutworzona, brak kredytu i ekonomii.
 
-Diagnozy z przebiegów roboczych: pierwszy E2E trafił na stary proces Vite z błędem 504 Outdated Optimize Dep po wcześniejszym npm ci; rozwiązanie: restart `npm run dev -- --force`. W następnym przebiegu równoległa regeneracja JSON wywołała HMR, resetując sesję podczas testu autosave. Końcowy pełny zestaw uruchomiono dopiero po zakończeniu regeneracji i zmian plików — 17/17, bez zmiany asercji autosave lub silnika. Nie regenerować danych podczas testów żywej aplikacji.
+## Weryfikacja końcowa 04B
 
-## Uruchomienie i Git
+- `npm test` — **52/52**, w tym 37 istniejących testów i 15 nowych: Web Mercator i szerokość geograficzna, kotwiczenie kursora, min/max zoom, różne szerokości, pan i zachowanie Polski, resize, rzeczywista belka skali, polskie/ASCII wyszukiwanie i etykiety bez kolizji.
+- `npm run typecheck` — **OK**, także E2E i konfiguracje narzędzi.
+- `npm run build` — **OK**. Osobne niezmienione pliki geograficzne, główny JS około 260 kB / 83 kB gzip, bez ostrzeżenia o dużym module.
+- `npm run test:e2e` — **23/23 w Chromium**: wszystkie wcześniejsze 17 testów i 6 nowych scenariuszy nawigacji. Weryfikacja 1366×768 i 1920×1080, a także resize między tymi rozmiarami i **DPR 2**. Przeszły regresje zegara, autosave, importu/eksportu i dwóch kart.
+- Build produkcyjny sprawdzony dodatkowo przez Vite preview w Chromium: 16 granic, ASCII wyszukiwanie Oświęcimia, wybór, zoom i skala działają; brak runtime errors.
+- Zrzuty obu rozdzielczości obejrzane; brak nachodzenia paneli. Zrzuty robocze /tmp/pixelcargo-04B-1366.png i /tmp/pixelcargo-04B-1920.png są poza wymaganymi plikami aplikacji. Istniejący test 390×844 także przeszedł.
+- `git diff --check` — OK. W przebiegu roboczym poprawiono selektor testu wyszukiwarki, który obejmował także opcje istniejącego select; nie wyłączano asercji i nie zmieniano istniejących testów silnika/zapisu.
 
-W istniejącym /workspace/piexelCARGO: `npm ci`, `npm run dev`. W tym środowisku cache npm: `--cache /tmp/pixelcargo-npm-cache`. Systemowy Chromium: /usr/bin/chromium; poza maszyną `npx playwright install chromium` albo CHROMIUM_PATH. Aplikacja nie wymaga Pythona/Shapely — są potrzebne tylko przy regeneracji danych. Szczegóły w README.md i docs/MAP_DATA.md.
+## Uruchomienie, Git i następny krok
 
-Faza I jest na GitHubie: 430aeab (01), 93b2e1f (02A), 9020a19 (02B), 31f83ac (03). Dla 04A przygotowany osobny commit na main i push bez force-push zgodnie z poleceniem użytkownika; ostateczny hash i potwierdzenie zdalnego stanu podaje raport końcowy. Przed commitem 04A wykonano fetch: main i origin/main były zgodne, bez nowych zmian zdalnych. Nie publikowano aplikacji jako witryny; push kodu nie oznacza wdrożenia.
+Uruchomienie bez zmian: w /workspace/piexelCARGO `npm ci`, potem `npm run dev`. W tym środowisku cache npm: `--cache /tmp/pixelcargo-npm-cache`, Chromium /usr/bin/chromium. Szczegóły w README.md. Nie regenerować JSON w czasie E2E — HMR mógłby zresetować sesję autosave.
 
-## Ograniczenia i dokładny następny krok
+Faza I jest na GitHubie: 430aeab, 93b2e1f, 9020a19, 31f83ac. Etap 04A: c525e66cc21e77652adeef9cbc195d45383b964b. Etap 04B jest zapisywany jako osobny commit na main i wysyłany bez force-push, zgodnie z poleceniem użytkownika; dokładny hash i potwierdzenie GitHub podaje raport końcowy. Przed commitem wykonano fetch: main i origin/main były zgodne, bez nowych zmian zdalnych. Push kodu nie oznacza publikacji witryny.
 
-Brak znanych nierozwiązanych błędów wymaganych funkcji 04A. Warstwa miast to jawne demo Małopolski; brak kompletnego krajowego katalogu miast, zweryfikowanej ludności, dróg, tras, pojazdów, firmy i ekonomii. Etap 04 jako całość nie jest ukończony.
+Brak znanych nierozwiązanych błędów wymaganych funkcji 04B. Nie ma 04C, terenu, dróg, routingu, nowych danych krajowych, rynku, aktywnych pojazdów/kierowców ani ekonomii. Cały etap 04 pozostaje nieukończony do realizacji 04C na osobne polecenie. Web Locks/IndexedDB nadal wymagają nowoczesnej przeglądarki i HTTPS/localhost; nagłe zamknięcie może utracić niezapisany odcinek między autosave, a powrót wczytuje ostatni trwały zapis.
 
-Web Locks i IndexedDB nadal wymagają nowoczesnej przeglądarki oraz HTTPS/localhost. Nagłe zamknięcie może utracić niezapisany odcinek między autosave; powrót odtwarza ostatni trwały zapis. Tych zasad nie zmieniono w 04A.
-
-Następny krok po nowym poleceniu: przeczytać aktualny HANDOFF, ROADMAP i MAP_DATA, ustalić dokładny zakres 04B i rozszerzać istniejące kontrakty/warstwy. Nie dodawać samodzielnie 04B/04C, swobodnej nawigacji ani wyznaczania tras.
+**Następny krok:** po osobnym zleceniu przeczytać bieżący HANDOFF, ROADMAP, MAP_DATA i wymagania 04C; rozwijać istniejący komponent i wspólne warstwy. Nie rozpoczynać 04C samodzielnie.

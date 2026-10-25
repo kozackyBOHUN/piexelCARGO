@@ -1,5 +1,9 @@
 import type { MapCity } from "./geography";
-import { screenPoint, type MapViewport } from "./projection";
+import {
+  groundMetersPerPixel,
+  screenPoint,
+  type MapViewport,
+} from "./projection";
 export interface CityLabel {
   id: string;
   text: string;
@@ -12,8 +16,11 @@ export interface CityLabel {
 export function placeCityLabels(
   cities: readonly MapCity[],
   viewport: MapViewport,
+  selectedId: string | null = null,
 ): CityLabel[] {
   const placed: CityLabel[] = [];
+  const resolution = groundMetersPerPixel(viewport);
+  const maxLabels = resolution > 1800 ? 3 : resolution > 600 ? 9 : Infinity;
   const points = cities.map((city) => ({
     city,
     point: screenPoint(city.coordinates, viewport),
@@ -21,6 +28,7 @@ export function placeCityLabels(
   const priorities = ["geonames:3094802", "geonames:757026", "geonames:763534"];
   points.sort((a, b) => {
     const rank = (id: string) => {
+      if (id === selectedId) return -1;
       const index = priorities.indexOf(id);
       return index < 0 ? priorities.length : index;
     };
@@ -32,13 +40,19 @@ export function placeCityLabels(
     city,
     point: [x, y],
   } of points) {
-    const width = city.name.length * 6.5 + 4;
+    if (placed.length >= maxLabels) break;
+    if (x < 0 || x > viewport.width || y < 0 || y > viewport.height) continue;
+    const width = city.name.length * 7 + 4;
     const height = 14;
     for (const [dx, dy] of [
       [7, -17],
       [7, 5],
       [-width - 7, -17],
       [-width - 7, 5],
+      [-width / 2, -26],
+      [-width / 2, 15],
+      [12, -35],
+      [-width - 12, 22],
     ]) {
       const label = {
         id: city.id,

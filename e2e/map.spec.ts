@@ -26,7 +26,9 @@ for (const size of [
       "d",
       /^M/,
     );
-    await expect(map.getByRole("button")).toHaveCount(19);
+    await expect(
+      map.locator('[data-layer="cities"]').getByRole("button"),
+    ).toHaveCount(19);
     await expect(
       page.getByText("Pełna sieć miast, drogi i trasy", { exact: false }),
     ).toBeVisible();
@@ -34,7 +36,9 @@ for (const size of [
       path: `/tmp/pixelcargo-04A-country-${size.width}.png`,
       fullPage: true,
     });
-    const before = await map.locator(".country-outline").getAttribute("d");
+    const before = await map
+      .locator('[data-layer="boundaries"]')
+      .getAttribute("transform");
     await page
       .getByRole("button", { name: "Obszar demo", exact: true })
       .click();
@@ -44,9 +48,9 @@ for (const size of [
         exact: true,
       }),
     ).toBeVisible();
-    expect(await map.locator(".country-outline").getAttribute("d")).not.toBe(
-      before,
-    );
+    expect(
+      await map.locator('[data-layer="boundaries"]').getAttribute("transform"),
+    ).not.toBe(before);
     await page
       .getByLabel("Miasto demonstracyjne")
       .selectOption("geonames:3094802");

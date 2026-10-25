@@ -1,4 +1,4 @@
-# Dane mapy — etap 04A
+# Dane mapy — źródła 04A i obsługa 04B
 
 Mapa jest lokalną warstwą wektorową, bez zewnętrznych kafelków, kluczy API i backendu. Obejmuje prawdziwe granice Polski i wszystkich 16 województw oraz **wyłącznie 19 miast demonstracyjnych Małopolski**. Nie jest to komplet miast Polski ani sieć dróg. Nie wyznacza tras.
 
@@ -58,4 +58,19 @@ Zweryfikowano generator na Pythonie 3.12 i Shapely 2.1.2. Zmiana źródła wymag
 - `labels.ts`: deterministyczne rozmieszczenie bez kolizji w pikselach CSS. Etykiety są ograniczane, ale wszystkie znaczniki i lista miast pozostają dostępne klawiaturą.
 - `src/ui/PolandMap.tsx`: izolowany, memoizowany widok. Oddzielne grupy SVG: województwa, granica państwa, miasta, etykiety. Przyszłe drogi, pojazdy i trasy mogą użyć tej samej projekcji, bez własnego przeliczania czasu ani zmiany silnika.
 
-Dwa stałe kadry (Polska i Małopolskie) służą przeglądowi danych 04A. Nie dodano swobodnego przesuwania, zoomu, wyszukiwania miast, routingów, danych całego rynku ani implementacji 04B/04C. Wybór miasta pokazuje jedynie nazwę i prawdziwe współrzędne, bez udawania ofert. Stan prezentacji mapy nie zmienia formatu zapisów gry.
+**Stan historyczny 04A:** dwa stałe kadry (Polska i Małopolskie) służyły przeglądowi danych 04A. Nie dodano swobodnego przesuwania, zoomu, wyszukiwania miast, routingów, danych całego rynku ani implementacji 04B/04C. Wybór miasta pokazuje jedynie nazwę i prawdziwe współrzędne, bez udawania ofert. Stan prezentacji mapy nie zmienia formatu zapisów gry.
+
+
+## Nawigacja 04B — bez zmiany danych
+
+Etap 04B rozwija istniejącą mapę, zachowując pliki danych, ich SHA-256 i licencje. Swobodne przesuwanie, zoom i wybór miasta są lokalnym stanem UI. Nie zmieniono GameState, zegara ani schematu zapisu.
+
+`projection.ts` udostępnia jedną kamerę `MapViewport`: rozmiar w pikselach CSS, skalę pikseli na metr projekcji i przesunięcia. Wszystkie warstwy korzystają z tego samego przekształcenia. Geometrie granic są cache’owane przy bazowym dopasowaniu; `viewportTransform` przekształca grupę SVG podczas nawigacji. Znaczniki, hitboxy i etykiety są obliczane przez wspólne `screenPoint`, zachowując rozmiar w pikselach CSS. Nie mnożymy skali przez devicePixelRatio.
+
+Dla sferycznej Web Mercator rzeczywiste metry na piksel w szerokości φ to `cos(φ) / viewport.scale`. `groundMetersPerPixel` stosuje φ w środku kamery. Maksymalna skala wynosi `cos(φ) / 200`; po przesunięciu na inną szerokość limit jest ponownie kontrolowany. `distanceScale` stosuje szerokość przy samej belce w dolnym rogu i dobiera długość 1/2/5 × potęga 10 z jednostką m lub km. Jest to lokalna metryka sferycznej projekcji, zgodna z przybliżonym limitem specyfikacji.
+
+Minimalna skala pochodzi z dopasowania całej Polski. Na minimalnym zoomie przesuwanie wraca do tego dopasowania. Przy większym zoomie środek kamery może poruszać się po powierzchni kraju; próba wyjścia poza rzeczywisty obrys jest rzutowana na najbliższy odcinek granicy. Dzięki temu Polska pozostaje widoczna także w narożnikach obwiedni, w których sam prostokątny clamp nie wystarcza. Zachowanie punktu pod kursorem jest dokładne, dopóki nie zadziała ograniczenie przesuwania lub zoomu.
+
+`labels.ts` ma progi rozdzielczości: ponad 1800 m/px — do 3 nazw, 600–1800 m/px — do 9, poniżej — wszystkie mieszczące się bez kolizji. Nazwa wybranego miasta ma pierwszeństwo. Nie renderujemy etykiet miast poza kadrem. Ich znaczniki nadal mają stały hitbox i obsługę klawiatury, a przy nakładaniu można wybrać miasto z listy grupy.
+
+`search.ts` normalizuje znaki Unicode i polskie ł, porównuje fragmenty nazw i sortuje wyniki. `CitySearch.tsx` otrzymuje katalog oraz nazwy województw z istniejących danych; nie zawiera ręcznej listy 19 nazw ani filtra ograniczającego przyszły większy katalog. Obecna aplikacja nadal przekazuje wyłącznie 19 miast demo i jawnie to komunikuje. Nie dodano danych ogólnopolskich ani 04C.

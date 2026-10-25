@@ -109,7 +109,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
         </a>
         <div className="environment-badge">
           <span className="status-light" />
-          FAZA II<span className="badge-divider">/</span>MAPA 04A
+          FAZA II<span className="badge-divider">/</span>MAPA 04B
         </div>
         <div className="topbar-note" aria-label="Alerty sesji">
           {status.mode === "active" && !status.saveError
@@ -279,7 +279,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
       <footer className="footer">
         <span>
           <span className="tiny-square" />
-          PixelCargo 0.1 · Faza II / 04A
+          PixelCargo 0.1 · Faza II / 04B
         </span>
         <span>
           Zegar działa podczas otwartej sesji. Po powrocie — ostatni zapis, bez
