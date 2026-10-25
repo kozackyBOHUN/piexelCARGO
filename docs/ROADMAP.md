@@ -11,7 +11,7 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
   - [ ] 04C Krajobraz Polski, pixel art i optymalizacja
     - [x] 04C-1 Kontrola wizualna i zrzuty przed zmianami
     - [x] 04C-2 Hydrografia
-    - [ ] 04C-3 Lasy i rzeźba terenu
+    - [x] 04C-3 Lasy i rzeźba terenu
     - [ ] 04C-4 Oprawa, optymalizacja, testy i zrzuty końcowe
 - [ ] 05 Sieć drogowa i wyznaczanie tras
 - [ ] 06 Start firmy i baza

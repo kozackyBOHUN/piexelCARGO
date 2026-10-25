@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "crs": "EPSG:3857",
+  "origin": [
+    1572000,
+    -7330400
+  ],
+  "pixelSize": 800,
+  "width": 1395,
+  "height": 1319,
+  "levels": [
+    {
+      "factor": 4,
+      "width": 349,
+      "height": 330,
+      "terrain": "/landscape/terrain-4.png",
+      "forests": "/landscape/forests-4.png"
+    },
+    {
+      "factor": 2,
+      "width": 698,
+      "height": 660,
+      "terrain": "/landscape/terrain-2.png",
+      "forests": "/landscape/forests-2.png"
+    },
+    {
+      "factor": 1,
+      "width": 1395,
+      "height": 1319,
+      "terrain": "/landscape/terrain-1.png",
+      "forests": "/landscape/forests-1.png"
+    }
+  ],
+  "forestClass": 10,
+  "forestShare": 0.4177,
+  "landCoverage": 1.0,
+  "heightRange": [
+    -148,
+    2181
+  ],
+  "heightSamples": [
+    {
+      "name": "Tatry",
+      "coordinates": [
+        20.02,
+        49.23
+      ],
+      "elevationMeters": 1681
+    },
+    {
+      "name": "Beskidy",
+      "coordinates": [
+        19.25,
+        49.57
+      ],
+      "elevationMeters": 1176
+    },
+    {
+      "name": "Bieszczady",
+      "coordinates": [
+        22.7,
+        49.1
+      ],
+      "elevationMeters": 963
+    },
+    {
+      "name": "Sudety",
+      "coordinates": [
+        15.74,
+        50.74
+      ],
+      "elevationMeters": 1352
+    },
+    {
+      "name": "Wyżyna Krakowsko-Częstochowska",
+      "coordinates": [
+        19.6,
+        50.5
+      ],
+      "elevationMeters": 398
+    },
+    {
+      "name": "Nizina Mazowiecka",
+      "coordinates": [
+        21,
+        52.2
+      ],
+      "elevationMeters": 109
+    }
+  ],
+  "sources": {
+    "forestTiles": 13,
+    "heightTiles": 56
+  },
+  "heightGridSha256": "d24d7f95db3bceb6ded77076f717900f57dccb0622b4d69c583705c3ad053342",
+  "forestRegions": [
+    {
+      "name": "Bory Tucholskie",
+      "coordinates": [
+        17.9,
+        53.7
+      ],
+      "treeCoverShareNearPoint": 0.7959
+    },
+    {
+      "name": "Puszcza Białowieska",
+      "coordinates": [
+        23.8,
+        52.7
+      ],
+      "treeCoverShareNearPoint": 0.8503
+    },
+    {
+      "name": "Puszcza Notecka",
+      "coordinates": [
+        16.0,
+        52.7
+      ],
+      "treeCoverShareNearPoint": 0.9728
+    },
+    {
+      "name": "Puszcza Kampinoska",
+      "coordinates": [
+        20.5,
+        52.3
+      ],
+      "treeCoverShareNearPoint": 0.7846
+    },
+    {
+      "name": "Bory Dolnośląskie",
+      "coordinates": [
+        15.4,
+        51.5
+      ],
+      "treeCoverShareNearPoint": 0.8345
+    }
+  ]
+}

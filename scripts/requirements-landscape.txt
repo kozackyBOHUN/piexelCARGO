@@ -1,0 +1,5 @@
+# Optional landscape preprocessing, never required at game startup.
+rasterio==1.4.3
+pillow==11.3.0
+numpy==2.5.4
+shapely==2.1.2

@@ -1196,7 +1196,7 @@ svg {
   }
 }
 /* 04C-2: one noninteractive canvas below the existing boundary/city SVG. */
-.hydrography-canvas {
+.landscape-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1228,4 +1228,23 @@ svg {
 }
 .hydrography-error {
   z-index: 3;
+}
+
+.map-legend .legend-forest {
+  width: 8px;
+  height: 6px;
+  background: #234332;
+}
+.map-legend .legend-terrain {
+  width: 8px;
+  height: 6px;
+  background: #777660;
+}
+.map-legend .legend-water {
+  width: 8px;
+  height: 3px;
+  background: #6590a6;
+}
+.raster-error {
+  bottom: 42px;
 }

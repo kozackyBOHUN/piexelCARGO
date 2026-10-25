@@ -4,8 +4,13 @@ import type { MapViewport } from "../world/projection";
 import { worldPath } from "../world/landscape/geometry";
 import { loadHydrography } from "../world/landscape/loader";
 import { createWaterIndex, waterDetail } from "../world/landscape/spatial";
+import {
+  loadRasterLandscape,
+  rasterWindow,
+  type RasterLandscape,
+} from "../world/landscape/raster";
 import type { Hydrography } from "../world/landscape/model";
-export const HydrographyCanvas = memo(function HydrographyCanvas({
+export const LandscapeCanvas = memo(function LandscapeCanvas({
   viewport,
   country,
 }: {
@@ -13,6 +18,23 @@ export const HydrographyCanvas = memo(function HydrographyCanvas({
   country: BoundaryGeometry;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const [raster, setRaster] = useState<RasterLandscape | null>(null);
+  const [rasterError, setRasterError] = useState("");
+  const [rasterAttempt, setRasterAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    loadRasterLandscape()
+      .then((value) => {
+        if (active) setRaster(value);
+      })
+      .catch(() => {
+        if (active)
+          setRasterError("Krajobraz niedostępny — ponów wczytywanie.");
+      });
+    return () => {
+      active = false;
+    };
+  }, [rasterAttempt]);
   const [data, setData] = useState<Hydrography | null>(null),
     [error, setError] = useState(""),
     [attempt, setAttempt] = useState(0);
@@ -76,7 +98,36 @@ export const HydrographyCanvas = memo(function HydrographyCanvas({
       context.clip(countryPath, "evenodd");
       const detail = waterDetail(viewport),
         visible = prepared?.index.query(viewport) ?? [];
-      // Future height/forest layers belong before these two water passes, not above labels/cities.
+      // All rasters use the same EPSG:3857 world transform and country clip as water.
+      // Order: base land -> height bands -> real tree cover -> water -> SVG boundaries/cities.
+      context.imageSmoothingEnabled = false;
+      let rasterPixels = 0,
+        rasterTotal = 0;
+      if (raster) {
+        const images = raster.images[detail];
+        for (const image of [images.terrain, images.forests]) {
+          const window = rasterWindow(
+            raster.manifest,
+            image.width,
+            image.height,
+            viewport,
+          );
+          rasterTotal += image.width * image.height;
+          if (window) rasterPixels += window.sw * window.sh;
+          if (window)
+            context.drawImage(
+              image,
+              window.sx,
+              window.sy,
+              window.sw,
+              window.sh,
+              window.dx,
+              window.dy,
+              window.dw,
+              window.dh,
+            );
+        }
+      }
       for (const kind of ["lake", "river"] as const)
         for (const { feature } of visible) {
           if (feature.kind !== kind) continue;
@@ -99,6 +150,13 @@ export const HydrographyCanvas = memo(function HydrographyCanvas({
         }
       context.restore();
       element.dataset.waterStatus = data ? "ready" : "loading";
+      element.dataset.landscapeStatus = raster ? "ready" : "loading";
+      element.dataset.landscapeLod = String(detail);
+      element.dataset.rasterCoverage = (
+        rasterTotal ? rasterPixels / rasterTotal : 0
+      ).toFixed(4);
+      element.dataset.layerOrder =
+        "base,elevation,forests,lakes,rivers,boundaries,cities,labels";
       element.dataset.waterVisible = String(visible.length);
       element.dataset.waterTotal = String(prepared?.index.size ?? 0);
       element.dataset.waterLod = String(detail);
@@ -114,15 +172,26 @@ export const HydrographyCanvas = memo(function HydrographyCanvas({
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", schedule);
     };
-  }, [viewport, prepared, countryPath, data]);
+  }, [viewport, prepared, countryPath, data, raster]);
   return (
     <>
       <canvas
         ref={canvas}
-        className="hydrography-canvas"
-        data-layer="hydrography"
+        className="landscape-canvas"
+        data-layer="landscape"
         aria-hidden="true"
       />
+      {rasterError && (
+        <button
+          className="hydrography-error map-overlay raster-error"
+          onClick={() => {
+            setRasterError("");
+            setRasterAttempt((value) => value + 1);
+          }}
+        >
+          {rasterError}
+        </button>
+      )}
       {error && (
         <button
           className="hydrography-error map-overlay"

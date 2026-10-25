@@ -23,7 +23,7 @@ import {
 import { placeCityLabels } from "../world/labels";
 import { PixelIcon } from "./PixelIcon";
 import { CitySearch } from "./CitySearch";
-import { HydrographyCanvas } from "./HydrographyCanvas";
+import { LandscapeCanvas } from "./LandscapeCanvas";
 
 /** Layer groups share one geographic projection; future roads/routes/vehicles can use screenPoint.
  * The map owns presentation state only. It neither advances nor mutates the game simulation. */
@@ -336,7 +336,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
           }
         }}
       >
-        <HydrographyCanvas
+        <LandscapeCanvas
           viewport={viewport}
           country={geography.country.geometry}
         />
@@ -466,6 +466,18 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
         </svg>
         <div className="map-legend" aria-hidden="true">
           <span>
+            <i className="legend-forest" />
+            Lasy · pokrycie drzewiaste
+          </span>
+          <span>
+            <i className="legend-terrain" />
+            Pasma wysokości
+          </span>
+          <span>
+            <i className="legend-water" />
+            Rzeki i jeziora
+          </span>
+          <span>
             <i className="legend-border" />
             Granica państwa
           </span>
@@ -587,8 +599,9 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
       <div className="panel-footnote map-attribution">
         <PixelIcon name="map" size={14} />
         <span>
-          Woda: Natural Earth (PD) · Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) ·
-          Miasta: © GeoNames (CC BY 4.0) ·{" "}
+          Krajobraz: © ESA WorldCover 2021 · USGS/NOAA · Natural Earth ·
+          Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) · Miasta: © GeoNames (CC BY
+          4.0) ·{" "}
           <a href="/map-sources.html" target="_blank" rel="noreferrer">
             Źródła i licencje
           </a>

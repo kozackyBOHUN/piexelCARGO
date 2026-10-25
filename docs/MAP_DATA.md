@@ -116,8 +116,43 @@ Jedna warstwa Canvas pod istniejącym SVG miast i granic, `pointer-events:none`.
 
 Pomiar warstwy wody w bieżącym headless Chromium podczas 50 próbek przeciągania: 1366×768 mediana 0,2 ms, P95 0,3 ms, max 1,1 ms; 1920×1080 mediana 0,2 ms, P95 0,4 ms, max 0,8 ms. To czas wykonania funkcji rysującej, nie pomiar pełnego kosztu GPU/React ani gwarancja FPS na każdym laptopie. Woda dodaje jeden canvas zamiast 54 lub większej liczby elementów SVG.
 
-### Blokada kolejnego podetapu 04C-3
+### Początkowa blokada dostępu (rozwiązana)
 
-Lasy i rzeźba terenu **nie są jeszcze zaimplementowane**. Sprawdzone planowane źródła: ESA WorldCover 2021 v200 (CC BY 4.0, klasyfikacja pokrycia terenu; planowany wybór pokrycia drzewiastego z jawnie podaną rozdzielczością) i publiczne kafle wysokości Terrarium z elevation-tiles-prod (weryfikacja źródeł i wymaganej atrybucji przed użyciem). Dane nie zostały pobrane i nie deklarujemy ich pokrycia ani licencji przygotowanego produktu wysokościowego.
+**Stan historyczny przed 04C-3:** lasy i rzeźba terenu nie były jeszcze zaimplementowane. Sprawdzone planowane źródła: ESA WorldCover 2021 v200 (CC BY 4.0, klasyfikacja pokrycia terenu; planowany wybór pokrycia drzewiastego z jawnie podaną rozdzielczością) i publiczne kafle wysokości Terrarium z elevation-tiles-prod (weryfikacja źródeł i wymaganej atrybucji przed użyciem). Dane nie zostały pobrane i nie deklarujemy ich pokrycia ani licencji przygotowanego produktu wysokościowego.
 
 Żądania testowe do `esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N48E018_Map.tif` oraz `s3.amazonaws.com/elevation-tiles-prod/terrarium/7/71/43.png` kończyły się `curl: (56) CONNECT tunnel failed, response 403` / HTTP 403. To blokada dostępu w obecnym środowisku, nie brak sekretu. Dodano obie domeny do szkicu egress bez naruszania presetów. Sam zapis szkicu nie stosuje ustawień do runtime; po ich zastosowaniu należy ponowić żądania, sprawdzić metadane/licencje, przygotować lokalny zoptymalizowany zestaw i dopiero wtedy implementować 04C-3. Nie zastąpiono tych danych losową grafiką.
+
+
+## Lasy i rzeźba 04C-3
+
+Początkowe HTTP 403 ustały po zmianie dostępności sieci; ponowne żądania zwróciły HTTP 200. Pobrano i zweryfikowano rzeczywiste źródła. Gra nie wymaga tych domen do działania — komplet przygotowanych zasobów jest lokalny w public/landscape/.
+
+### ESA WorldCover — pokrycie drzewiaste
+
+- Źródło: **ESA WorldCover 10 m 2021 v200**, Zanaga et al. (2022), DOI [10.5281/zenodo.7254221](https://doi.org/10.5281/zenodo.7254221).
+- URL każdego kafla: `https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N{lat}E{lon}_Map.tif`. Dokładne 13 adresów, ETag i SHA-256 odczytanej próbki są przypięte w **scripts/landscape-sources.json**.
+- Dane: rok 2021; pobrane 2026-10-25. Licencja **CC BY 4.0**. Obowiązkowa atrybucja: **© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium**. Widoczny skrót w stopce, pełna atrybucja na stronie Źródła i licencje.
+- Licencję i cytowanie zweryfikowano w oficjalnym [Product User Manual V2.0, §5, str. 19](https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/docs/WorldCover_PUM_V2.0.pdf), SHA-256 `4301a3d95260d88bd4315f43ccf2a12ef74ad391109b9f36e22b6e51d8490107`. Opis adaptacji: public/licenses/worldcover-CC-BY-4.0.md.
+- Odczytano przeglądy COG do 600×600 na kafel 3° (próbka około 0,005°), wybrano klasę **10 — tree cover**, zreprojektowano nearest-neighbor do wspólnej EPSG:3857 i przycięto maską kraju. Oryginalna klasa ma szersze znaczenie niż prawny las (m.in. zadrzewienia i plantacje). Przeglądy i próbkowanie generalizują małe obiekty; nie zachowujemy dokładności 10 m i nie deklarujemy pełnego rejestru drzewostanów.
+- Siatka pokrywa **100% komórek polskiej maski** (nie oznacza dokładności granic każdego drzewostanu). W tej uogólnionej próbce udział klasy 10 wynosi 0,4177 — to **nie oficjalna lesistość Polski**, tylko statystyka konkretnego przetworzenia WorldCover. Wysoki udział może wynikać z szerszej definicji klasy i przeglądów/nearest sampling. Znane kompleksy Bory Tucholskie, Białowieska, Notecka, Kampinoska i Bory Dolnośląskie mają potwierdzone pokrycie w próbkach kontrolnych.
+
+### Wysokości — Terrarium, SRTM/GMTED2010/ETOPO1
+
+- Dokładne 56 adresów `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/{x}/{y}.png`, SHA-256, daty modyfikacji, wersje S3 i nagłówki pochodzenia są w scripts/landscape-sources.json. Mozaika kafli z **2017 r.**, pobrana 2026-10-25. Terrarium dekodowane jako `R*256 + G + B/256 - 32768` metrów.
+- Sprawdzono nagłówki wszystkich pobranych kafli: źródła wyłącznie **SRTM, GMTED2010, ETOPO1**, bez niezweryfikowanych regionalnych dostawców. SRTM i GMTED2010: **data courtesy of the U.S. Geological Survey**; ETOPO1: **terrain data U.S. National Oceanic and Atmospheric Administration**, domena publiczna. Opracowanie publicznego zestawu: Mapzen/Tilezen.
+- Zasady źródłowe: [Tilezen Joerd attribution, przypięty commit 0b86765156d0612d837548c2cf70376c43b3405c](https://github.com/tilezen/joerd/blob/0b86765156d0612d837548c2cf70376c43b3405c/docs/attribution.md), kopia public/licenses/terrain-ATTRIBUTION.md. Sekcje SRTM, GMTED2010 i ETOPO1 potwierdzają status domeny publicznej; podano atrybucję w aplikacji i opis modyfikacji.
+- Złożono kafle zoom 8, przeliczono bilinear do krajowej siatki **800 metrów projekcji** (około **460–525 m rzeczywistych** w Polsce), zastosowano rzeczywiste pasma wysokości i subtelny gradient cieniowania. Kolory są kwantowane; nie ma fotografii ani losowych ikon gór. Zapisane próbki kontrolne obejmują Tatry, Beskidy, Bieszczady, Sudety, Wyżynę Krakowsko-Częstochowską i Nizinę Mazowiecką.
+- To uogólniona rzeźba, nie aktualny wysokorozdzielczy NMT; wierzchołki gór i małe doliny są wygładzone. Surowy zakres siatki w masce kraju to około -148–2181 m (mozaika może obejmować zagłębienia i wartości przy wodach). Nie poprawiano ręcznie wysokości, aby uzyskać oczekiwane szczyty.
+
+### Wspólny produkt lokalny i odtworzenie
+
+Pliki public/landscape/: manifest.json oraz terrain-{4,2,1}.png i forests-{4,2,1}.png. Razem obrazy około **0,6 MB**. Manifest zawiera CRS, origin w konwencji wspólnej kamery (północ = mniejsze Y), rozmiar bazowy 1395×1319, rozdzielczość, trzy LOD oraz kontrolne statystyki źródeł. Kolory są tylko interpretacją danych. Przezroczystość poza krajem i wspólny clip Path2D zapobiegają wyciekaniu warstw.
+
+```sh
+python3 -m pip install --target /tmp/pixelcargo-raster-tools -r scripts/requirements-landscape.txt --cache-dir /tmp/pixelcargo-pip-cache
+PYTHONPATH=/tmp/pixelcargo-raster-tools python3 scripts/prepare-landscape.py
+```
+
+Generator sprawdza istniejący source lock: ETag źródła ESA i SHA-256 odczytanej próbki, a dla pełnych kafli Terrarium SHA-256 pliku PNG. Dane cache w /tmp/pixelcargo-landscape/raster są ponownie weryfikowane. Przy pierwszym pozyskaniu użyto `--initialize-lock`; skrypt odmawia zastąpienia istniejącej blokady i nie wolno zmieniać sum tylko po to, aby ukryć niezgodność. Pełnych wielogigabajtowych COG nie zapisujemy: czytamy ich przeglądy przez bezpieczne HTTPS/Range z weryfikacją TLS, zaufanym systemowym CA i blokadą wersji/ETag oraz sumą próbki. Reprodukcję z gotowej blokady wykonano po pierwszym pozyskaniu i walidacja przeszła.
+
+`LandscapeCanvas.tsx` zastępuje nazwę HydrographyCanvas z 04C-2, zachowując tę samą pojedynczą warstwę i funkcje wody. Kolejność: teren bazowy → wysokości → drzewa → jeziora/rzeki → SVG granic → miasta → etykiety. Obrazy i geometrie cache’owane, wycinek rastra liczony w world meters przez rasterWindow, bez ponownej reprojekcji przy przesuwaniu. Mały zoom wybiera uproszczony obraz, duży ujawnia mniejsze powierzchnie. Raster ma ograniczoną liczbę pikseli zamiast tysięcy poligonów/obiektów SVG.
