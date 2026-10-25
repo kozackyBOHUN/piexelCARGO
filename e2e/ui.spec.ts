@@ -93,7 +93,10 @@ for (const size of [
       page.getByRole("button", { name: "Importuj", exact: true }),
     ).toBeInViewport();
     await expect(
-      page.getByRole("heading", { name: "Mapa Polski — etap 04" }),
+      page.getByRole("group", {
+        name: "Mapa Polski z granicami województw",
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
       page.getByRole("region", { name: "Harmonogram", exact: true }),

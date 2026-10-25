@@ -1,0 +1,3 @@
+# Optional data regeneration only; not required to build or run the game.
+shapely==2.1.2
+numpy==2.5.4

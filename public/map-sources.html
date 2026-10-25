@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Źródła mapy — PixelCargo</title>
+    <style>
+      body {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 24px;
+        background: #171e26;
+        color: #dce5e8;
+        font:
+          16px/1.8 system-ui,
+          sans-serif;
+      }
+      h1,
+      h2 {
+        font-family: monospace;
+        color: #f2ba62;
+      }
+      a {
+        color: #f2cd96;
+      }
+      code {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Źródła mapy PixelCargo</h1>
+    <p>
+      Etap 04A: rzeczywiste granice państwa i 16 województw, 19 demonstracyjnych
+      miast Małopolski. To podzbiór miast, bez dróg i wyznaczania tras.
+    </p>
+    <h2>Granice</h2>
+    <p>
+      Państwowy Rejestr Granic (GUGiK), według opisu źródła. Konwersja i
+      uproszczenie: Piotr Patrzyk,
+      <a
+        href="https://github.com/ppatrzyk/polska-geojson/tree/74a22f97cf822aa1cb49802c1700ccb8b6340eca"
+        >polska-geojson</a
+      >. Licencja opracowania:
+      <a href="/licenses/polska-geojson-MIT.txt">MIT — polska-geojson</a>, ©
+      2019 Piotr Patrzyk.
+    </p>
+    <p>
+      Użyto pliku wojewodztwa-medium.geojson. Zmiany PixelCargo: naprawa
+      niepoprawnej topologii pierścieni, suma obszarów województw jako granica
+      państwa, zaokrąglenie do pięciu miejsc dziesiętnych, identyfikatory
+      województw. Nie przesuwano ręcznie punktów mapy. Źródło nie podaje daty
+      stanu administracyjnego; zapisujemy przypiętą migawkę, nie deklarujemy
+      bieżącego stanu PRG.
+    </p>
+    <h2>Miasta</h2>
+    <p>
+      © <a href="https://www.geonames.org/">GeoNames</a>,
+      <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+      Współrzędne i nazwy pochodzą ze zbioru cities500, dystrybucja
+      <a href="https://pypi.org/project/geonamescache/3.0.2/"
+        >geonamescache 3.0.2</a
+      >
+      autorstwa Ramiro Gómez (<a href="/licenses/geonamescache-MIT.txt"
+        >licencja MIT pakietu</a
+      >).
+    </p>
+    <p>
+      Zmiany PixelCargo: wybór 19 miast Małopolski, usunięcie pozostałych pól,
+      stabilne identyfikatory geonames i powiązanie z województwem. Nie używamy
+      nieudatowanych danych ludności do ekonomii. Dane miast całej Polski będą
+      wymagać osobnego etapu.
+    </p>
+    <p>
+      Data pobrania obu migawek: 25 października 2026. Pełne sumy SHA-256 i
+      instrukcja odtworzenia: docs/MAP_DATA.md w repozytorium projektu.
+    </p>
+    <p><a href="/">Powrót do PixelCargo</a></p>
+  </body>
+</html>

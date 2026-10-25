@@ -5,6 +5,7 @@ import { formatGameTime } from "../core/engine";
 import { SaveControls } from "./SaveControls";
 import { PixelIcon, type IconName } from "./PixelIcon";
 import { Timeline } from "./Timeline";
+import { PolandMap } from "./PolandMap";
 const tabs: {
   id: string;
   label: string;
@@ -108,7 +109,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
         </a>
         <div className="environment-badge">
           <span className="status-light" />
-          FAZA I<span className="badge-divider">/</span>FUNDAMENT GRY
+          FAZA II<span className="badge-divider">/</span>MAPA 04A
         </div>
         <div className="topbar-note" aria-label="Alerty sesji">
           {status.mode === "active" && !status.saveError
@@ -266,54 +267,19 @@ export function App({ runtime }: { runtime: GameRuntime }) {
           <div className="management-foot">
             <span className="tiny-square" />
             {status.mode === "active"
-              ? "Silnik czasu i zapisu aktywny w Fazie I"
+              ? "Silnik czasu i zapisu aktywny"
               : "Symulacja w tej karcie nie jest uruchomiona"}
           </div>
         </aside>
         <div className="world-column">
-          <section className="panel map-panel" aria-labelledby="map-title">
-            <header className="panel-heading">
-              <div>
-                <span className="section-number">02</span>
-                <h2 id="map-title">Obszar operacyjny</h2>
-              </div>
-              <span className="module-tag">MODUŁ NIEAKTYWNY</span>
-            </header>
-            <div className="map-placeholder">
-              <div className="map-coordinate top-left">
-                PIXELCARGO / OBSZAR MAPY
-              </div>
-              <div className="placeholder-center">
-                <div className="map-icon">
-                  <PixelIcon name="map" size={56} />
-                </div>
-                <span className="eyebrow">KOLEJNY ETAP ROZWOJU</span>
-                <h2>Mapa Polski — etap 04</h2>
-                <p>
-                  Tu pojawi się interaktywna mapa.
-                  <br />
-                  Dane miast i sieć drogowa nie są jeszcze zaimplementowane.
-                </p>
-                <span className="placeholder-label">
-                  <span className="tiny-square" /> Miejsce na przyszły moduł
-                </span>
-              </div>
-              <div className="map-coordinate bottom-right">
-                BRAK DANYCH GEOGRAFICZNYCH
-              </div>
-            </div>
-            <div className="panel-footnote">
-              <PixelIcon name="map" size={14} />
-              Widok techniczny · mapa i transporty niedostępne
-            </div>
-          </section>
+          <PolandMap />
           <Timeline time={state.time} />
         </div>
       </main>
       <footer className="footer">
         <span>
           <span className="tiny-square" />
-          PixelCargo 0.1 · Faza I
+          PixelCargo 0.1 · Faza II / 04A
         </span>
         <span>
           Zegar działa podczas otwartej sesji. Po powrocie — ostatni zapis, bez
