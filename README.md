@@ -1,3 +1,9 @@
+# Układ gry — Etap 07
+
+MAPA / BAZA w lewym górnym rogu otwiera duży widok. Ikony po lewej otwierają szerokie zarządzanie z podzakładkami. Harmonogram: 1 AUTO, 5 AUT, PEŁNY EKRAN lub wysokość ustawiona przeciągnięciem górnej krawędzi; preferencje zachowują się po odświeżeniu. Szczegóły: [docs/LAYOUT_07.md](docs/LAYOUT_07.md). Integracja PNG pozostaje wstrzymana.
+
+---
+
 # Interfejs gry — Etap 06
 
 MAPA / BAZA przełącza prawy widok. Pięć sekcji po lewej otwiera funkcje bez zatrzymywania świata; harmonogram pozostaje pod mapą/bazą. Zapis i restart są pod ustawieniami w górnym pasku. Szczegóły: [docs/INTERFACE_06.md](docs/INTERFACE_06.md).

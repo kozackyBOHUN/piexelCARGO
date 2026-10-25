@@ -1,3 +1,9 @@
+# Aktualizacja — Etap 07: nawigacja i harmonogram
+
+Duża mapa/baza + ikony albo szerokie zarządzanie 2/3; tabela zleceń bez przesuwania poziomego. Harmonogram 1 AUTO / 5 AUT / PEŁNY EKRAN, uchwyt wysokości, osobne trwałe preferencje UI, alerty i rzeczywista oś czasu. Mechanika, ekonomia, czas, zapisy i OSM bez zmian. Paczek grafik NIE integrowano; niedokończone zmiany poprzedniego zadania zostały w osobnym worktree, poza tą gałęzią. Baza 07ca6179a286ddd65ffa290b26d2bfd606781de6, gałąź feat/preview-gameplay-core. Szczegóły i punkt kontynuacji: docs/LAYOUT_07.md. Po testach, commit/push i sprawdzeniu Pages czekać na nowe polecenie.
+
+---
+
 # Aktualizacja — Etap 06, nowy interfejs
 
 Jedna gra ma nową powłokę według referencji: pięć sekcji menu i osobny panel, niezależne tryby MAPA/BAZA, tabele zleceń/floty/finansów, przydział auta, hover OSM i stały harmonogram. Mechanika i dane bez zmian. Szczegóły i ograniczenia assetów/liczby paczek: docs/INTERFACE_06.md. Baza e3b66f2e05287185a1a050dc87904e0fba72ee5d, gałąź feat/preview-gameplay-core. Nie ingerowano w gałąź grafika. Punkt wznowienia: ukończony zakres interfejsu; po commit/push i sprawdzeniu Pages czekać na nowe polecenie. Nie rozpoczynać kolejnych etapów.
