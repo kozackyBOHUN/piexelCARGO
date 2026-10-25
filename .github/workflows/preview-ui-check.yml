@@ -2,7 +2,8 @@ name: Preview Pixel UI / Regression
 on:
   push:
     branches:
-      - feat/preview-parking-tutorial
+      - feat/preview-restart-control
+      - feat/preview-gameplay-core
   workflow_dispatch:
 
 permissions:
