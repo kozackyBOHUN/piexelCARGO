@@ -54,6 +54,7 @@ export interface PreviewState {
   readonly van: PreviewVan | null;
   readonly driverHiredAt: GameMs | null;
   readonly paidWagesGrosze: Grosze;
+  readonly wagesLoggedGrosze: Grosze;
   readonly active: ActiveTransport | null;
   readonly completedOfferIds: readonly string[];
   readonly events: readonly PreviewEvent[];
@@ -79,7 +80,7 @@ function record(state: PreviewState, message: string, changeGrosze: number): Pre
 }
 export function createPreviewState(time: GameMs): PreviewState {
   assertNatural(time, 'czas');
-  return { time, company: null, van: null, driverHiredAt: null, paidWagesGrosze: 0,
+  return { time, company: null, van: null, driverHiredAt: null, paidWagesGrosze: 0, wagesLoggedGrosze: 0,
     active: null, completedOfferIds: [], events: [] };
 }
 export function establishCompany(state: PreviewState, name: string, baseCityId: string): PreviewState {
@@ -144,11 +145,17 @@ export function advancePreview(state: PreviewState, newGameTime: GameMs): Previe
   if (newGameTime === state.time) return state;
   let current = state;
   const step = (to: number) => {
+    const previousTime = current.time;
     const wageTotal = current.driverHiredAt === null ? 0 : Math.floor((to - current.driverHiredAt) * WAGE_PER_HOUR / HOUR);
     const wageDifference = wageTotal - current.paidWagesGrosze;
     current = { ...current, time: to, paidWagesGrosze: wageTotal,
       company: current.company ? { ...current.company, balanceGrosze: current.company.balanceGrosze - wageDifference } : null };
-    if (wageDifference) current = record(current, 'Wynagrodzenie kierowcy.', -wageDifference);
+    // Aggregate wage ledger entries rather than persisting one event every timer tick.
+    if (wageTotal > (current.wagesLoggedGrosze ?? 0) && Math.floor(to / HOUR) > Math.floor(previousTime / HOUR)) {
+      const toLog = wageTotal - (current.wagesLoggedGrosze ?? 0);
+      current = { ...current, wagesLoggedGrosze: wageTotal };
+      current = record(current, 'Wynagrodzenie kierowcy.', -toLog);
+    }
   };
   while (current.time < newGameTime) {
     const startOfNextDay = (Math.floor(current.time / DAY) + 1) * DAY;
