@@ -602,7 +602,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
           Krajobraz: © ESA WorldCover 2021 · USGS/NOAA · Natural Earth ·
           Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) · Miasta: © GeoNames (CC BY
           4.0) ·{" "}
-          <a href="/map-sources.html" target="_blank" rel="noreferrer">
+          <a href={`${import.meta.env.BASE_URL}map-sources.html`} target="_blank" rel="noreferrer">
             Źródła i licencje
           </a>
         </span>

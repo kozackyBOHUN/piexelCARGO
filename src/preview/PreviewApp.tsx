@@ -110,7 +110,7 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
   const [base,setBase] = useState('');
   useEffect(()=>{
     let active = true;
-    fetch('/roads/preview/routes.json').then(async response=>{
+    fetch(`${import.meta.env.BASE_URL}roads/preview/routes.json`).then(async response=>{
       if(!response.ok) throw new Error('Nie znaleziono zestawu zatwierdzonych tras preview.');
       const json: unknown = await response.json();
       if (!Array.isArray(json) || !json.every(isRoute) || json.length===0) throw new Error('Dane tras mają nieprawidłowy format.');
@@ -154,7 +154,7 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
   }
   function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(previewTime));setError('');}}
   return <div className="pv-app">
-    <header className="pv-header"><div><a href="/">← MAPA / PANEL TECHNICZNY</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
+    <header className="pv-header"><div><a href={import.meta.env.BASE_URL}>← MAPA / PANEL TECHNICZNY</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
       <div className="pv-clock"><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
     <div className="pv-summary">
       <div><small>FIRMA</small><strong>{state.company?.name ?? 'Nieutworzona'}</strong></div>

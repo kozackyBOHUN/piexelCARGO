@@ -1,3 +1,23 @@
+# Aktualizacja — przygotowana publikacja GitHub Pages
+
+Gałąź feat/preview-gameplay-core, baza a233b302b597ac46d178b399f42d199956850157.
+Workflow .github/workflows/preview-pages.yml buduje i publikuje wyłącznie tę gałąź.
+npm run build:pages ustawia /piexelCARGO/; fetch tras i linki UI/licencji obsługują
+bazę repozytorium. localStorage i mechanika bez zmian. Nie scalono do main.
+
+Lokalny produkcyjny build i test Playwright pod /piexelCARGO/ przechodzą (1/1):
+firma, furgon/kierowca, zapis/reload, trasa, powrót do mapy i licencje, bez 404.
+Publiczna publikacja wymaga włączenia Pages → Source: GitHub Actions i zielonego
+workflow. Nie podawać URL jako zweryfikowanego przed faktycznym deploy.
+Brak narzędzia publicznego podglądu Codexa; proxy blokowało dostęp do GitHub API
+oraz domeny Pages (403). Dokładne ostatnie kroki: docs/GITHUB_PAGES.md.
+Adres docelowy: https://kozackybohun.github.io/piexelCARGO/?preview=1.
+Czekać na nowe polecenie po zakończeniu tej publikacji/raportu.
+
+Poniżej historyczny raport stabilizacji preview.
+
+---
+
 # Preview — stabilizacja zapisu ukończona
 
 Gałąź feat/preview-gameplay-core, baza 1b361852066205a2c7139ec9f1a1ff7ae91e1b0e.

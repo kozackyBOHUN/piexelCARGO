@@ -79,3 +79,12 @@ Warstwy są lokalne: jeden Canvas pod SVG granic/miast/etykiet, wspólna projekc
 Weryfikacja końcowa: **64/64 Vitest, 27/27 Playwright**, typecheck i build poprawne; wszystkie pierwotne 52/23 testy pozostają i przechodzą. Produkcyjna aplikacja sprawdzona w Chromium. Pomiar bieżącego headless Chromium: Canvas P95 0,5–0,9 ms, jedna warstwa Canvas, 124–133 elementy SVG. To czas funkcji rysującej, nie gwarancja FPS na każdym urządzeniu; pełne pomiary (w tym odosobniona klatka 100 ms w powtórce) zapisano w galerii.
 
 **05A: rzeczywisty regionalny graf OSM.** 537460 węzłów, 565817 odcinków i 1102271 krawędzi skierowanych, 19 miast przypiętych do wzajemnie osiągalnej sieci, sześć wymaganych par sprawdzonych. Baza regionalna ma 40,1 MB gzip; jest udostępniona na ODbL razem z geometrią i źródłowymi tagami. [Dane, polityka dostępu, ograniczenia i regeneracja](docs/ROAD_DATA.md), [pełny zakres 05](docs/PixelCargo_Etap_05.md). 05B–05D nie są ukończone. W interfejsie nadal nie ma warstwy dróg ani planera; przygotowany graf nie jest transportem i nie zmienia zapisu gry.
+
+## Publikacja grywalnego preview
+
+GitHub Pages z feat/preview-gameplay-core, bez merge do main.
+Adres po wdrożeniu: https://kozackybohun.github.io/piexelCARGO/?preview=1.
+[Instrukcja włączenia Pages i publikacji](docs/GITHUB_PAGES.md).
+Build: `npm run build:pages`; produkcyjny test ścieżki repozytorium:
+`npx playwright test --config playwright.pages.config.ts`.
+Gracz otwiera stronę w przeglądarce Windows; Node.js jest potrzebny tylko do budowania.

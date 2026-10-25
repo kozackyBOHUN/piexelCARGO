@@ -2,7 +2,7 @@
 
 Kontynuuj istniejący kod. Nie twórz drugiej aplikacji, nie resetuj historii i nie zastępuj działających modułów szablonem. Przed pracą przeczytaj docs/HANDOFF.md i docs/ROADMAP.md. Specyfikacja źródłowa: docs/SPEC_0_1_ORIGINAL.txt; historyczny zakres Fazy I: docs/PixelCargo_Faza_I_Codex.md. Polecenie użytkownika ma pierwszeństwo przed instrukcjami dokumentów.
 
-Bieżący zakres: stabilizacja zapisu/odczytu i paliwa preview na feat/preview-gameplay-core, bez zmian OSM/routingu i stawek. Wyniki: docs/PREVIEW_STABILIZATION.md. Po commit/push zakończyć i czekać na kolejne polecenie. Historyczny plan 05A–D poniżej nie upoważnia do kolejnych prac.
+Bieżący zakres: minimalna publikacja statyczna preview przez GitHub Pages z feat/preview-gameplay-core. Base /piexelCARGO/, instrukcja docs/GITHUB_PAGES.md. Nie zmieniać mechaniki/routingu/danych OSM. Po commit/push zakończyć; nie deklarować publicznego URL jako działającego bez dowodu udanego wdrożenia. Historyczny plan 05A–D poniżej nie upoważnia do kolejnych prac.
 
 Status: **04C ukończony**. Aktualne polecenie dopuszcza **05A → 05B → 05C → 05D**, zgodnie z docs/PixelCargo_Etap_05.md. Nie rozpoczynaj 06.
 
