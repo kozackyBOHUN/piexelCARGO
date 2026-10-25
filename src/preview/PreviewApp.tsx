@@ -7,6 +7,7 @@ import {
   type PreviewOffer, type PreviewState, type TransportRoute,
 } from './gameplay';
 import { BaseParking } from './BaseParking';
+import { CargoPixel } from './PixelSprites';
 
 /** This preview is independent of the unreleased full-country market and road graph. */
 const STORAGE = 'pixelcargo-0.1-preview-v1';
@@ -193,7 +194,7 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
           {!offers.length && <p>Brak dostępnych kursów z tej lokalizacji.</p>}
           {offers.map(({route,offer})=><article className="pv-job" key={offer.id}>
             <strong>{city(route.fromCityId)} → {city(route.toCityId)}</strong>
-            <span>{offer.cargo} • {offer.massKg} kg • {offer.volumeM3} m³ • {offer.pallets} pal.</span>
+            <div className="pv-cargo-row"><CargoPixel cargo={offer.cargo}/><span>{offer.cargo}<small>{offer.massKg} kg · {offer.volumeM3} m³ · {offer.pallets} palety</small></span></div>
             <span>{(route.meters/1000).toFixed(1)} km • {duration(route.seconds)}</span>
             <div><b>{price(offer.payoutGrosze)}</b><button disabled={!!state.active||!state.van||state.driverHiredAt===null||status.mode!=='active'} onClick={()=>{action(s=>dispatchTransport(s,offer,stationaryRoute(route.fromCityId,route.geometry[0]),route));setView('map');}}>PRZYJMIJ</button></div>
           </article>)}</>}
