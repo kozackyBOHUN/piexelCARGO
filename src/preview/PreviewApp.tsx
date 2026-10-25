@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { GameRuntime } from '../core/runtime';
+import { CONFIG } from '../core/config';
 import { formatGameTime } from '../core/engine';
 import {
   advancePreview, buyUsedVan, createPreviewState, dispatchTransport, establishCompany,
@@ -159,10 +160,25 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
     if(status.mode!=='active') {setError('Ta sesja jest nieaktywna. Zamknij inne karty gry.');return;}
     try{const next = fn(state);setState(next);setError('');}catch(e){setError(e instanceof Error?e.message:String(e));}
   }
-  function reset(){if(window.confirm('Usunąć zapis wersji preview i rozpocząć od nowa?')){window.localStorage.removeItem(STORAGE);setState(createPreviewState(previewTime));setView('base');setError('');}}
+  function reset(){
+    if(!window.confirm('Zrestartować firmę? Utracisz firmę, pojazdy, kierowcę, pieniądze, zlecenia i historię. Tej operacji nie można cofnąć.')) return;
+    const initial=createPreviewState(CONFIG.startTime);
+    // Reset ONLY the independent preview; the technical root session remains intact.
+    clockOffset.current=CONFIG.startTime-game.time;
+    // Flush the new state synchronously, so reloading right after clicking cannot
+    // resurrect an older company from the periodic autosave.
+    latestState.current=initial;
+    try{window.localStorage.setItem(STORAGE,JSON.stringify(initial));}
+    catch{window.localStorage.removeItem(STORAGE);}
+    setState(initial);
+    setView('base');
+    setName('');
+    setBase(routes[0]?.fromCityId??'');
+    setError('');
+  }
   return <div className="pv-app">
     <header className="pv-header"><div><a href={import.meta.env.BASE_URL}>← MAPA / PANEL TECHNICZNY</a><h1>PIXELCARGO <span>0.1 • GRAJ</span></h1><small>JEDEN FURGON • RZECZYWISTE DROGI • WERSJA PREVIEW</small></div>
-      <div className="pv-clock"><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
+      <div className="pv-clock"><button type="button" className="pv-restart-button" onClick={reset} aria-label="RESTART FIRMY">↺ RESTART FIRMY</button><span>{formatGameTime(previewTime).day} · DZIEŃ {formatGameTime(previewTime).dayNumber}</span><strong>{formatGameTime(previewTime).hour}</strong><small>1 sekunda = 1 minuta gry</small></div></header>
     <div className="pv-summary">
       <div><small>FIRMA</small><strong>{state.company?.name ?? 'Nieutworzona'}</strong></div>
       <div><small>SALDO</small><strong>{state.company ? price(state.company.balanceGrosze) : '—'}</strong></div>
@@ -222,7 +238,7 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
         <div className="pv-events">{[...state.events].reverse().slice(0,12).map(event=><div key={event.id}><span>{formatGameTime(event.at).hour}</span><span>{event.message}</span><strong>{event.changeGrosze ? price(event.changeGrosze) : '—'}</strong></div>)}
           {!state.events.length && <p>Brak operacji.</p>}
         </div>
-        <div className="pv-foot"><span>Oddzielny zapis demonstracji. Nie modyfikuje zapisu gry głównej.</span><button onClick={reset}>RESET PREVIEW</button></div>
+        <div className="pv-foot"><span>Oddzielny zapis demonstracji. Aby rozpocząć od nowa, użyj przycisku RESTART FIRMY w prawym górnym rogu.</span></div>
       </section>
     </div>
     <footer className="pv-footer">PIXELCARGO • PREVIEW • NIEPEŁNA WERSJA 0.1 · ŹRÓDŁO DRÓG: © OPENSTREETMAP CONTRIBUTORS</footer>
