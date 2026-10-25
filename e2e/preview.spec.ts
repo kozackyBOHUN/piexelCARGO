@@ -16,6 +16,33 @@ async function readyCompany(page:Page){
  await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
  await expect(page.getByText('KIEROWCA ZATRUDNIONY',{exact:true})).toBeVisible();
 }
+test('RESTART FIRMY in top-right asks confirmation, clears company and restarts tutorial after reload',async({page})=>{
+  await readyCompany(page);
+  await page.waitForTimeout(1100);
+  const before=await saved(page);
+  expect(before?.company?.name).toBe('Stabilny Transport');
+  const button=page.getByRole('button',{name:'RESTART FIRMY'});
+  await expect(button).toBeVisible();
+  page.once('dialog',dialog=>dialog.dismiss());
+  await button.click();
+  expect((await saved(page))?.company?.name).toBe('Stabilny Transport');
+  page.once('dialog',dialog=>dialog.accept());
+  await button.click();
+  await expect(page.locator('.pv-summary')).toContainText('Nieutworzona');
+  await expect(page.getByLabel('Nazwa firmy')).toHaveValue('');
+  await expect(page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'})).toBeDisabled();
+  const resetSave=await saved(page);
+  expect(resetSave?.company).toBeNull();
+  expect(resetSave?.van).toBeNull();
+  expect(resetSave?.driverHiredAt).toBeNull();
+  expect(resetSave?.events).toEqual([]);
+  expect(resetSave?.time).toBeGreaterThanOrEqual(6*60*60*1000);
+  expect(resetSave?.time).toBeLessThan(6*60*60*1000+60*60*1000);
+  await page.reload();
+  await expect(page.locator('.pv-summary')).toContainText('Nieutworzona');
+  await expect(page.getByRole('button',{name:'RESTART FIRMY'})).toBeVisible();
+  expect((await saved(page))?.company).toBeNull();
+});
 test('first visit introduces parking, locks buildings and keeps five market listings after reload',async({page})=>{
  await page.goto('/?preview=1');
  await expect(page.getByLabel('Nazwa firmy')).toHaveValue('');
