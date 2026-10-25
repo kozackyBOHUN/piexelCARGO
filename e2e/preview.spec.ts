@@ -16,6 +16,29 @@ async function readyCompany(page:Page){
  await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ'}).click();
  await expect(page.getByText('KIEROWCA ZATRUDNIONY',{exact:true})).toBeVisible();
 }
+test('first visit introduces parking, locks buildings and keeps five market listings after reload',async({page})=>{
+ await page.goto('/?preview=1');
+ await expect(page.getByLabel('Nazwa firmy')).toHaveValue('');
+ await expect(page.getByLabel('Nazwa firmy')).toHaveAttribute('placeholder','Moja Firma Transportowa');
+ await page.getByLabel('Nazwa firmy').fill('Test Pixel');
+ await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ'}).click();
+ await expect(page.getByText('WITAJ W SWOJEJ BAZIE')).toBeVisible();
+ await expect(page.getByRole('button',{name:/KADRY, poziom 1, zablokowany/})).toBeDisabled();
+ await page.getByRole('button',{name:/SPEDYCJA, poziom 1, zablokowany/})).toBeDisabled();
+ await page.getByRole('button',{name:/PARKING, poziom 1, otwarty/}).click();
+ await expect(page.getByText('TWOJA FLOTA JEST PUSTA')).toBeVisible();
+ await page.getByRole('tab',{name:'DEALER'}).click();
+ await expect(page.getByRole('button',{name:'WYMAGA PARKINGU LV 2'})).toBeDisabled();
+ await page.getByRole('tab',{name:'GIEŁDA'}).click();
+ await expect(page.locator('.pv-car-card')).toHaveCount(5);
+ await page.waitForTimeout(1200);
+ const before=(await saved(page))!.usedVanMarket;
+ await page.reload();
+ await page.getByRole('button',{name:/PARKING, poziom 1, otwarty/}).click();
+ await page.getByRole('tab',{name:'GIEŁDA'}).click();
+ await expect(page.locator('.pv-car-card')).toHaveCount(5);
+ expect((await saved(page))?.usedVanMarket).toEqual(before);
+});
 test('preview saves within two seconds and restores company, balance, van and driver',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await readyCompany(page);await page.waitForTimeout(2100);
