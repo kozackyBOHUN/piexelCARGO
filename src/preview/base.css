@@ -29,6 +29,7 @@
 .pv-used-list{max-height:390px;overflow-y:auto;padding-right:6px;scrollbar-color:#9d8058 #1b2931;scrollbar-width:thin}
 .pv-car-card{display:grid;grid-template-columns:minmax(160px,1fr) minmax(230px,1.65fr);gap:14px;margin:6px 3px 13px;background:#26343d;border:2px solid #56656c;box-shadow:4px 4px 0 #10181e;padding:10px}
 .pv-car-graphic{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;background:repeating-linear-gradient(0deg,#394c50 0 15px,#334449 15px 19px);border:2px solid #42595d;min-height:118px}
+.pv-vehicle-sprite{display:block;width:100%;max-width:320px;height:auto;aspect-ratio:2/1;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(3px 6px 0 #17232b);user-select:none}
 .pv-van-art{display:block;width:100%;max-width:220px;min-height:80px;image-rendering:pixelated;filter:drop-shadow(4px 5px 0 #151e27)}
 .pv-condition-warn,.pv-condition-good{font-size:9px;color:#e6c091;letter-spacing:1px}.pv-condition-warn{color:#ef9878}
 .pv-car-info{display:flex;flex-direction:column;gap:6px;min-width:0}.pv-car-info>strong{font-size:13px;color:#f5e4c3}.pv-car-sub{color:#97b3bd;font-size:10px}
