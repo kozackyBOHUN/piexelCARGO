@@ -166,8 +166,8 @@ export function makeRoadRouter(network: RoadNetwork, profile: VanProfile = DEFAU
   if (!(profile.maxSpeedKph > 0) || !Number.isFinite(profile.maxSpeedKph)) throw new Error('Niepoprawny profil prędkości.');
   const rules = restrictions(network.graph, profile);
   const graph = network.graph;
-  const allowedWays = graph.ways.map(w => edgeAllowed(w.tags, profile));
-  const secondsPerEdge = network.edges.map(edge => {
+  const allowedWays = Uint8Array.from(graph.ways, w => edgeAllowed(w.tags, profile) ? 1 : 0);
+  const secondsPerEdge = Float64Array.from(network.edges, edge => {
     const s = graph.segments[edge.segment], tags = graph.ways[s[3]].tags;
     return s[4] * 3.6 / speedKph(tags, edge.reverse, profile);
   });
@@ -182,30 +182,36 @@ export function makeRoadRouter(network: RoadNetwork, profile: VanProfile = DEFAU
     }
     const target: LonLat = [graph.nodes[goal][1], graph.nodes[goal][2]];
     const heuristic = (node: number) => strategy === 'dijkstra' ? 0 : greatCircleMeters([graph.nodes[node][1], graph.nodes[node][2]], target) * 0.999999;
-    const queue = new Heap(), distance = new Map<number,number>(), predecessor = new Map<number, number>();
+    // Indexed edges are dense and stable. Typed arrays avoid millions of Map entries
+    // on the real 05A OSM graph, while still allowing repeatable searches.
+    const queue = new Heap();
+    const distance = new Float64Array(network.edges.length);
+    distance.fill(Infinity);
+    const predecessor = new Int32Array(network.edges.length);
+    predecessor.fill(-1);
     for (const eIndex of network.outgoing[start]) {
       const e = network.edges[eIndex], s = graph.segments[e.segment];
       if (!allowedWays[s[3]]) continue;
       const cost = s[4];
-      if (cost < (distance.get(eIndex) ?? Infinity)) { distance.set(eIndex, cost); predecessor.set(eIndex, -1); queue.push({ edge: eIndex, distance: cost, cost: cost + heuristic(e.to) }); }
+      if (cost < distance[eIndex]) { distance[eIndex] = cost; predecessor[eIndex] = -1; queue.push({ edge: eIndex, distance: cost, cost: cost + heuristic(e.to) }); }
     }
     let last = -1;
     while (queue.length) {
       const state = queue.pop()!, from = network.edges[state.edge];
-      if (state.distance !== distance.get(state.edge)) continue;
+      if (state.distance !== distance[state.edge]) continue;
       if (from.to === goal) { last = state.edge; break; }
       for (const nextIndex of network.outgoing[from.to]) {
         const next = network.edges[nextIndex], segment = graph.segments[next.segment];
         if (!allowedWays[segment[3]] || !canTurn(network, from, next, rules)) continue;
         const candidate = state.distance + segment[4];
-        if (candidate >= (distance.get(nextIndex) ?? Infinity) - 1e-9) continue;
-        distance.set(nextIndex, candidate); predecessor.set(nextIndex, state.edge);
+        if (candidate >= distance[nextIndex] - 1e-9) continue;
+        distance[nextIndex] = candidate; predecessor[nextIndex] = state.edge;
         queue.push({ edge: nextIndex, distance: candidate, cost: candidate + heuristic(next.to) });
       }
     }
     if (last < 0) return { route: null, diagnostics: report };
     const path: number[] = [];
-    for (let e = last; e !== -1; e = predecessor.get(e) ?? -1) path.push(e);
+    for (let e = last; e !== -1; e = predecessor[e]) path.push(e);
     path.reverse();
     const legs: RoadLeg[] = [];
     const geometry: LonLat[] = [];
