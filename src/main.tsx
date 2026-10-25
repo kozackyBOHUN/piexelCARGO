@@ -1,12 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { CONFIG } from './core/config';
-import { GameSession, SessionClock } from './core/session';
+import { GameRuntime } from './core/runtime';
 import { TechnicalApp } from './ui/TechnicalApp';
-const session = new GameSession();
-const clock = new SessionClock(session.advance);
-clock.start(performance.now());
-const sample = () => clock.sample(performance.now());
-const timer = setInterval(sample, CONFIG.tickMs);
-document.addEventListener('visibilitychange', sample);
-createRoot(document.getElementById('root')!).render(<TechnicalApp session={session} />);
-if (import.meta.hot) import.meta.hot.dispose(() => { clearInterval(timer); clock.stop(); document.removeEventListener('visibilitychange', sample); });
+const runtime = new GameRuntime(); runtime.start();
+createRoot(document.getElementById('root')!).render(<TechnicalApp runtime={runtime} />);
+if (import.meta.hot) import.meta.hot.dispose(() => { void runtime.close(); });

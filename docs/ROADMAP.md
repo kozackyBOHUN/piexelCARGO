@@ -3,7 +3,7 @@ Punkty 01–03 pochodzą z dokumentu Fazy I. Nazwy 04–18 to robocze grupowanie
 
 - [x] 01 Fundament i architektura
 - [x] 02A Silnik symulacji i zegar
-- [ ] 02B Zapis, odczyt i blokada kart
+- [x] 02B Zapis, odczyt i blokada kart
 - [ ] 03 Powłoka interfejsu pixel art
 - [ ] 04 Mapa Polski i dane geograficzne
 - [ ] 05 Sieć drogowa i wyznaczanie tras
