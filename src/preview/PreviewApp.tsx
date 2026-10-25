@@ -109,8 +109,12 @@ function ActivePreviewApp({runtime}: {runtime: GameRuntime}) {
   const [loadError,setLoadError] = useState('');
   const [error,setError] = useState('');
   const [name,setName] = useState('');
-  const [view,setView] = useState<'base'|'map'>('base');
+  const [view,setView] = useState<'base'|'map'>(state.active ? 'map' : 'base');
   const [base,setBase] = useState('');
+  useEffect(()=>{
+    // Resuming a transport stays on the map even after the cargo arrives.
+    if(state.active) setView('map');
+  },[Boolean(state.active)]);
   useEffect(()=>{
     let active = true;
     fetch(`${import.meta.env.BASE_URL}roads/preview/routes.json`).then(async response=>{
