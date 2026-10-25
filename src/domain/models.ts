@@ -10,13 +10,13 @@ export interface Route { id: string; nodeIds: string[] }
 export interface TimelineAction { id: string; start: GameTime; end: GameTime }
 export interface LedgerEntry { id: string; eventId: string; amount: Money; at: GameTime }
 export interface DomainEvent { id: string; type: 'session-started'; at: GameTime }
-export type GameCommand = { id: string; type: 'advance'; elapsedRealMs: number };
+export type GameCommand = { type: 'advance'; sequence: number; elapsedRealMs: number };
 export interface GameState {
   time: GameTime;
   rngState: number;
   company: Company | null;
   events: DomainEvent[];
-  processedCommandIds: string[];
+  commandSequence: number;
 }
 export interface SaveEnvelope {
   schemaVersion: 1;

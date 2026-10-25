@@ -1,8 +1,8 @@
 # Stan przekazania
-Ostatni w pełni ukończony punkt: **01**.
+Ostatni w pełni ukończony punkt: **02A**.
 
-Działa jeden projekt React + TypeScript + Vite. Kontrakty: src/domain/models.ts; konfiguracja: src/core/config.ts; stan początkowy: src/core/state.ts. Czas w milisekundach gry od poniedziałku 00:00 (start 06:00), pieniądze w groszach. Brak firmy i kredytu.
+Działa fundament 01 i czysty silnik czasu (src/core/engine.ts), centralny GameSession i SessionClock (src/core/session.ts). Zegar startuje w poniedziałek o 06:00, 1 sekunda realna = 1 minuta gry. Monotoniczne próbki performance.now nadrabiają tło tej samej sesji; duplikaty i cofnięcia są ignorowane, ułamki zachowywane. Numer sekwencji komendy jest częścią stanu i chroni przed powtórzeniem naliczenia. Mulberry32 ma jawne ziarno i stan; brak losowania zależnego od renderu. Kwoty: grosze, czas: milisekundy gry. Firma nadal null, brak kredytu.
 
-Weryfikacja 01: npm test — 1/1; npm run typecheck — OK; npm run build — OK; npm run test:e2e — 1/1 w systemowym Chromium; dev uruchomiony i HTTP sprawdzone. Naprawiono rozdzielenie zbiorów testów Vitest/Playwright. Cache npm w tym środowisku: --cache /tmp/pixelcargo-npm-cache (domyślny katalog domowy nie jest zapisywalny).
+Weryfikacja 02A: npm test — 7/7 (start, przelicznik, doba/tydzień, throttling, duplikaty, restart zegara, RNG); npm run typecheck — OK; npm run build — OK; npm run test:e2e — 2/2 w systemowym Chromium (start i rzeczywisty postęp zegara). Brak znanych błędów. Cache npm w środowisku: --cache /tmp/pixelcargo-npm-cache.
 
-Brak znanych błędów punktu 01. Następny krok: **02A**, czysty silnik komend, RNG i zegar niezależny od Reacta. Nie zaczynać projektu ponownie. Zakres 04–18 zablokowany do osobnego polecenia użytkownika.
+Następny krok: **02B** — IndexedDB, walidacja wersji/importu, brak postępu offline, autosave i wyłączna blokada sesji między kartami. Kontynuować istniejące moduły. Etapy 04–18 wymagają osobnego polecenia.

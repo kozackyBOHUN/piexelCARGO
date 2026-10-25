@@ -1,2 +1,12 @@
 import { createRoot } from 'react-dom/client';
-createRoot(document.getElementById('root')!).render(<main><h1>PixelCargo 0.1</h1><p>Sesja techniczna — fundament gry. Firma nieutworzona.</p></main>);
+import { CONFIG } from './core/config';
+import { GameSession, SessionClock } from './core/session';
+import { TechnicalApp } from './ui/TechnicalApp';
+const session = new GameSession();
+const clock = new SessionClock(session.advance);
+clock.start(performance.now());
+const sample = () => clock.sample(performance.now());
+const timer = setInterval(sample, CONFIG.tickMs);
+document.addEventListener('visibilitychange', sample);
+createRoot(document.getElementById('root')!).render(<TechnicalApp session={session} />);
+if (import.meta.hot) import.meta.hot.dispose(() => { clearInterval(timer); clock.stop(); document.removeEventListener('visibilitychange', sample); });
