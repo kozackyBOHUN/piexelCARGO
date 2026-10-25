@@ -92,8 +92,8 @@ function OfferCard({offer,canPay,owned,onBuy,money}: {
   </article>;
 }
 export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money}:Props){
-  const [building,setBuilding]=useState<Building>('parking');
-  const [tab,setTab]=useState<GarageTab>('gielda');
+  const [building,setBuilding]=useState<Building|null>(null);
+  const [tab,setTab]=useState<GarageTab>('flota');
   const parkingReady=!!state.van;
   const driverReady=state.driverHiredAt!==null;
   useEffect(()=>{if(parkingReady)setTab('flota');},[parkingReady]);
@@ -124,6 +124,7 @@ export function BaseParking({state,cityName,onBuy,onHire,onShowMap,money}:Props)
       <div className="pv-yard-badge">PIXELCARGO · BAZA</div>
     </div>
     <div className="pv-base-inspector">
+      {building===null&&<div className="pv-empty-garage"><span className="pv-empty-symbol">⌁</span><strong>WITAJ W SWOJEJ BAZIE</strong><p>Kliknij podświetlony PARKING, aby otworzyć zarządzanie pojazdami.</p></div>}
       {building==='parking'&&<><div className="pv-base-toolbar"><div><h3>PARKING <small>LV 1</small></h3><p>1 miejsce na pojazd · {parkingReady?'1/1 zajęte':'0/1 zajętych'}</p></div>
         <div className="pv-garage-tabs" role="tablist" aria-label="Zakładki parkingu">
           <button role="tab" aria-selected={tab==='flota'} className={tab==='flota'?'is-active':''} onClick={()=>setTab('flota')}>FLOTA</button>
