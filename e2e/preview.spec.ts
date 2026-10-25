@@ -48,7 +48,7 @@ test('preview saves within two seconds and restores company, balance, van and dr
  expect(before.company!.balanceGrosze).toBe(2000000-before.van!.specs!.priceGrosze-before.paidWagesGrosze);
  await page.reload();
  await expect(page.locator('.pv-summary')).toContainText('Stabilny Transport');
- await expect(page.getByText('KIEROWCA ZATRUDNIONY',{exact:true})).toBeVisible();
+ await expect(page.locator('.pv-stat').filter({hasText:'Kierowca:'})).toContainText('Zatrudniony');
  await expect.poll(async()=> (await saved(page))?.time??0).toBeGreaterThan(before.time);
  const after=(await saved(page))!;
  expect(after.company?.baseCityId).toBe(before.company?.baseCityId);
