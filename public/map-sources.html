@@ -42,7 +42,7 @@
         href="https://github.com/ppatrzyk/polska-geojson/tree/74a22f97cf822aa1cb49802c1700ccb8b6340eca"
         >polska-geojson</a
       >. Licencja opracowania:
-      <a href="/licenses/polska-geojson-MIT.txt">MIT — polska-geojson</a>, ©
+      <a href="licenses/polska-geojson-MIT.txt">MIT — polska-geojson</a>, ©
       2019 Piotr Patrzyk.
     </p>
     <p>
@@ -57,7 +57,7 @@
     <p>
       Made with <a href="https://www.naturalearthdata.com/">Natural Earth</a>,
       wersja 5.1.2, domena publiczna.
-      <a href="/licenses/natural-earth-PUBLIC-DOMAIN.md"
+      <a href="licenses/natural-earth-PUBLIC-DOMAIN.md"
         >Oświadczenie licencyjne i pochodzenie danych</a
       >.
     </p>
@@ -74,7 +74,7 @@
     <p>
       © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data
       (2021) processed by ESA WorldCover consortium.
-      <a href="/licenses/worldcover-CC-BY-4.0.md"
+      <a href="licenses/worldcover-CC-BY-4.0.md"
         >CC BY 4.0 — opis adaptacji i cytowanie ESA</a
       >.
     </p>
@@ -93,7 +93,7 @@
       Mapzen/Tilezen). Użyte kafle mają źródła SRTM i GMTED2010 courtesy of the
       U.S. Geological Survey oraz ETOPO1 terrain data U.S. National Oceanic and
       Atmospheric Administration — domena publiczna.
-      <a href="/licenses/terrain-ATTRIBUTION.md"
+      <a href="licenses/terrain-ATTRIBUTION.md"
         >Źródłowe zasady atrybucji i licencje</a
       >.
     </p>
@@ -113,7 +113,7 @@
       <a href="https://pypi.org/project/geonamescache/3.0.2/"
         >geonamescache 3.0.2</a
       >
-      autorstwa Ramiro Gómez (<a href="/licenses/geonamescache-MIT.txt"
+      autorstwa Ramiro Gómez (<a href="licenses/geonamescache-MIT.txt"
         >licencja MIT pakietu</a
       >).
     </p>
@@ -130,20 +130,36 @@
     <h2>Drogi — OpenStreetMap</h2>
     <p>
       © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>,
-      <a href="/licenses/ODbL-1.0.txt">Open Database License 1.0</a>.
+      <a href="licenses/ODbL-1.0.txt">Open Database License 1.0</a>.
       Źródło: datowane ekstrakty Geofabrik z 24 października 2026.
       Zmiany: filtrowanie dostępu/kierunków, polska maska OSM, graf według źródłowych IDs,
-      kompresja węzłów z pełną geometrią. <a href="/licenses/roads-ATTRIBUTION.md">Opis zmian i licencja bazy</a>.
+      kompresja węzłów z pełną geometrią. <a href="licenses/roads-ATTRIBUTION.md">Opis zmian i licencja bazy</a>.
       Kod gry, tereny i dane innych dostawców zachowują swoje licencje.
     </p>
     <p>
       Cała pochodna baza regionalna na ODbL, do pobrania bez opłat:
-      <a href="/roads/demo/graph.json.gz" download>graf Małopolski (gzip JSON)</a>,
-      <a href="/roads/demo/border.json.gz" download>maska granicy OSM (gzip JSON)</a>,
-      <a href="/roads/demo/manifest.json">manifest, data danych i statystyki</a>.
+      <a href="roads/demo/graph.json.gz" download>graf Małopolski (gzip JSON)</a>,
+      <a href="roads/demo/border.json.gz" download>maska granicy OSM (gzip JSON)</a>,
+      <a href="roads/demo/manifest.json">manifest, data danych i statystyki</a>.
       Opis formatu, sumy i generator: docs/ROAD_DATA.md w repozytorium.
       Graf regionalny nie jest pełnym grafem Polski ani gotowym rynkiem transportowym.
     </p>
-    <p><a href="/">Powrót do PixelCargo</a></p>
+    <p>Etap 09: regionalna sieć sąsiedzka — 75 audytowanych kierunkowych odcinków,
+      306 składanych relacji między 18 miastami. Gorlice pozostają wyłączone.
+      Dane pochodne OSM na ODbL:
+      <a href="roads/county/links.json" download>geometrie odcinków</a>,
+      <a href="roads/county/network.json" download>legalne przejścia sieci</a>,
+      <a href="roads/county/README.md">opis przekształceń</a>.
+      Poprzednie 135 kierunków zachowano jako katalog awaryjny.
+    </p>
+    <p>Routing 11: 19 miast, 342 audytowane kierunki Małopolski, w tym Gorlice.
+      Najkrótsze bezpieczne przebiegi w pełnym zamrożonym grafie, bez wymuszonych objazdów przez centra powiatów.
+      Dane pochodne na ODbL:
+      <a href="roads/preferred/catalog.json" download>katalog segmentów i tras</a>,
+      <a href="roads/preferred/manifest.json">wersja i SHA-256</a>,
+      <a href="roads/preferred/README.md">metoda i ograniczenia</a>.
+      Starsze katalogi pozostają dostępne historycznie.
+    </p>
+    <p><a href="./">Powrót do PixelCargo</a></p>
   </body>
 </html>

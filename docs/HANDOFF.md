@@ -1,3 +1,104 @@
+# Etap 11 — routing ukończony
+
+Baza 92ff5c46eaa334f6ad6f7ec6ab03bb1bafe32d25; osobny worktree /workspace/pixelcargo-stage11. **19 miast, 342/342 audytowanych kierunków, 36 relacji Gorlic, 135/135 bez pogorszenia dystansu 08**. Raport wszystkich certyfikatów: docs/reports/11-route-acceptance.json; metoda i ograniczenia: docs/STAGE_11.md. Końcowa kontrola PBF także 342/342 bez błędów. Niekompletne from/to nigdy nie są zgadywane: konkretne manewry muszą być bezpieczne dla każdej możliwej wartości brakującego członka; pozostałe są zamknięte. Trzy krótsze, niecertyfikowalne warianty opisano w raporcie. Największy narzut do audytowanego bezpiecznego optimum pełnego grafu: 0%.
+
+**Testy: TypeScript OK, 144/144 unit, 49/49 pełny Playwright, 1/1 produkcyjny Pages, build i build:pages OK**. W obu rozdzielczościach przeprowadzono dostawę i powrót z każdego 19 miast, kontrolę 12 priorytetów i aktualizację starego aktywnego kursu bez teleportacji/dublowania wypłaty. Pełny graf i PBF nie są ładowane w przeglądarce. Runtime wymaga manifestu 11 i zgodnego SHA, bez fallbacku do powiatowych objazdów. Stare geometrie aktywnych zapisów, stare 135 tras, raporty 08/09 i mechaniki gry pozostają niezmienione.
+
+Punkt wznowienia: commit zawierający ten wpis, docelowo wyłącznie feat/preview-gameplay-core. Katalog 11-3c539dacd20d148a, SHA 502fc56e986e477e76eeb4bde63c111d37e1ce374e0d99cf9e4c5b7ab0afd1a6. Po push potwierdzić workflow Pages dla dokładnego SHA i uruchomić playwright.routing11-live.config.ts na publicznym URL; końcowy raport zadania zawiera wynik. **Po zakończeniu czekać na nowe polecenie**, bez kolejnego etapu, bez main i bez naruszania innych worktree/szkiców.
+
+---
+
+# Aktualizacja — Etap 10 ukończony
+
+Baza cc8b20e51147e27f99119195ed065ce857950a2d; osobny worktree /workspace/pixelcargo-stage10, lokalna gałąź codex/stage10, docelowo wyłącznie feat/preview-gameplay-core. Implementacja jednostek i postępu ładunków, ładowni, dzielenia i rzeczywistego łączenia partii o wspólnym nadawcy/odbiorcy. Bez zmian OSM i PNG. Dokumentacja zasad/migracji/ograniczeń: docs/STAGE_10.md. Wielopunktowy planer nie jest zaimplementowany; inne miasta wymagają osobnych kursów.
+
+Potwierdzone: TypeScript OK, **133/133** testy jednostkowe, **45/45** pełny Playwright (wszystkie wcześniejsze + oba nowe scenariusze 10), **1/1** produkcyjny Pages, build oraz build:pages OK. Przeglądarki 1366×768 i 1920×1080: mieszany ładunek, osiem palet w trzech kursach po prawdziwych trasach OSM, trzy paski, PNG, reload z towarem w aucie i wypłata raz. Jednostkowo również odrębne limity wszystkich pięciu modeli, kara tylko od niedostarczonej reszty, kroki czasu, paliwo i migracja.
+
+Punkt wznowienia: commit zawierający ten wpis na feat/preview-gameplay-core. Zrealizowane: jednostki paczka/karton/europaleta, rezerwacje odrębne od towaru na pokładzie, fizyczny załadunek/rozładunek, częściowe dostawy, wybór ilości i łączenie zgodnych zleceń, widok ładowni i liczniki Spedycji. Ceny przyjętych zleceń, parametry aut, PNG i 306 relacji OSM zachowane. Ograniczenia: łączenie tylko dla wspólnego miasta odbioru/dostawy; brak planera wielu przystanków. Stara niepaletyzowana partia bez znanej liczby paczek pozostaje niepodzielną partią historyczną. Nie zgadywać jej jednostek. Publikacja przez istniejący workflow Pages po push; sprawdzić sukces dla dokładnego SHA. Po raporcie **czekać na kolejne polecenie**, bez następnych etapów i bez merge do main.
+
+---
+
+# Aktualizacja — Etap 09 ukończony
+
+Praca w osobnym `/workspace/pixelcargo-stage09`, baza `367d153ef5403ddcf92ddd4e4d30b5b8ff7f5bce`, docelowo wyłącznie `feat/preview-gameplay-core`. Kod implementuje: 75 audytowanych odcinków / 306 składanych kierunków / 18 miast, Oświęcim potwierdzony, Gorlice wyłączone, kredyt i odsetki o północy, zmęczenie i niepłatny sen, planowanie odpoczynku i tankowania, kompaktową oś z edycją przyszłych postojów. Stare 135 tras zachowane. Szczegóły, migracja i ograniczenia: docs/STAGE_09.md; raport: docs/reports/09-routes.json.
+
+Potwierdzone: ponowny audyt 75 odcinków i 306 pełnych łańcuchów bez naruszeń; TypeScript OK; **123/123** testów jednostkowych; build i build:pages OK; pełny Playwright **43/43** (w tym oba rozmiary ekranu, przesuwanie przyszłego postoju, sen, paliwo, kredyt i dostawa); produkcyjny Playwright pod /piexelCARGO/ **1/1**. Zachowano wszystkie wcześniejsze testy, dostosowując liczbę ofert i oczekiwanie na rzeczywisty czas nowych tras. Brak zmian grafu źródłowego i starego katalogu 135 tras.
+
+Punkt wznowienia: commit zawierający ten wpis na `feat/preview-gameplay-core`. Etap 09 ukończony w dopuszczonym zakresie; Gorlice i 11 odrzuconych odcinków celowo wyłączone. Nie dodano usługi dowozu paliwa ani punktów POI stacji; tankowanie jest deterministycznym punktem usługi na faktycznej geometrii, zgodnie z regułami 09. Starym zapisom nie dopisuje się fikcyjnego historycznego zmęczenia. Publikacja przez istniejący workflow Pages po push tej gałęzi; wynik deploy sprawdzić dla tego samego SHA. Po raporcie końcowym **czekać na nowe polecenie**, bez kolejnych etapów, zmian main ani naruszania starych szkiców.
+
+---
+
+# Aktualizacja — Etap 08
+
+Wykonano osiem punktów: zatwierdzone 52 PNG i mapowanie wyglądu, zegar od utworzenia firmy, trwały samouczek, profilowy marker, 17 miast / 135 audytowanych kierunków (w tym powrót Zakopane → Kraków), przejazd pusty, wyjaśnienia blokad, oś TERAZ na 25% i najnowsza historia finansów na górze. Układ 07 i wcześniejsze zapisy zachowane. Oświęcim i Gorlice nie są uruchomione — brak wystarczającej kontroli tras. Nie dodano nowych modeli, odpoczynku ani planowanego tankowania. Szczegóły, audyt i punkt kontynuacji: docs/STAGE_08.md oraz docs/reports/08-routes.json. Baza d9610db409fd6405e21df1998a2caf10023a40ad. Po pozytywnych testach i commit/push wyłącznie na feat/preview-gameplay-core, sprawdzić Pages i czekać na polecenie.
+
+---
+
+# Aktualizacja — Etap 07: nawigacja i harmonogram
+
+Duża mapa/baza + ikony albo szerokie zarządzanie 2/3; tabela zleceń bez przesuwania poziomego. Harmonogram 1 AUTO / 5 AUT / PEŁNY EKRAN, uchwyt wysokości, osobne trwałe preferencje UI, alerty i rzeczywista oś czasu. Mechanika, ekonomia, czas, zapisy i OSM bez zmian. Paczek grafik NIE integrowano; niedokończone zmiany poprzedniego zadania zostały w osobnym worktree, poza tą gałęzią. Baza 07ca6179a286ddd65ffa290b26d2bfd606781de6, gałąź feat/preview-gameplay-core. Szczegóły i punkt kontynuacji: docs/LAYOUT_07.md. Po testach, commit/push i sprawdzeniu Pages czekać na nowe polecenie.
+
+---
+
+# Aktualizacja — Etap 06, nowy interfejs
+
+Jedna gra ma nową powłokę według referencji: pięć sekcji menu i osobny panel, niezależne tryby MAPA/BAZA, tabele zleceń/floty/finansów, przydział auta, hover OSM i stały harmonogram. Mechanika i dane bez zmian. Szczegóły i ograniczenia assetów/liczby paczek: docs/INTERFACE_06.md. Baza e3b66f2e05287185a1a050dc87904e0fba72ee5d, gałąź feat/preview-gameplay-core. Nie ingerowano w gałąź grafika. Punkt wznowienia: ukończony zakres interfejsu; po commit/push i sprawdzeniu Pages czekać na nowe polecenie. Nie rozpoczynać kolejnych etapów.
+
+---
+
+# Aktualizacja — rynek zleceń preview
+
+Rozbudowano deterministyczny rynek dziesięciu towarów, trwałe oferty (5 dni), trzy rezerwacje, ręczne rozpoczęcie, terminy 3 dni i jednorazowe kary/wypłaty. Zachowano wspólny zegar, mapę, paliwo, pensje i stare zapisy; brak zmian CSS/grafik/OSM. Szczegóły i jawne ograniczenia puli/danych ludnościowych: docs/FREIGHT_MARKET.md. Baza 15e64015b1322fa96aafd45b06af4add7f30dfb0; gałąź feat/preview-gameplay-core. Po commit/push czekać na polecenie. Nie rozpoczynać dalszych etapów ani ingerować w feat/pixelcargo-art-assets.
+
+---
+
+# Aktualizacja — jedna grywalna aplikacja
+
+Połączono mapę, firmę, bazę, flotę, rynek i prawdziwy harmonogram. Jeden zegar GameRuntime.session.time, obsługiwany przez PreviewSession; stary zapis firmy zostaje zachowany. / oraz /?preview=1 otwierają tę samą grę; diagnostyka tylko /?dev=1. Pojazd porusza się po gotowej geometrii OSM i pozostaje w celu. Bez zmian ekonomii, tras i IndexedDB.
+
+Opis architektury, testów i ograniczeń: docs/UNIFIED_GAME.md. Punkt wznowienia: ukończona integracja na feat/preview-gameplay-core, baza 0222e511156683bb0819b85bb9ba7a8a42cfbfb1. Po commit/push czekać na nowe polecenie; nie rozpoczynać następnych etapów. Publikację potwierdza dopiero udany workflow Pages.
+
+---
+
+# Aktualizacja — przygotowana publikacja GitHub Pages
+
+Gałąź feat/preview-gameplay-core, baza a233b302b597ac46d178b399f42d199956850157.
+Workflow .github/workflows/preview-pages.yml buduje i publikuje wyłącznie tę gałąź.
+npm run build:pages ustawia /piexelCARGO/; fetch tras i linki UI/licencji obsługują
+bazę repozytorium. localStorage i mechanika bez zmian. Nie scalono do main.
+
+Lokalny produkcyjny build i test Playwright pod /piexelCARGO/ przechodzą (1/1):
+firma, furgon/kierowca, zapis/reload, trasa, powrót do mapy i licencje, bez 404.
+Publiczna publikacja wymaga włączenia Pages → Source: GitHub Actions i zielonego
+workflow. Nie podawać URL jako zweryfikowanego przed faktycznym deploy.
+Brak narzędzia publicznego podglądu Codexa; proxy blokowało dostęp do GitHub API
+oraz domeny Pages (403). Dokładne ostatnie kroki: docs/GITHUB_PAGES.md.
+Adres docelowy: https://kozackybohun.github.io/piexelCARGO/?preview=1.
+Czekać na nowe polecenie po zakończeniu tej publikacji/raportu.
+
+Poniżej historyczny raport stabilizacji preview.
+
+---
+
+# Preview — stabilizacja zapisu ukończona
+
+Gałąź feat/preview-gameplay-core, baza 1b361852066205a2c7139ec9f1a1ff7ae91e1b0e.
+Naprawiono odrzucanie zapisu preview podczas startu (wyścig z odczytem IndexedDB)
+i wznowienie czasu przy różnych częstotliwościach zapisu. Firma, saldo, furgon,
+kierowca i aktywny przewóz zachowują się po reload; dostawa płaci dokładnie raz.
+Poprawka paliwa z bazy potwierdzona, bez zmiany stawek i parametrów.
+
+Typecheck/build OK, unit 79/79, tylko potrzebny Playwright 2/2:
+npx playwright test --config playwright.preview.config.ts.
+Szczegóły i zakres: docs/PREVIEW_STABILIZATION.md.
+Bez zmian tras/grafów/routingu, silnika głównego, schematu IndexedDB i innych etapów.
+Praca w osobnym worktree /workspace/pixelcargo-preview-stabilization; stare szkice
+w /workspace/piexelCARGO nietknięte. Nie scalono do main. Czekać na nowe polecenie.
+
+Poniżej archiwalny raport 05A, sprzed prac nad grywalnym preview.
+
+---
+
 # Stan przekazania — 05A ukończony
 
 Ostatni ukończony podetap: **05A**, osobny commit w bieżącej historii.
@@ -138,3 +239,17 @@ Dane są uogólnione: hydrografia 1:10m nie zawiera wszystkich cieków/jezior; W
 Nie ma 05/routingu/dróg, nowych miast krajowych, transportów, pojazdów, kierowców, rynku, ekonomii ani multiplayera. Nie dodano płatnego API czy klucza. Kolejny etap wymaga nowego polecenia; kontynuować istniejące warstwy/kamerę, bez nowej aplikacji.
 
 Uruchomienie: `npm ci` (tu opcjonalnie `--cache /tmp/pixelcargo-npm-cache`), `npm run dev`. Python i zewnętrzne domeny są potrzebne tylko do regeneracji, nie gry. Nie regenerować zasobów podczas E2E/HMR.
+
+Końcowa weryfikacja: TypeScript OK; npm test 86/86 (11 plików); standardowy build i build:pages OK; Playwright unified 33/33 (w tym scenariusze gry w obu rozdzielczościach); produkcyjny Pages 1/1. Brak zmian w danych OSM, trasach, silniku i schemacie IndexedDB.
+
+Końcowe kontrole: npm run typecheck OK; npm test 93/93 (12 plików); npm run build i build:pages OK; Playwright unified 33/33, freight 1/1, Pages 1/1 (łącznie 35). Pełna płatna dostawa, zapis w trasie, ruch auta, harmonogram i restart potwierdzone.
+
+Weryfikacja: TypeScript OK; npm test 95/95 (13 plików); standardowy build i build:pages OK; Playwright interface06 36/36 (wszystkie dotychczasowe przypadki plus nowa pełna rozgrywka w obu rozdzielczościach), produkcyjny Pages 1/1. Po korekcie instrukcji samouczka i odsunięciu etykiety Biura powtórzono jednostkowe/build oraz 9 scenariuszy gry i Pages. Zrzuty rzeczywistego interfejsu: docs/screenshots/06/.
+
+Końcowa weryfikacja: npm run typecheck OK; npm test 97/97 (14 plików); npm run build i build:pages OK; Playwright layout07 38/38; produkcyjny Pages 1/1 (łącznie 39 scenariuszy). Obie rozdzielczości, powrót z pełnego harmonogramu, drag i klawiatura uchwytu, alert w 1 AUTO oraz pełna dostawa i zapis potwierdzone. Poprawiono wykryte testem nakładanie nagłówka małej mapy na wyszukiwanie. Brak zmian w mechanice i danych, brak integracji PNG.
+
+Końcowe kontrole: TypeScript OK; npm test 105/105 (16 plików); oba buildy OK; Playwright stage08 41/41 plus produkcyjny Pages 1/1 (łącznie 42 scenariusze). Dwa rozmiary okna, wszystkie PNG, pełny samouczek/dostawa do Zakopanego/powrót pusty, zapis częściowego ticka i wcześniejsze regresje zaliczone. SHA-256 katalogu tras zgadza się z raportem. Zrzuty: docs/screenshots/08/.
+
+Kontrola publikacji wykazała Cache-Control: max-age=600 dla routes.json na Pages. Fetch katalogu używa cache:no-cache, aby rewalidować ETag przy starcie i nie uruchamiać starszej siatki z cache przeglądarki. Nie zmienia to samych tras ani zapisu.
+
+Domknięcie publikacji: cache katalogu jest rewalidowany, na mapie widnieje bezpośredni podpis © OpenStreetMap contributors. Ponowne TypeScript/build/build:pages oraz Playwright 41/41 i Pages 1/1 zaliczone; testy jednostkowe nadal 105/105.

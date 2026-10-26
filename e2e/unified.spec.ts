@@ -1,0 +1,12 @@
+import {test,expect} from '@playwright/test';
+import {readyCompany,menu} from './helpers/interface06';
+import {takeTarnow} from './helpers/freight';
+for(const viewport of [{width:1366,height:768},{width:1920,height:1080}])test(`canonical clock, route camera and real plan ${viewport.width}`,async({page})=>{
+ await page.setViewportSize(viewport);await page.clock.install();await readyCompany(page);await takeTarnow(page);await page.clock.runFor(17000);await expect(page.getByTestId('osm-route')).toBeVisible();
+ const clocks=()=>page.evaluate(()=>['canonical-clock','poland-map','game-timeline'].map(id=>{const e=document.querySelector(`[data-testid="${id}"]`)!;return e.getAttribute('data-time')??e.getAttribute('data-game-time')}));expect(new Set(await clocks()).size).toBe(1);
+ await page.getByRole('button',{name:'5 AUT',exact:true}).click();await page.getByText('Plan czynności i czasy',{exact:true}).click();const plan=await page.locator('.pc-plan>div[data-transport-id]').evaluateAll(ns=>ns.map(n=>({phase:n.getAttribute('data-phase'),duration:Number(n.getAttribute('data-end'))-Number(n.getAttribute('data-start'))})));expect(plan.map(a=>a.phase)).toEqual(['empty','loading','loaded','unloading']);expect(plan[0].duration).toBe(0);expect(plan[1].duration).toBe(900000);expect(plan[3].duration).toBe(900000);
+ await menu(page,'PARKING','Moje samochody');expect(new Set(await clocks()).size).toBe(1);
+ await page.getByRole('button',{name:'Pokaż pojazd',exact:true}).click();const marker=page.getByTestId('game-vehicle');await marker.click();await expect(page.getByLabel('Wybrany pojazd')).toContainText('Tarnów');
+ const map=page.getByTestId('poland-map'),box=(await map.boundingBox())!;await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.wheel(0,-250);await page.clock.runFor(100);await page.mouse.down();await page.mouse.move(box.x+box.width/2+20,box.y+box.height/2+10,{steps:4});await page.mouse.up();
+ const error=await page.evaluate(()=>{const e=document.querySelector('[data-testid="game-vehicle"]')!,m=document.querySelector('[data-testid="poland-map"]')!;const n=(e:Element,k:string)=>Number(e.getAttribute(k)),lon=n(e,'data-lon'),lat=n(e,'data-lat'),scale=n(m,'data-map-scale');return Math.max(Math.abs(6378137*lon*Math.PI/180*scale+n(m,'data-offset-x')-n(e,'data-screen-x')),Math.abs(-6378137*Math.log(Math.tan(Math.PI/4+lat*Math.PI/360))*scale+n(m,'data-offset-y')-n(e,'data-screen-y')))});expect(error).toBeLessThan(1e-6);
+});

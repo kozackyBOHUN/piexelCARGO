@@ -1,6 +1,40 @@
-# PixelCargo 0.1 — mapa 04C i graf drogowy 05A
+# PixelCargo — Routing 11
 
-Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, zlecenia, pojazdy, drogi i transporty pozostają niezaimplementowane.
+Małopolska: **19 miast i 342 audytowane kierunki OSM**, bez pogorszenia dystansu 135 tras etapu 08. Naprawiono wybór tras i objazdy, dołączono Gorlice. Gra korzysta z wersjonowanego katalogu z kontrolą SHA-256; aktywne starsze kursy zachowują swoją geometrię. Mechaniki 09/10 i PNG pozostają bez zmian.
+
+[Zagraj online](https://kozackybohun.github.io/piexelCARGO/?preview=1) · [Zasady i kontrola routingu](docs/STAGE_11.md) · [342 certyfikaty](docs/reports/11-route-acceptance.json).
+
+---
+
+# Etap 08 (historia)
+
+Zatwierdzona grafika, zegar od założenia firmy, samouczek, profilowy furgon, oś czasu ze stałym TERAZ i historia finansów od najnowszej operacji. Działa 17 miast / 135 audytowanych kierunków; jest powrót z Zakopanego i ręczny przejazd pusty. Szczegóły oraz ograniczenia: [docs/STAGE_08.md](docs/STAGE_08.md).
+
+Zapis firmy jest automatyczny co sekundę oraz przy opuszczaniu strony. Przycisk zapisu i restart są w Ustawieniach. Zegar stoi do utworzenia firmy; stare firmy wznawiają własny czas bez naliczania offline.
+
+---
+
+## Układ gry — Etap 07 (zachowany w 08)
+
+MAPA / BAZA w lewym górnym rogu otwiera duży widok. Ikony po lewej otwierają szerokie zarządzanie z podzakładkami. Harmonogram: 1 AUTO, 5 AUT, PEŁNY EKRAN lub wysokość ustawiona przeciągnięciem górnej krawędzi; preferencje zachowują się po odświeżeniu. Szczegóły: [docs/LAYOUT_07.md](docs/LAYOUT_07.md).
+
+---
+
+## Interfejs gry — Etap 06 (historia)
+
+MAPA / BAZA przełącza prawy widok. Pięć sekcji po lewej otwiera funkcje bez zatrzymywania świata; harmonogram pozostaje pod mapą/bazą. Zapis i restart są pod ustawieniami w górnym pasku. Szczegóły: [docs/INTERFACE_06.md](docs/INTERFACE_06.md).
+
+---
+
+# Aktualna gra preview
+
+`/` i `/?preview=1` otwierają jedną grę: mapa Polski, baza, flota, rynek i harmonogram korzystają z jednego zegara i zapisu. Historyczny panel techniczny: `/?dev=1`. Szczegóły integracji: [docs/UNIFIED_GAME.md](docs/UNIFIED_GAME.md). Publikacja pod `/piexelCARGO/`: [instrukcja Pages](docs/GITHUB_PAGES.md).
+
+---
+
+## Historia mapy 04C i grafu drogowego 05A
+
+Działająca polskojęzyczna powłoka gry transportowej: deterministyczny zegar, lokalny zapis, interfejs retro i rzeczywista mapa Polski z granicami 16 województw. Warstwa miast obejmuje wyłącznie 19 miast demonstracyjnych Małopolski. Mapa zawiera rzeczywiste rzeki i jeziora Natural Earth, pokrycie drzewiaste ESA WorldCover oraz rzeźbę terenu z danych wysokościowych SRTM/GMTED2010/ETOPO1. Etapy 04A–04C są ukończone. Firma, rynek i transporty zostały następnie uruchomione w preview opisanym wyżej.
 
 ## Uruchomienie
 
@@ -15,7 +49,7 @@ W środowisku z niezapisywalnym domyślnym cache: `npm ci --cache /tmp/pixelcarg
 
 Aplikacja działa bez backendu, kluczy API i dodatkowych usług. IndexedDB i Web Locks wymagają nowoczesnego Chrome/Edge/Firefox oraz HTTPS lub localhost. Zapisy są przypisane do originu przeglądarki (protokół, host, port).
 
-## Obsługa i zapis
+## Historyczna diagnostyka zapisu (?dev=1)
 
 - Zakładki przełączaj myszą lub klawiaturą: Tab, strzałki, Home, End. Menu nie zatrzymuje czasu.
 - Zegar startuje w poniedziałek o 06:00. Jedna sekunda rzeczywista to jedna minuta gry. Otwarta karta w tle nadrabia czas po wznowieniu.
@@ -79,3 +113,12 @@ Warstwy są lokalne: jeden Canvas pod SVG granic/miast/etykiet, wspólna projekc
 Weryfikacja końcowa: **64/64 Vitest, 27/27 Playwright**, typecheck i build poprawne; wszystkie pierwotne 52/23 testy pozostają i przechodzą. Produkcyjna aplikacja sprawdzona w Chromium. Pomiar bieżącego headless Chromium: Canvas P95 0,5–0,9 ms, jedna warstwa Canvas, 124–133 elementy SVG. To czas funkcji rysującej, nie gwarancja FPS na każdym urządzeniu; pełne pomiary (w tym odosobniona klatka 100 ms w powtórce) zapisano w galerii.
 
 **05A: rzeczywisty regionalny graf OSM.** 537460 węzłów, 565817 odcinków i 1102271 krawędzi skierowanych, 19 miast przypiętych do wzajemnie osiągalnej sieci, sześć wymaganych par sprawdzonych. Baza regionalna ma 40,1 MB gzip; jest udostępniona na ODbL razem z geometrią i źródłowymi tagami. [Dane, polityka dostępu, ograniczenia i regeneracja](docs/ROAD_DATA.md), [pełny zakres 05](docs/PixelCargo_Etap_05.md). 05B–05D nie są ukończone. W interfejsie nadal nie ma warstwy dróg ani planera; przygotowany graf nie jest transportem i nie zmienia zapisu gry.
+
+## Publikacja grywalnego preview
+
+GitHub Pages z feat/preview-gameplay-core, bez merge do main.
+Adres po wdrożeniu: https://kozackybohun.github.io/piexelCARGO/?preview=1.
+[Instrukcja włączenia Pages i publikacji](docs/GITHUB_PAGES.md).
+Build: `npm run build:pages`; produkcyjny test ścieżki repozytorium:
+`npx playwright test --config playwright.pages.config.ts`.
+Gracz otwiera stronę w przeglądarce Windows; Node.js jest potrzebny tylko do budowania.

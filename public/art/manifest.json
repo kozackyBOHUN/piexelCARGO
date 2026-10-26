@@ -1,0 +1,474 @@
+{
+  "format": "PixelCargo combined approved graphics",
+  "count": 52,
+  "items": [
+    {
+      "id": "van-used-6",
+      "path": "public/art/vehicles/van-used-6.png",
+      "category": "vehicles",
+      "width": 320,
+      "height": 160,
+      "sha256": "9407c3229b676cbdfc2342fe36180d8f4d1283b028bbf59a1b8e4a7a7baeb3c7",
+      "source": "auta_06_08"
+    },
+    {
+      "id": "van-used-7",
+      "path": "public/art/vehicles/van-used-7.png",
+      "category": "vehicles",
+      "width": 320,
+      "height": 160,
+      "sha256": "3f412b2eebdbf0dd1ac818a2b002aa31d7017c05a447700a664be2c9273dc29f",
+      "source": "auta_06_08"
+    },
+    {
+      "id": "van-used-8",
+      "path": "public/art/vehicles/van-used-8.png",
+      "category": "vehicles",
+      "width": 320,
+      "height": 160,
+      "sha256": "a028eea7e4157ab74d964019ff54f9d1ac480d616e089a034658895b3ec2e2dd",
+      "source": "auta_06_08"
+    },
+    {
+      "id": "cargo-08",
+      "path": "public/art/cargo/cargo-08.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "ae4f82947bfdd40b5e5fbf5edd85a5f2dd983b7a2445220d314aad66ef17a4f9",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-04",
+      "path": "public/art/cargo/cargo-04.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "914b614b5ce4363bef72f740bec9a0f1ff8e005d82172efcbb5aff4ae77f8389",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-02",
+      "path": "public/art/cargo/cargo-02.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "ccf2d486b762b561d8319339a8e10804da18a98cb4e6d41440507ddaa2697d35",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-09",
+      "path": "public/art/cargo/cargo-09.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "9b6926e69d5bf074093751529a6302870609dd41a7020ec367b7797a854d1b6a",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-07",
+      "path": "public/art/cargo/cargo-07.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "8a1de25a667d392804d5e276270dc0917fe540bd51e0af1cc357857996345cb2",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-05",
+      "path": "public/art/cargo/cargo-05.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "960a556cefc66d25a4833c4f8262221824db0e236566dcc7777fc12b9db104f4",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-03",
+      "path": "public/art/cargo/cargo-03.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "56941b3d4fe5bc745360a3d472d535677d3693ff9f1fe4e8edb408fb1fcfbeeb",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-01",
+      "path": "public/art/cargo/cargo-01.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "9cccd58aa5a54cfb8fb0a435f2b7dae033b84cfef03eadaff4b4c2dae86a1bd9",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-06",
+      "path": "public/art/cargo/cargo-06.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "d4e47a251d6b636768edb63e04331c260a5e3f2cc66b266b589bc3aefcc8f3df",
+      "source": "paczka_05"
+    },
+    {
+      "id": "cargo-10",
+      "path": "public/art/cargo/cargo-10.png",
+      "category": "cargo",
+      "width": 64,
+      "height": 64,
+      "sha256": "6845ac27dc13c1cb4d7bf8bba22100f38001fe554801d5fe99d7dbcda9e9647d",
+      "source": "paczka_05"
+    },
+    {
+      "id": "building-dispatch-lv1",
+      "path": "public/art/buildings/building-dispatch-lv1.png",
+      "category": "buildings",
+      "width": 512,
+      "height": 384,
+      "sha256": "7dea9195351f602d68ca353f3ebc5e7721e828c57addde5f4fe4233a73c47f47",
+      "source": "paczka_05"
+    },
+    {
+      "id": "building-office-lv1",
+      "path": "public/art/buildings/building-office-lv1.png",
+      "category": "buildings",
+      "width": 512,
+      "height": 384,
+      "sha256": "3c641af112d14926454f17d2dbc31e150eebcbc54f11bf109d2944486dc79be4",
+      "source": "paczka_05"
+    },
+    {
+      "id": "building-hr-lv1",
+      "path": "public/art/buildings/building-hr-lv1.png",
+      "category": "buildings",
+      "width": 512,
+      "height": 384,
+      "sha256": "78d1181add973821dd1c60ac639c101e09b7cd472ecab61f85cd2e42ed5351f7",
+      "source": "paczka_05"
+    },
+    {
+      "id": "building-parking-lv1",
+      "path": "public/art/buildings/building-parking-lv1.png",
+      "category": "buildings",
+      "width": 512,
+      "height": 384,
+      "sha256": "a234f0befd9cf4fd345dec8d5416914b89b1866afd44723e980ac31e0d0d72bd",
+      "source": "paczka_05"
+    },
+    {
+      "id": "van-used-15",
+      "path": "public/art/vehicles/van-used-15.png",
+      "category": "vehicles",
+      "width": 320,
+      "height": 160,
+      "sha256": "6094d263070415dcd2c1dce0c2eb674aae6cef30c354177580b529fa3f06f202",
+      "source": "paczka_05"
+    },
+    {
+      "id": "van-used-14",
+      "path": "public/art/vehicles/van-used-14.png",
+      "category": "vehicles",
+      "width": 320,
+      "height": 160,
+      "sha256": "727c8c6c2a11f941809f0c977634314d48eda82834dd8b281bb716a3889db1e7",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-06",
+      "path": "public/art/drivers/driver-06.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "192b50959d965159c7d1d2aa6dbc450e4684b5e5f2bf4d31eb311355a5e0db97",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-01",
+      "path": "public/art/drivers/driver-01.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "c9ab36c24e01a042d8db72f67a2bb8a5be006e1885de15d609156d548a9ce749",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-05",
+      "path": "public/art/drivers/driver-05.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "333ae3e0ae0322020d7c66adbee12c5615a5acee98dedf4c4fe148ddc8e18b2a",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-03",
+      "path": "public/art/drivers/driver-03.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "59dd4e69261bf4d6c0d4ce276268f0063f4cdf37e6a07b1fe2fcf5b1fe2b4b44",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-02",
+      "path": "public/art/drivers/driver-02.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "39af1d5705f19cb201d70fa0cb9f58d640647d5d2278712d6e989acc55fe92d6",
+      "source": "paczka_05"
+    },
+    {
+      "id": "driver-04",
+      "path": "public/art/drivers/driver-04.png",
+      "category": "drivers",
+      "width": 96,
+      "height": 96,
+      "sha256": "39843640d2e6eba9c212089d06654f268099c1bdde0d4ef7dc6ca36fc8ccd1a1",
+      "source": "paczka_05"
+    },
+    {
+      "id": "icon-accept",
+      "path": "public/art/ui/actions/icon-accept.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "9c61662b7a0c94cb529cb59ee7fe0f322fd5307a8bd07526141dc3bd49c673ad",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-assign",
+      "path": "public/art/ui/actions/icon-assign.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "575277949cd79ad9742f15a826a62df438dbf230436d496f90a89318316acefe",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-buy",
+      "path": "public/art/ui/actions/icon-buy.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "5e5f37cd8cc69c7d13c4d8584f33689e8d473fbdcf6430cde5ac4f9257a48941",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-fuel",
+      "path": "public/art/ui/actions/icon-fuel.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "747c962d056338e8d306088d0adb633bd4510d7a8ff2fc5ebef27168f8fb9240",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-hire",
+      "path": "public/art/ui/actions/icon-hire.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "b53f33de9f9da95d2a16c762814d8574bdd8c5f0ce095e5fe55ba79a2a0b695a",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-restart",
+      "path": "public/art/ui/actions/icon-restart.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "ef0d87adb385422d35524e93d0cb489a5e523fac0ebff430e2b666aa591dff91",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-route",
+      "path": "public/art/ui/actions/icon-route.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "ba8d613d17b053a1b7be05b97dcce13a19542485ef4036c27722a7f21ddf9f50",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-save",
+      "path": "public/art/ui/actions/icon-save.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "58f1f650ce83c97fa591f083a105cd073ea60959b263e14a4970691469cf4720",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-search",
+      "path": "public/art/ui/actions/icon-search.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "ab1219168c3ae365a19386702edf03dbc22f6675ac9f886812cc3d33bf20a4e2",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-sleep",
+      "path": "public/art/ui/actions/icon-sleep.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "40d7cbeb9f0e7005a9c22b78169c5da673073b270d8ad663d612fe8c0b57c8cd",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-back",
+      "path": "public/art/ui/controls/icon-back.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "e309e738ccb0fd735a3f3e3fd0df847aab90f6a53a27882665819bbeba30ca3c",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-collapse",
+      "path": "public/art/ui/controls/icon-collapse.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "2632a0bb3ef1cd71ce97b4274afba9793d296787c3ce4e5dfe5b7dea84a3e0ee",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-expand",
+      "path": "public/art/ui/controls/icon-expand.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "ad068e015201eb21928338d1ffec2d91f2ce91a58d36ea7e1c01c06c7cc1125c",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-settings",
+      "path": "public/art/ui/controls/icon-settings.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "b967384e5270e32369877cc8de031dccac7b38ae099c02a2fbf640e76cb7475b",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-base",
+      "path": "public/art/ui/menu/icon-base.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "c700c26158d625fd53ea5b71f49e12203c711eb75e297113629133005b9c432e",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-dispatch",
+      "path": "public/art/ui/menu/icon-dispatch.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "f7af6b14ccce5bbd3a885641ca8268449cf3334a89e854b7f25c8b53f242f754",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-drivers",
+      "path": "public/art/ui/menu/icon-drivers.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "af4a4ba13ca0f11c77372aac7b0313f4d1dff239c70f198da9cc974494e6513f",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-finances",
+      "path": "public/art/ui/menu/icon-finances.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "379a13ad424b055addd0c803345ed5850792e8ad62d825f6628ddbb46e0f7d56",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-map",
+      "path": "public/art/ui/menu/icon-map.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "7f94b3be31d277c2399694de2eb5e429d89e95dc7062aa49d75a0551bd8ec006",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-office",
+      "path": "public/art/ui/menu/icon-office.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "6158f2a0305b9ebec6c1a7d76a1f4736b525860c5159dd1e62e053be909eb8d1",
+      "source": "ui_06"
+    },
+    {
+      "id": "icon-parking",
+      "path": "public/art/ui/menu/icon-parking.png",
+      "category": "ui",
+      "width": 48,
+      "height": 48,
+      "sha256": "b8e9ea5f98d82ca5780146faa2932faf4b8f18520821465e9147108e7c6a2a28",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-critical",
+      "path": "public/art/ui/status/status-critical.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "8c7f495c1ed1bb76765fb0c8014d9a9b56bfd37b9eb8c052c69f10949b60cef9",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-late",
+      "path": "public/art/ui/status/status-late.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "bc28983307430b653223713213e8c01e2ccd801a8016286bb32fdd0cbf7ebfd4",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-low-fuel",
+      "path": "public/art/ui/status/status-low-fuel.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "e7cdaaa8adef23d627ac35b7779e999d65ba3d58ffb123e186c6c1a166ae1bee",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-ok",
+      "path": "public/art/ui/status/status-ok.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "71b43ee6376af71a1756dadd1ca451308ca3faf2b64ce5bceaa329acb0a41116",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-tired",
+      "path": "public/art/ui/status/status-tired.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "d3dc85a89cfe1095a4215af7b23c21a6682b17656058113d5ead1c543ccaa447",
+      "source": "ui_06"
+    },
+    {
+      "id": "status-warning",
+      "path": "public/art/ui/status/status-warning.png",
+      "category": "ui",
+      "width": 32,
+      "height": 32,
+      "sha256": "02a73186155bc8a3d62528f190967cbf4373c1dccfb37956483ec46adf4bbab6",
+      "source": "ui_06"
+    }
+  ]
+}

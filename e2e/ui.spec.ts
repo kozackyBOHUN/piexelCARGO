@@ -16,7 +16,7 @@ test("all tabs, keyboard navigation and live clock use one running session", asy
   page.on("console", (msg) => {
     if (msg.type() === "error") errors.push(msg.text());
   });
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await expect(page.getByTestId("game-clock")).toHaveText("06:00");
   for (const name of tabs) {
     const tab = page.getByRole("tab", { name, exact: true });
@@ -62,7 +62,7 @@ for (const size of [
     page,
   }) => {
     await page.setViewportSize(size);
-    await page.goto("/");
+    await page.goto("/?dev=1");
     const management = await page
       .getByRole("complementary", { name: "Zarządzanie" })
       .boundingBox();
@@ -112,7 +112,7 @@ test("small screen uses stacked panels and preserves keyboard access", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await page.getByRole("tab", { name: "Ustawienia", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Zapisz", exact: true }),

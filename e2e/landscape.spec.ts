@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 test("local water canvas has LOD, culling and never captures map interaction", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?dev=1");
   const layer = page.locator('[data-layer="landscape"]');
   await expect(layer).toHaveAttribute("data-water-status", "ready");
   expect(
@@ -51,7 +51,7 @@ test("hydrography failure can be retried without losing base map or the live gam
       ? route.fulfill({ status: 503, body: "unavailable" })
       : route.continue(),
   );
-  await page.goto("/");
+  await page.goto("/?dev=1");
   const retry = page.getByRole("button", {
     name: "Hydrografia niedostępna — ponów wczytywanie.",
     exact: true,
@@ -74,7 +74,7 @@ test("real terrain and forest LODs share the camera, cull raster pixels and keep
   page,
 }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto("/");
+  await page.goto("/?dev=1");
   const layer = page.locator('[data-layer="landscape"]');
   await expect(layer).toHaveAttribute("data-landscape-status", "ready");
   await expect(layer).toHaveAttribute(
@@ -108,7 +108,7 @@ test("failed raster data can be retried while water, cities and clock stay funct
       ? route.fulfill({ status: 503, body: "unavailable" })
       : route.continue(),
   );
-  await page.goto("/");
+  await page.goto("/?dev=1");
   const retry = page.getByRole("button", {
     name: "Krajobraz niedostępny — ponów wczytywanie.",
     exact: true,

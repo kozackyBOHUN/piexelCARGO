@@ -4,20 +4,20 @@ for (const size of [
   { width: 1920, height: 1080 },
 ]) {
   test(`real local map and demo cities work at ${size.width}×${size.height}`, async ({
-    page,
+    page, baseURL,
   }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     const external: string[] = [];
+    const localHost=new URL(baseURL!).host;
     page.on("request", (request) => {
       if (
-        !request.url().startsWith("http://127.0.0.1:5173") &&
-        !request.url().startsWith("ws://127.0.0.1:5173")
+        new URL(request.url()).host !== localHost
       )
         external.push(request.url());
     });
     await page.setViewportSize(size);
-    await page.goto("/");
+    await page.goto("/?dev=1");
     const map = page.getByTestId("poland-map");
     await expect(map.locator('[data-layer="voivodeships"] path')).toHaveCount(
       16,
@@ -93,7 +93,7 @@ test("data credits are accessible and include both data licenses", async ({
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "MIT — polska-geojson", exact: true }),
-  ).toHaveAttribute("href", "/licenses/polska-geojson-MIT.txt");
+  ).toHaveJSProperty("href",new URL("/licenses/polska-geojson-MIT.txt",page.url()).href);
   await expect(
     page.getByRole("link", { name: "CC BY 4.0", exact: true }),
   ).toHaveAttribute("href", "https://creativecommons.org/licenses/by/4.0/");
@@ -106,7 +106,7 @@ test("map data failure is recoverable and does not stop the clock", async ({
     if (block) await route.fulfill({ status: 503, body: "unavailable" });
     else await route.continue();
   });
-  await page.goto("/");
+  await page.goto("/?dev=1");
   await expect(
     page.getByText("Nie udało się wczytać lokalnych danych mapy.", {
       exact: false,

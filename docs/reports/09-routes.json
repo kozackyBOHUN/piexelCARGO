@@ -1,0 +1,4908 @@
+{
+  "accepted": 75,
+  "rejected": [
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:161917e3",
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:755889",
+      "reason": "Error: Ambiguous or absent directed source edge at 335"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:f486cd75",
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3094802",
+      "reason": "Error: Ambiguous or absent directed source edge at 569"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:16509a9d",
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3091256",
+      "reason": "Error: Ambiguous or absent directed source edge at 335"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:ef0a492d",
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3084300",
+      "reason": "Error: no via-node violation: 3420948 at 30372078 from 1392975571 to 101322356; no via-node violation: 9180197 at 326847486 from 247803153 to 633658000"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:8f853832",
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3094802",
+      "reason": "Error: Ambiguous or absent directed source edge at 1166"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:fc9321fd",
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:755889",
+      "reason": "Error: Conditional road tags require review"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:a59240ce",
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3082722",
+      "reason": "Error: Unassessed unsupported restriction exposure: 20326618"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:697c91cf",
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3082722",
+      "reason": "Error: no via-node violation: 21070398 at 13020843002 from 1416953487 to 239440697"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:329c37ea",
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:763523",
+      "reason": "Error: Conditional road tags require review"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:566fc51c",
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:763523",
+      "reason": "Error: Conditional road tags require review"
+    },
+    {
+      "id": "road:05A-v1-a0575a3f5bd99f19-98733c38:fa6bf21a",
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:766301",
+      "reason": "Error: Conditional road tags require review"
+    }
+  ],
+  "cities": [
+    "geonames:3091256",
+    "geonames:3094802",
+    "geonames:3082722",
+    "geonames:3084300",
+    "geonames:3089658",
+    "geonames:3101547",
+    "geonames:3090146",
+    "geonames:764917",
+    "geonames:761258",
+    "geonames:755889",
+    "geonames:775758",
+    "geonames:775183",
+    "geonames:766301",
+    "geonames:763523",
+    "geonames:773569",
+    "geonames:757026",
+    "geonames:763534",
+    "geonames:3080866"
+  ],
+  "routeCount": 306,
+  "routes": [
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 32163.264865513,
+      "seconds": 2384.081623496041,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 54672.67515955999,
+      "seconds": 3583.9562665438516,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 33103.53541233244,
+      "seconds": 2385.0332874523347,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 88633.22414011344,
+      "seconds": 5883.861485514136,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 77084.48931054921,
+      "seconds": 5633.323543871594,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 72479.29847179119,
+      "seconds": 5025.986599536416,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 73064.69196068727,
+      "seconds": 4816.0060000744315,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e"
+      ],
+      "meters": 58894.66209591589,
+      "seconds": 4226.206310750924,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:755889",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2"
+      ],
+      "meters": 22597.094927972004,
+      "seconds": 1663.933515454903,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 41153.18237745813,
+      "seconds": 2577.629216425574,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 55658.40485696004,
+      "seconds": 3531.5458920619926,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 47053.874819554454,
+      "seconds": 3073.4127814357307,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 85489.4171435366,
+      "seconds": 5710.576668472479,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 96796.84858200912,
+      "seconds": 5886.151834582789,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 86700.36949463982,
+      "seconds": 6985.532778338576,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 71898.96459771258,
+      "seconds": 4655.199798323774,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3091256",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 107938.56876504603,
+      "seconds": 7144.030767532986,
+      "viaCityIds": [
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754"
+      ],
+      "meters": 88692.3280980517,
+      "seconds": 6051.406174016791,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5"
+      ],
+      "meters": 49844.565865758974,
+      "seconds": 3409.0277597072572,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 71182.59631204195,
+      "seconds": 4593.536372649577,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6cd19cec"
+      ],
+      "meters": 62542.26028120801,
+      "seconds": 4255.029845998765,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 44921.224445036416,
+      "seconds": 3249.2419203755576,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 40316.03360627825,
+      "seconds": 2641.9049760403773,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 40901.427095174295,
+      "seconds": 2431.9243765783917,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf"
+      ],
+      "meters": 35052.33741916134,
+      "seconds": 2594.5394746605252,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e2678f59"
+      ],
+      "meters": 102574.19273539497,
+      "seconds": 7070.237931032893,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc"
+      ],
+      "meters": 79604.03194658515,
+      "seconds": 5458.81059631995,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab"
+      ],
+      "meters": 82842.32730809395,
+      "seconds": 5559.232740669292,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b7794456"
+      ],
+      "meters": 116726.3938844458,
+      "seconds": 8152.540523646102,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 123568.47804324614,
+      "seconds": 7919.079753669716,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 94719.45824180398,
+      "seconds": 6263.343062600036,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 113884.29194577374,
+      "seconds": 9013.219626945884,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6"
+      ],
+      "meters": 132354.52842231203,
+      "seconds": 8656.972126558965,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3094802",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 146017.6296647559,
+      "seconds": 9352.533852730236,
+      "viaCityIds": [
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754"
+      ],
+      "meters": 38847.76223229261,
+      "seconds": 2642.3784143095354,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:90c4d764"
+      ],
+      "meters": 48847.932671103394,
+      "seconds": 3347.615062796771,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 21338.030446282995,
+      "seconds": 1184.5086129423264,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 33960.54898055356,
+      "seconds": 2299.9052189702843,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c"
+      ],
+      "meters": 34759.17349217712,
+      "seconds": 2246.9452965846162,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30"
+      ],
+      "meters": 60779.24506669383,
+      "seconds": 4089.3767501991038,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3101547",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:90c4d764",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 89749.35976627772,
+      "seconds": 5779.539439375155,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:90c4d764",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf"
+      ],
+      "meters": 83900.27009026465,
+      "seconds": 5942.154537457287,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3094802",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e2678f59"
+      ],
+      "meters": 52729.62686963592,
+      "seconds": 3661.2101713256357,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 80000.94460975083,
+      "seconds": 5220.007630735108,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 94506.16708925273,
+      "seconds": 6173.924306371532,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 85901.63705184705,
+      "seconds": 5715.791195745266,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 73723.91217748717,
+      "seconds": 4510.051993962472,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 135644.61081430188,
+      "seconds": 8528.53024889233,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 125548.13172693252,
+      "seconds": 9627.911192648126,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 110746.72683000511,
+      "seconds": 7297.578212633301,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3082722",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 96173.0637989966,
+      "seconds": 5943.506093022979,
+      "viaCityIds": [
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3"
+      ],
+      "meters": 33009.36241132548,
+      "seconds": 2388.328432550117,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:61fb9cc3"
+      ],
+      "meters": 58368.37793276057,
+      "seconds": 4003.655721278885,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 21569.139747227553,
+      "seconds": 1198.9229790915185,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 55529.68872778108,
+      "seconds": 3498.8281980618,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c"
+      ],
+      "meters": 56328.31323940472,
+      "seconds": 3445.868275676137,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30"
+      ],
+      "meters": 82348.38481392141,
+      "seconds": 5288.299729290621,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3101547",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:61fb9cc3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 99269.80502793481,
+      "seconds": 6435.580097857267,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e"
+      ],
+      "meters": 91904.02450724108,
+      "seconds": 6614.534743301039,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:755889",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2"
+      ],
+      "meters": 55606.45733929741,
+      "seconds": 4052.2619480050253,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 74162.54478878363,
+      "seconds": 4965.957648975692,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 88667.76726828553,
+      "seconds": 5919.874324612116,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 80063.23723087991,
+      "seconds": 5461.741213985845,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 52385.88173120403,
+      "seconds": 3325.5433810201507,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 129806.21099333468,
+      "seconds": 8274.480267132916,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 119709.73190596532,
+      "seconds": 9373.861210888708,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ff5abcf3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 104908.32700903797,
+      "seconds": 7043.52823087388,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:3091256",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3084300",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 74835.03335271346,
+      "seconds": 4758.997480080653,
+      "viaCityIds": [
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754"
+      ],
+      "meters": 72667.76985012037,
+      "seconds": 4922.7436692921565,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:836376e3"
+      ],
+      "meters": 63600.96194584472,
+      "seconds": 4416.307516166231,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588"
+      ],
+      "meters": 33820.00761782773,
+      "seconds": 2280.3652549826256,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 55158.038064110704,
+      "seconds": 3464.873867924948,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:39c79bc6"
+      ],
+      "meters": 21555.008559262944,
+      "seconds": 1338.421866273629,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:39c79bc6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30"
+      ],
+      "meters": 47575.08013377961,
+      "seconds": 3180.853319888115,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3101547",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:39c79bc6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46"
+      ],
+      "meters": 86703.50758399836,
+      "seconds": 5402.701554150769,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3101547",
+        "geonames:3090146",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:836376e3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf"
+      ],
+      "meters": 98653.29936500598,
+      "seconds": 7010.846990826753,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3094802",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e2678f59"
+      ],
+      "meters": 86549.63448746367,
+      "seconds": 5941.575426308257,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 113820.95222757857,
+      "seconds": 7500.372885717728,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 128326.17470708047,
+      "seconds": 8454.289561354146,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 119721.64466967472,
+      "seconds": 7996.156450727885,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 107543.91979531487,
+      "seconds": 6790.417248945086,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:836376e3",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 158320.4201876486,
+      "seconds": 10679.650578766268,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 159368.13934476027,
+      "seconds": 11908.276447630737,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 144566.73444783266,
+      "seconds": 9577.943467615922,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3089658",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d0069588",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 129993.07141682431,
+      "seconds": 8223.871348005594,
+      "viaCityIds": [
+        "geonames:3089658",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754"
+      ],
+      "meters": 73309.06008653596,
+      "seconds": 4882.873715396636,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2"
+      ],
+      "meters": 45159.257333360256,
+      "seconds": 3316.874675464998,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601"
+      ],
+      "meters": 34461.297854243305,
+      "seconds": 2240.495301087106,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 55799.32830052628,
+      "seconds": 3425.0039140294284,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1af61da7"
+      ],
+      "meters": 21538.577114212847,
+      "seconds": 1334.306699222438,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30"
+      ],
+      "meters": 26020.07157451668,
+      "seconds": 1842.4314536144886,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f80f4c30",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46"
+      ],
+      "meters": 65148.49902473543,
+      "seconds": 4064.2796878771387,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3090146",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf"
+      ],
+      "meters": 80211.59475252157,
+      "seconds": 5911.414150125514,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3094802",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e2678f59"
+      ],
+      "meters": 87190.92472387926,
+      "seconds": 5901.705472412737,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 114462.24246399415,
+      "seconds": 7460.502931822208,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab"
+      ],
+      "meters": 128001.58464145417,
+      "seconds": 8876.107416134284,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 120362.9349060903,
+      "seconds": 7956.286496832365,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 108185.21003173044,
+      "seconds": 6750.547295049565,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 139878.71557516415,
+      "seconds": 9580.217738065025,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:13438ddf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 159043.549279134,
+      "seconds": 12330.094302410873,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3094802",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 145208.02468424826,
+      "seconds": 9538.073513720401,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3101547",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 130634.36165323989,
+      "seconds": 8184.001394110072,
+      "viaCityIds": [
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754"
+      ],
+      "meters": 98938.63495186351,
+      "seconds": 6663.483322349628,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc3d62e2"
+      ],
+      "meters": 70788.83219868774,
+      "seconds": 5097.484282417989,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601"
+      ],
+      "meters": 60090.872719570805,
+      "seconds": 4021.104908040095,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 81428.9031658538,
+      "seconds": 5205.613520982413,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1af61da7"
+      ],
+      "meters": 47168.15197954039,
+      "seconds": 3114.9163061754266,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2"
+      ],
+      "meters": 25629.574865327486,
+      "seconds": 1780.6096069529897,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46"
+      ],
+      "meters": 39128.42745021872,
+      "seconds": 2221.848234262649,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831"
+      ],
+      "meters": 69970.16710140044,
+      "seconds": 4583.24454926364,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e2678f59"
+      ],
+      "meters": 112820.49958920691,
+      "seconds": 7682.315079365735,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc"
+      ],
+      "meters": 114521.86162882419,
+      "seconds": 7447.5156709230605,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab"
+      ],
+      "meters": 117760.15699033304,
+      "seconds": 7547.937815272406,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d75f5754",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 145992.50977141783,
+      "seconds": 9736.89610378536,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 133814.78489705783,
+      "seconds": 8531.156902002569,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 129637.28792404305,
+      "seconds": 8252.048137203152,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 148802.12162801297,
+      "seconds": 11001.924701548998,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dc319e46",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6"
+      ],
+      "meters": 167272.35810455112,
+      "seconds": 10645.677201162089,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3090146",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d857601",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 156263.9365185675,
+      "seconds": 9964.611001063085,
+      "viaCityIds": [
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 116266.2853174838,
+      "seconds": 7794.750562229469,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:9a7ffdaf"
+      ],
+      "meters": 41110.03917219813,
+      "seconds": 2425.117135007287,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:9a7ffdaf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5"
+      ],
+      "meters": 90954.60503795705,
+      "seconds": 5834.14489471455,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3094802",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:9a7ffdaf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 112292.63548424003,
+      "seconds": 7018.653507656871,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1af61da7"
+      ],
+      "meters": 86553.28495355605,
+      "seconds": 5337.653653356891,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3090146",
+        "geonames:3101547",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:66c68bc2"
+      ],
+      "meters": 65014.70783934328,
+      "seconds": 4003.346954134452,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3090146",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0"
+      ],
+      "meters": 39385.132974015745,
+      "seconds": 2222.73734718146,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831"
+      ],
+      "meters": 30841.739651181688,
+      "seconds": 2361.39631500099,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 103100.78126188538,
+      "seconds": 6813.96755859398,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc"
+      ],
+      "meters": 75393.43417860554,
+      "seconds": 5225.667436660413,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab"
+      ],
+      "meters": 78631.72954011426,
+      "seconds": 5326.089581009756,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b7794456"
+      ],
+      "meters": 112515.7961164662,
+      "seconds": 7919.397363986564,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:9a7ffdaf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 164678.51721544404,
+      "seconds": 10344.196888677037,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 90508.86047382426,
+      "seconds": 6030.199902940502,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 109673.69417779405,
+      "seconds": 8780.076467286348,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:2d87a831",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6"
+      ],
+      "meters": 128143.93065433236,
+      "seconds": 8423.828966899435,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:764917",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:9a7ffdaf",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 187127.6688369537,
+      "seconds": 11777.650987737554,
+      "viaCityIds": [
+        "geonames:764917",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 85424.54566630206,
+      "seconds": 5433.3542472284835,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43"
+      ],
+      "meters": 35574.68309940789,
+      "seconds": 2480.4546556109362,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5"
+      ],
+      "meters": 85419.24896516686,
+      "seconds": 5889.482415318203,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68"
+      ],
+      "meters": 106757.27941144984,
+      "seconds": 7073.991028260523,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6cd19cec"
+      ],
+      "meters": 98116.94338061573,
+      "seconds": 6735.484501609707,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 80495.9075444441,
+      "seconds": 5729.696575986489,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0"
+      ],
+      "meters": 70310.10737978104,
+      "seconds": 4592.309949363868,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:764917",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 30924.97440576538,
+      "seconds": 2369.572602182404,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 72259.04161070356,
+      "seconds": 4452.571243593005,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc"
+      ],
+      "meters": 44551.69452742376,
+      "seconds": 2864.271121659426,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab"
+      ],
+      "meters": 47789.98988893263,
+      "seconds": 2964.693266008767,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:723cd7bc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b7794456"
+      ],
+      "meters": 81674.05646528452,
+      "seconds": 5558.001048985579,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775758",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 159143.16114265387,
+      "seconds": 10399.534409280688,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:78a93c1a"
+      ],
+      "meters": 59667.120822642646,
+      "seconds": 3668.803587939515,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 78831.95452661242,
+      "seconds": 6418.68015228535,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:60aeb5ab",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6"
+      ],
+      "meters": 97302.19100315089,
+      "seconds": 6062.43265189844,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:775183",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:761258",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:bbda9d68",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 181592.31276416354,
+      "seconds": 11832.988508341205,
+      "viaCityIds": [
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3082722",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716"
+      ],
+      "meters": 22478.594994054885,
+      "seconds": 1650.6471503097775,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 54641.85985956787,
+      "seconds": 4034.7287738058176,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 77151.2701536149,
+      "seconds": 5234.603416853626,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 55582.130406387376,
+      "seconds": 4035.680437762106,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 111111.81913416831,
+      "seconds": 7534.5086358239105,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 99563.08430460394,
+      "seconds": 7283.970694181373,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 94957.89346584595,
+      "seconds": 6676.633749846197,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 67222.5415737093,
+      "seconds": 4931.845397478423,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e"
+      ],
+      "meters": 36297.56716794387,
+      "seconds": 2562.272795296019,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:41332b86"
+      ],
+      "meters": 27796.71706872329,
+      "seconds": 1618.6076272658934,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:41332b86",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 42301.9395482252,
+      "seconds": 2572.524302902313,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e406e622"
+      ],
+      "meters": 47736.147360261355,
+      "seconds": 3111.4232554164755,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 107968.01213759155,
+      "seconds": 7361.223818782246,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:41332b86",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 83440.38327327429,
+      "seconds": 4927.130245423111,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:41332b86",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 73343.90418590503,
+      "seconds": 6026.5111891788965,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e406e622",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 72581.23713841948,
+      "seconds": 4693.21027230452,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:755889",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b3eca716",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 130417.163759101,
+      "seconds": 8794.677917842766,
+      "viaCityIds": [
+        "geonames:755889",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 40872.851138878206,
+      "seconds": 2569.0831255690605,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 73036.11600439114,
+      "seconds": 4953.1647490650985,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 95545.52629843823,
+      "seconds": 6153.039392112911,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 73976.3865512107,
+      "seconds": 4954.11641302139,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 129506.07527899164,
+      "seconds": 8452.944611083196,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 117957.34044942723,
+      "seconds": 8202.406669440654,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 113352.14961066926,
+      "seconds": 7595.069725105479,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6d3b32f6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 75105.81642511355,
+      "seconds": 5212.539318019103,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6d3b32f6"
+      ],
+      "meters": 44180.842019348114,
+      "seconds": 2842.9667158366988,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 27707.3470832798,
+      "seconds": 1588.300121933573,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 14505.222479501894,
+      "seconds": 953.9166756364173,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b7794456"
+      ],
+      "meters": 37122.36193786066,
+      "seconds": 2693.7299273261565,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc"
+      ],
+      "meters": 126362.26828241488,
+      "seconds": 8279.659794041532,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 55643.66620455087,
+      "seconds": 3308.5226181572148,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 45547.18711718175,
+      "seconds": 4407.903561913002,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b7794456",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 61967.45171601878,
+      "seconds": 4275.516944214198,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775758",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1fb5dacc",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 148811.4199039246,
+      "seconds": 9713.113893102049,
+      "viaCityIds": [
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 55277.89956265311,
+      "seconds": 3521.8921778870176,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43"
+      ],
+      "meters": 83402.36232870312,
+      "seconds": 5451.084354843293,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 109950.57472221315,
+      "seconds": 7105.848444430873,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 88381.43497498562,
+      "seconds": 5906.925465339353,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 143911.12370276655,
+      "seconds": 9405.753663401169,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 128323.58677373921,
+      "seconds": 8700.326275218842,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0"
+      ],
+      "meters": 118137.78660907623,
+      "seconds": 7562.939648596219,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:764917",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 78752.65363506044,
+      "seconds": 5340.202301414757,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2"
+      ],
+      "meters": 47827.67922929504,
+      "seconds": 2970.629699232352,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 42112.395507054694,
+      "seconds": 2541.1091742515305,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d"
+      ],
+      "meters": 14405.04842377485,
+      "seconds": 952.8090523179575,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a84a0dcb"
+      ],
+      "meters": 43709.47399510765,
+      "seconds": 3136.2791013210003,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:89448a64"
+      ],
+      "meters": 124780.5131663558,
+      "seconds": 7987.288083580991,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:763534",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 41138.443725049,
+      "seconds": 2354.6059425207973,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 31041.964637679812,
+      "seconds": 3453.9868862765884,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6"
+      ],
+      "meters": 49512.20111421816,
+      "seconds": 3097.7393858896735,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:775183",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4b2b61a6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e85d767a"
+      ],
+      "meters": 144859.90132026945,
+      "seconds": 9263.952392513282,
+      "viaCityIds": [
+        "geonames:775183",
+        "geonames:763534",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610"
+      ],
+      "meters": 46669.520384605,
+      "seconds": 3025.3221720895617,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 78832.78525011793,
+      "seconds": 5409.403795585599,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 101342.19554416499,
+      "seconds": 6609.278438633417,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 79773.05579693746,
+      "seconds": 5410.355459541896,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 135302.74452471844,
+      "seconds": 8909.183657603708,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 123754.00969515402,
+      "seconds": 8658.64571596115,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 119148.81885639606,
+      "seconds": 8051.30877162598,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f8772090",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6d3b32f6",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 112151.7359795885,
+      "seconds": 7897.57731310517,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775758",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f8772090",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6d3b32f6"
+      ],
+      "meters": 81226.76157382311,
+      "seconds": 5528.004710922766,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775758",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d66bb568"
+      ],
+      "meters": 47836.66785136574,
+      "seconds": 3124.6199231556434,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f8772090"
+      ],
+      "meters": 37045.91955447502,
+      "seconds": 2685.0379950860683,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:23448557"
+      ],
+      "meters": 43672.162591096836,
+      "seconds": 3127.6666022694885,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:89448a64"
+      ],
+      "meters": 100113.4018302957,
+      "seconds": 6471.335714579354,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:763534",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:23448557",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 84810.6063161459,
+      "seconds": 5482.272544790285,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:23448557",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8af0fa4e"
+      ],
+      "meters": 74714.12722877662,
+      "seconds": 6581.6534885460715,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:775183",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a"
+      ],
+      "meters": 24845.089778158068,
+      "seconds": 1581.7870168880427,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:766301",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e4d68a6a",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e85d767a"
+      ],
+      "meters": 120192.7899842091,
+      "seconds": 7748.000023511634,
+      "viaCityIds": [
+        "geonames:766301",
+        "geonames:763534",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82"
+      ],
+      "meters": 52470.50421001575,
+      "seconds": 2360.918926951801,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 84633.76907552867,
+      "seconds": 4745.00055044784,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 73623.36536584626,
+      "seconds": 4196.115315914612,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb"
+      ],
+      "meters": 52054.22561861878,
+      "seconds": 2997.192336823093,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 107583.91434639967,
+      "seconds": 6496.020534884897,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c"
+      ],
+      "meters": 108382.53885802349,
+      "seconds": 6443.060612499235,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 124949.8026818068,
+      "seconds": 7386.905526488221,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 125535.19617070295,
+      "seconds": 7176.9249270262235,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e"
+      ],
+      "meters": 111365.1663059315,
+      "seconds": 6587.125237702723,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:755889",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2"
+      ],
+      "meters": 75067.5991379878,
+      "seconds": 4024.852442406709,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 93623.68658747397,
+      "seconds": 4938.548143377376,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 108128.90906697587,
+      "seconds": 5892.4648190138,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3f8e1853"
+      ],
+      "meters": 99524.37902957013,
+      "seconds": 5434.331708387528,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 149267.35279202482,
+      "seconds": 8247.0707615346,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:325ac4e9",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00e8b2c0"
+      ],
+      "meters": 136723.67628044117,
+      "seconds": 9211.900854349049,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:763534",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:325ac4e9"
+      ],
+      "meters": 75419.04086401174,
+      "seconds": 4923.75813978718,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763523",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b73ce032"
+      ],
+      "meters": 22449.151621509507,
+      "seconds": 1433.4540990605067,
+      "viaCityIds": [
+        "geonames:763523",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 96421.71744644846,
+      "seconds": 5904.569768495198,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43"
+      ],
+      "meters": 95185.92614526511,
+      "seconds": 6179.2932198392655,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4018ddd5"
+      ],
+      "meters": 145030.49201102395,
+      "seconds": 9588.32097954651,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 129525.25285878102,
+      "seconds": 8289.603055947533,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6cd19cec"
+      ],
+      "meters": 157728.18642647285,
+      "seconds": 10434.323065838042,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 140107.1505903011,
+      "seconds": 9428.535140214804,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0"
+      ],
+      "meters": 129921.35042563837,
+      "seconds": 8291.148513592198,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:764917",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 90536.2174516226,
+      "seconds": 6068.411166410739,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8cee9ff7"
+      ],
+      "meters": 59611.24304585721,
+      "seconds": 3698.8385642283342,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 83256.21339084998,
+      "seconds": 4923.786764859721,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d"
+      ],
+      "meters": 55548.86630757019,
+      "seconds": 3335.4866429261433,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c"
+      ],
+      "meters": 41143.81788379533,
+      "seconds": 2382.6775906081857,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:40508e9c",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a84a0dcb"
+      ],
+      "meters": 84853.29187890302,
+      "seconds": 5518.956691929182,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:775183",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:c0f7df35",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:89448a64"
+      ],
+      "meters": 155921.52802562786,
+      "seconds": 10463.610969285859,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:757026",
+        "geonames:763534",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:c0f7df35"
+      ],
+      "meters": 20681.58224116722,
+      "seconds": 1243.4405503381786,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:c0f7df35",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14"
+      ],
+      "meters": 80653.21597349024,
+      "seconds": 5574.062271594568,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:757026",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:773569",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:c0f7df35",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e85d767a"
+      ],
+      "meters": 176000.91617954156,
+      "seconds": 11740.27527821817,
+      "viaCityIds": [
+        "geonames:773569",
+        "geonames:757026",
+        "geonames:763534",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2"
+      ],
+      "meters": 85459.73999816057,
+      "seconds": 5274.5331165100415,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43"
+      ],
+      "meters": 113584.20276421035,
+      "seconds": 7203.725293466308,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 140132.4151577207,
+      "seconds": 8858.489383053891,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 118563.27541049314,
+      "seconds": 7659.566403962374,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00b712b2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 174092.96413827428,
+      "seconds": 11158.39460202419,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a7a47c43",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 158505.42720924638,
+      "seconds": 10452.96721384186,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:88f447a0"
+      ],
+      "meters": 148319.6270445835,
+      "seconds": 9315.580587219247,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:764917",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 108934.49407056783,
+      "seconds": 7092.8432400377815,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2"
+      ],
+      "meters": 78009.51966480246,
+      "seconds": 4723.270637855378,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:27d20fa5"
+      ],
+      "meters": 72294.23594256207,
+      "seconds": 4293.750112874564,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:cf91020d"
+      ],
+      "meters": 44586.88885928229,
+      "seconds": 2705.4499909409833,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d"
+      ],
+      "meters": 30181.84043550743,
+      "seconds": 1752.6409386230275,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:20cd7e7d",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a84a0dcb"
+      ],
+      "meters": 73891.31443061524,
+      "seconds": 4888.920039944026,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:775183",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:89448a64"
+      ],
+      "meters": 135239.94578446075,
+      "seconds": 9220.17041894768,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:763534",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aa4a9f5a"
+      ],
+      "meters": 20534.02316153122,
+      "seconds": 1280.3319042277433,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14"
+      ],
+      "meters": 59971.633732323084,
+      "seconds": 4330.621721256389,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:763534"
+      ]
+    },
+    {
+      "fromCityId": "geonames:757026",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aaeb2b14",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e85d767a"
+      ],
+      "meters": 155319.3339383745,
+      "seconds": 10496.834727879992,
+      "viaCityIds": [
+        "geonames:757026",
+        "geonames:763534",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610"
+      ],
+      "meters": 71397.65283145232,
+      "seconds": 4558.614135603038,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 103560.91769696522,
+      "seconds": 6942.69575909908,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 126070.32799101241,
+      "seconds": 8142.570402146892,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff"
+      ],
+      "meters": 104501.18824378488,
+      "seconds": 6943.647423055371,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:86c96bff",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 160030.87697156597,
+      "seconds": 10442.47562111719,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:87b46b39"
+      ],
+      "meters": 148482.14214200116,
+      "seconds": 10191.937679474637,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:fd564610",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 143876.95130324352,
+      "seconds": 9584.600735139433,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dbf38799",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7ca218f4"
+      ],
+      "meters": 128104.98766023645,
+      "seconds": 8426.460731981557,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:775183",
+        "geonames:761258",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dbf38799",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a459c6a2"
+      ],
+      "meters": 97180.01325447107,
+      "seconds": 6056.888129799154,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:775183",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:d66bb568"
+      ],
+      "meters": 72564.800298213,
+      "seconds": 4657.9118866691115,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:f8772090"
+      ],
+      "meters": 61774.05200132236,
+      "seconds": 4218.3299585995455,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:dbf38799"
+      ],
+      "meters": 49352.334025176075,
+      "seconds": 3086.2584305668006,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04"
+      ],
+      "meters": 24728.132446847227,
+      "seconds": 1533.291963513476,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:89448a64"
+      ],
+      "meters": 75268.31205213747,
+      "seconds": 4889.548697691306,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00e8b2c0",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aa4a9f5a"
+      ],
+      "meters": 81838.65857796064,
+      "seconds": 5568.474618789614,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:757026",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00e8b2c0"
+      ],
+      "meters": 61304.6354164295,
+      "seconds": 4288.142714561868,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:763534",
+      "toCityId": "geonames:3080866",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:e85d767a"
+      ],
+      "meters": 95347.70020605087,
+      "seconds": 6166.213006623585,
+      "viaCityIds": [
+        "geonames:763534",
+        "geonames:3080866"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3091256",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82"
+      ],
+      "meters": 74902.85741073402,
+      "seconds": 3794.2436331007725,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3094802",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1"
+      ],
+      "meters": 107066.12227624693,
+      "seconds": 6178.325256596813,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3082722",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65"
+      ],
+      "meters": 96055.71856656465,
+      "seconds": 5629.4400220635835,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3084300",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb"
+      ],
+      "meters": 74486.57881933713,
+      "seconds": 4430.517042972063,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3084300"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3089658",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:1d2035ff"
+      ],
+      "meters": 130016.26754711807,
+      "seconds": 7929.345241033868,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3089658"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3101547",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:b8ce09fb",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:16d97a65",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:6a8e6c1c"
+      ],
+      "meters": 130814.89205874188,
+      "seconds": 7876.385318648206,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3084300",
+        "geonames:3082722",
+        "geonames:3101547"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:3090146",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:8bef435c"
+      ],
+      "meters": 147382.15588252532,
+      "seconds": 8820.230232637194,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:3090146"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:764917",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:a98c58a1",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:693b5c43"
+      ],
+      "meters": 147967.5493714212,
+      "seconds": 8610.249633175194,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:3094802",
+        "geonames:764917"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:761258",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7268263e"
+      ],
+      "meters": 133797.5195066499,
+      "seconds": 8020.4499438516905,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:755889",
+        "geonames:761258"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:755889",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:0f419da2"
+      ],
+      "meters": 97499.95233870609,
+      "seconds": 5458.177148555679,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:755889"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:775758",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece"
+      ],
+      "meters": 116056.03978819221,
+      "seconds": 6371.87284952635,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:775183",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404"
+      ],
+      "meters": 130561.26226769411,
+      "seconds": 7325.789525162774,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:766301",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aa5fa502",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00ad5e04"
+      ],
+      "meters": 120103.10718182917,
+      "seconds": 7717.377363767578,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763534",
+        "geonames:766301"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:763523",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495"
+      ],
+      "meters": 22432.353200718313,
+      "seconds": 1433.3247061489708,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:773569",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:7e709495",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:3b236e82",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:519b2ece",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:4115f404",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:ed6e409d"
+      ],
+      "meters": 171699.70599274288,
+      "seconds": 9680.395467683567,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763523",
+        "geonames:3091256",
+        "geonames:775758",
+        "geonames:775183",
+        "geonames:773569"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:757026",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aa5fa502",
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:00e8b2c0"
+      ],
+      "meters": 156679.6101514115,
+      "seconds": 10472.228114815964,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763534",
+        "geonames:757026"
+      ]
+    },
+    {
+      "fromCityId": "geonames:3080866",
+      "toCityId": "geonames:763534",
+      "segmentIds": [
+        "road:05A-v1-a0575a3f5bd99f19-98733c38:aa5fa502"
+      ],
+      "meters": 95374.97473498205,
+      "seconds": 6184.0854002541055,
+      "viaCityIds": [
+        "geonames:3080866",
+        "geonames:763534"
+      ]
+    }
+  ],
+  "failed": [],
+  "stateCount": 43,
+  "joinValidation": "OSM via-node and via-way state carried through every source edge; full 08 audit on every resulting chain",
+  "gorlice": "disabled",
+  "oswiecim": {
+    "cityId": "geonames:3089658",
+    "nodeId": 599998162
+  }
+}

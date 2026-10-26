@@ -103,13 +103,14 @@ export function App({ runtime }: { runtime: GameRuntime }) {
               PixelCargo <small>0.1</small>
             </h1>
             <span className="brand-caption">
-              TRANSPORT • LOGISTYKA • PLANOWANIE
+              WIDOK DEVELOPERSKI
             </span>
           </span>
         </a>
+        <a href={`${import.meta.env.BASE_URL}?preview=1`} style={{color:"#f2ba62",fontSize:"12px",fontWeight:700,border:"1px solid #ac8752",padding:"8px 11px",textDecoration:"none"}}>▶ WRÓĆ DO GRY</a>
         <div className="environment-badge">
           <span className="status-light" />
-          FAZA II<span className="badge-divider">/</span>MAPA 04C
+          DEV<span className="badge-divider">/</span>DIAGNOSTYKA
         </div>
         <div className="topbar-note" aria-label="Alerty sesji">
           {status.mode === "active" && !status.saveError
@@ -117,7 +118,7 @@ export function App({ runtime }: { runtime: GameRuntime }) {
             : "SESJA WYMAGA UWAGI"}
           <span>
             {status.mode === "active"
-              ? "Lokalna sesja techniczna"
+              ? "Historyczny panel diagnostyczny"
               : "Sprawdź komunikat statusu poniżej"}
           </span>
         </div>

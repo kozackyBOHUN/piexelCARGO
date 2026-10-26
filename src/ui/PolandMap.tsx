@@ -1,3 +1,4 @@
+import {VehicleSilhouette} from './VehicleSilhouette';
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { loadGeography } from "../world/loader";
 import type { GeographyDataset, MapCity } from "../world/geography";
@@ -24,10 +25,12 @@ import { placeCityLabels } from "../world/labels";
 import { PixelIcon } from "./PixelIcon";
 import { CitySearch } from "./CitySearch";
 import { LandscapeCanvas } from "./LandscapeCanvas";
+import type { GameMapState } from "../preview/transport";
+import { worldPath } from "../world/landscape/geometry";
 
 /** Layer groups share one geographic projection; future roads/routes/vehicles can use screenPoint.
  * The map owns presentation state only. It neither advances nor mutates the game simulation. */
-export const PolandMap = memo(function PolandMap() {
+export const PolandMap = memo(function PolandMap({game}: {game?:GameMapState}) {
   const [data, setData] = useState<GeographyDataset | null>(null);
   const [error, setError] = useState("");
   const [attempt, setAttempt] = useState(0);
@@ -44,7 +47,7 @@ export const PolandMap = memo(function PolandMap() {
       mounted = false;
     };
   }, [attempt]);
-  if (data) return <PolandMapView geography={data} />;
+  if (data) return <PolandMapView geography={data} game={game} />;
   return (
     <section className="panel map-panel" aria-labelledby="map-title">
       <header className="panel-heading">
@@ -68,7 +71,7 @@ export const PolandMap = memo(function PolandMap() {
   );
 });
 
-function PolandMapView({ geography }: { geography: GeographyDataset }) {
+function PolandMapView({ geography, game }: { geography: GeographyDataset; game?:GameMapState }) {
   const limits = useMemo(
     () => createNavigationLimits(geography.country.geometry),
     [geography],
@@ -76,6 +79,13 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
   const demo = geography.voivodeships.find(
     (region) => region.id === geography.coverage.demoVoivodeshipId,
   )!;
+  const [vehicleSelected,setVehicleSelected]=useState(false);
+  const vehicle=game?.vehicle;
+  const vehicleCoordinates=vehicle?.coordinates??geography.cities.find(c=>c.id===vehicle?.cityId)?.coordinates;
+  const routeGeometry=vehicle?.route;
+  const routePath=useMemo(()=>routeGeometry?worldPath({type:'LineString',coordinates:routeGeometry}):'', [routeGeometry]);
+  const highlightedPath=useMemo(()=>game?.highlightedRoute?worldPath({type:'LineString',coordinates:game.highlightedRoute}):'',[game?.highlightedRoute]);
+  const companyBase=geography.cities.find(c=>c.id===game?.baseCityId);
   const [view, setView] = useState<"country" | "demo" | "custom">("country");
   const [viewport, setViewport] = useState(() =>
     fitViewport(limits.bounds, 800, 320),
@@ -245,6 +255,12 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
     };
     animation.current = requestAnimationFrame(frame);
   };
+  useEffect(()=>{
+    if(!routeGeometry?.length)return;
+    const bounds=geometryBounds({type:'Polygon',coordinates:[routeGeometry]});
+    change(value=>constrainViewport(fitViewport(bounds,value.width,value.height,40),limits));
+    setView('custom');
+  },[routeGeometry]);
   const renderedCities = [
     ...geography.cities.filter((city) => city.id !== selectedCityId),
     ...geography.cities.filter((city) => city.id === selectedCityId),
@@ -267,7 +283,8 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
             Obszar demo
           </button>
         </div>
-        <span className="module-tag">MAPA · ETAP 04C</span>
+        {vehicleCoordinates&&<button className="map-vehicle-focus" onClick={()=>change(value=>focusViewport(value,vehicleCoordinates,limits))}>Pokaż pojazd</button>}
+        <span className="module-tag">{game?'MAPA GRY':'MAPA · ETAP 04C'}</span>
       </header>
       <CitySearch
         cities={geography.cities}
@@ -278,6 +295,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
         ref={container}
         className={`geographic-map ${dragging ? "is-dragging" : ""}`}
         data-testid="poland-map"
+        data-game-time={game?.time}
         data-map-scale={viewport.scale}
         data-offset-x={viewport.offsetX}
         data-offset-y={viewport.offsetY}
@@ -353,8 +371,7 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
         >
           <desc>
             Prawdziwe granice PRG/GUGiK i 19 miast demo GeoNames. Przeciągnij,
-            aby przesunąć; użyj kółka lub przycisków powiększenia. Brak dróg i
-            tras.
+            aby przesunąć; użyj kółka lub przycisków powiększenia. Wybrana trasa gry pochodzi z geometrii OSM.
           </desc>
           <g
             transform={viewportTransform(base, viewport)}
@@ -381,6 +398,11 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
               />
             </g>
           </g>
+          {routePath&&<g data-layer="transport-route" transform={`translate(${viewport.offsetX} ${viewport.offsetY}) scale(${viewport.scale})`}>
+            <path d={routePath} fill="none" stroke="#172129" strokeWidth="6" vectorEffect="non-scaling-stroke"/>
+            <path d={routePath} fill="none" stroke="#f3ba62" strokeWidth="3" vectorEffect="non-scaling-stroke" data-testid="osm-route"/>
+          </g>}
+          {highlightedPath&&<g data-layer="offer-route" pointerEvents="none" transform={`translate(${viewport.offsetX} ${viewport.offsetY}) scale(${viewport.scale})`}><path data-testid="offer-route" d={highlightedPath} fill="none" stroke="#54baff" strokeWidth="4" vectorEffect="non-scaling-stroke"/></g>}
           <g data-layer="cities">
             {renderedCities.map((city) => {
               const [x, y] = screenPoint(city.coordinates, viewport);
@@ -463,6 +485,14 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
               </text>
             ))}
           </g>
+          {companyBase&&<g data-layer="company-base" transform={`translate(${screenPoint(companyBase.coordinates,viewport).join(' ')})`} aria-label="Baza firmy">
+            <path d="M-9 10V-3L0-10L9-3V10Z" fill="#80afd0" stroke="#16232c" strokeWidth="2"/><title>Baza: {companyBase.name}</title>
+          </g>}
+          {vehicle&&vehicleCoordinates&&<g data-layer="vehicles" data-testid="game-vehicle" data-status={vehicle.status} data-destination={vehicle.destinationId} data-progress={vehicle.progress} data-lon={vehicleCoordinates[0]} data-lat={vehicleCoordinates[1]} data-screen-x={screenPoint(vehicleCoordinates,viewport)[0]} data-screen-y={screenPoint(vehicleCoordinates,viewport)[1]} transform={`translate(${screenPoint(vehicleCoordinates,viewport).join(' ')})`} role="button" tabIndex={0} aria-label={`Pojazd: ${vehicle.name}`} aria-pressed={vehicleSelected} onClick={()=>setVehicleSelected(v=>!v)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setVehicleSelected(v=>!v)}}}>
+            <rect x="-14" y="-14" width="28" height="28" fill="transparent"/>
+            <VehicleSilhouette category="van"/>
+            <title>{vehicle.name} · {vehicle.status}</title>
+          </g>}
         </svg>
         <div className="map-legend" aria-hidden="true">
           <span>
@@ -592,17 +622,18 @@ function PolandMapView({ geography }: { geography: GeographyDataset }) {
           </select>
         </label>
       </div>
+      {vehicleSelected&&vehicle&&<div className="map-vehicle-details" aria-label="Wybrany pojazd"><strong>{vehicle.name}</strong><span>Status: {vehicle.status}</span><span>Cel: {geography.cities.find(c=>c.id===vehicle.destinationId)?.name??vehicle.destinationId}</span><span>Postęp: {(vehicle.progress*100).toFixed(0)}%</span></div>}
       <div className="map-data-note">
-        Warstwa demonstracyjna obejmuje wyłącznie 19 miast Małopolski. Pełna
-        sieć miast, drogi i trasy nie są jeszcze dostępne.
+        {game?'19 miast demonstracyjnych · zatwierdzone trasy OSM · pozycja pojazdu według wspólnego czasu gry.':'Warstwa demonstracyjna obejmuje wyłącznie 19 miast Małopolski. Pełna sieć miast, drogi i trasy nie są jeszcze dostępne.'}
       </div>
       <div className="panel-footnote map-attribution">
         <PixelIcon name="map" size={14} />
         <span>
+          {game&&<>Drogi: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a> · </>}
           Krajobraz: © ESA WorldCover 2021 · USGS/NOAA · Natural Earth ·
           Granice: PRG/GUGiK, oprac. ppatrzyk (MIT) · Miasta: © GeoNames (CC BY
           4.0) ·{" "}
-          <a href="/map-sources.html" target="_blank" rel="noreferrer">
+          <a href={`${import.meta.env.BASE_URL}map-sources.html`} target="_blank" rel="noreferrer">
             Źródła i licencje
           </a>
         </span>

@@ -1,0 +1,110 @@
+[
+  {
+    "from": "Kraków",
+    "to": "Wieliczka",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:755889",
+    "audited08ApproxKm": 14.141378,
+    "broken09ApproxKm": 102.57,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Wieliczka",
+    "to": "Kraków",
+    "fromCityId": "geonames:755889",
+    "toCityId": "geonames:3094802",
+    "audited08ApproxKm": 13.96532,
+    "broken09ApproxKm": 54.64,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Myślenice",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:3091256",
+    "audited08ApproxKm": 30.297762,
+    "broken09ApproxKm": 88.69,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Myślenice",
+    "to": "Kraków",
+    "fromCityId": "geonames:3091256",
+    "toCityId": "geonames:3094802",
+    "audited08ApproxKm": 29.92521,
+    "broken09ApproxKm": 32.16,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Sucha Beskidzka",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:3084300",
+    "audited08ApproxKm": 53.279386,
+    "broken09ApproxKm": 71.18,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Olkusz",
+    "to": "Kraków",
+    "fromCityId": "geonames:3090146",
+    "toCityId": "geonames:3094802",
+    "audited08ApproxKm": 39.89,
+    "broken09ApproxKm": 70.79,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Zakopane",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:3080866",
+    "audited08ApproxKm": 103.64,
+    "broken09ApproxKm": 146.02,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Zakopane",
+    "to": "Kraków",
+    "fromCityId": "geonames:3080866",
+    "toCityId": "geonames:3094802",
+    "audited08ApproxKm": 104.0828938,
+    "broken09ApproxKm": 107.07,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Tarnów",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:757026",
+    "audited08ApproxKm": 82.69,
+    "broken09ApproxKm": 113.9,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Tarnów",
+    "to": "Kraków",
+    "fromCityId": "geonames:757026",
+    "toCityId": "geonames:3094802",
+    "audited08ApproxKm": 82.89,
+    "broken09ApproxKm": 113.6,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Nowy Sącz",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:763534",
+    "audited08ApproxKm": 86.1,
+    "broken09ApproxKm": 132.4,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  },
+  {
+    "from": "Kraków",
+    "to": "Bochnia",
+    "fromCityId": "geonames:3094802",
+    "toCityId": "geonames:775758",
+    "audited08ApproxKm": 41.6,
+    "broken09ApproxKm": 79.6,
+    "expected": "fix via audited 08 or independently reverified shorter"
+  }
+]

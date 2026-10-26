@@ -1,0 +1,32 @@
+import {finishCurrentCourse} from './helpers/freight';
+import {test,expect,type Page} from '@playwright/test';
+import type {PreviewState} from '../src/preview/gameplay';
+async function menu(page:Page,section:string,item:string){const button=page.getByRole('navigation',{name:'Menu gry'}).getByRole('button',{name:section,exact:true});if(await button.getAttribute('aria-expanded')!=='true')await button.click();await page.getByRole('button',{name:item,exact:true}).click()}
+for(const viewport of [{width:1366,height:768},{width:1920,height:1080}])test(`stage06 complete gameplay and viewport ${viewport.width}`,async({page})=>{
+ test.setTimeout(90000);await page.setViewportSize(viewport);await page.clock.install();const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('pixelcargo-0.1-preview-v1')!) as PreviewState);
+ await page.goto('/');await page.getByLabel('Nazwa firmy').fill('Kozak Transport');await page.getByRole('button',{name:'ZAŁÓŻ FIRMĘ',exact:true}).click();
+ await expect(page.getByTestId('poland-map')).toBeVisible();await expect(page.getByRole('heading',{name:'Przegląd firmy',exact:true})).toBeVisible();
+ await page.screenshot({path:`/tmp/pixelcargo-06-overview-${viewport.width}.png`});
+ await menu(page,'PARKING','Giełda używanych');await expect(page.locator('.pv-car-card')).toHaveCount(5);await page.getByRole('button',{name:'KUP POJAZD',exact:true}).first().click();
+ await menu(page,'KADRY','Rekrutacja');await page.getByRole('button',{name:'ZATRUDNIJ KIEROWCĘ',exact:true}).click();
+ await menu(page,'SPEDYCJA','Szukaj zleceń');await expect(page.getByRole('table',{name:'Dostępne zlecenia'})).toBeVisible();expect((await saved()).market!.offers).toHaveLength(190);
+ await page.getByLabel('Miasto załadunku',{exact:true}).selectOption('geonames:3094802');await page.getByLabel('Promień geograficzny',{exact:true}).selectOption('50');await page.getByLabel('Miasto rozładunku',{exact:true}).selectOption('geonames:757026');await page.getByLabel('Wielkość ładunku',{exact:true}).selectOption('fits');
+ const row=page.locator('[data-offer-id]').filter({hasText:'Kraków'}).filter({has:page.getByRole('button',{name:'PRZYJMIJ',exact:true,disabled:false})}).first();await row.hover();await expect(page.getByTestId('offer-route')).toBeAttached();expect((await page.getByTestId('offer-route').getAttribute('d'))!.split('L').length).toBeGreaterThan(1000);
+ await page.getByRole('heading',{name:'Szukaj zleceń',exact:true}).hover();await expect(page.getByTestId('offer-route')).toHaveCount(0);
+ await row.getByRole('button',{name:'PRZYJMIJ',exact:true}).click();expect((await saved()).active).toBeNull();
+ await menu(page,'SPEDYCJA','Zlecenia przyjęte');await page.getByRole('button',{name:'PRZYDZIEL AUTO',exact:true}).click();await expect(page.getByLabel('Samochód do zlecenia',{exact:true})).toBeVisible();await page.getByRole('button',{name:'ROZPOCZNIJ KURS',exact:true}).click();
+ await page.clock.runFor(17000);await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');await expect(page.getByTestId('osm-route')).toBeVisible();
+ const before=(await saved()),lon=await page.getByTestId('game-vehicle').getAttribute('data-lon');await page.clock.runFor(2000);expect(await page.getByTestId('game-vehicle').getAttribute('data-lon')).not.toBe(lon);
+ await page.getByRole('button',{name:'BAZA',exact:true}).click();await expect(page.getByRole('group',{name:'Interaktywna baza firmy'})).toBeVisible();
+ await page.getByRole('button',{name:/BIURO, poziom 1/}).click();await expect(page.getByRole('heading',{name:'Przegląd firmy',exact:true})).toBeVisible();
+ await menu(page,'FINANSE','Podsumowanie finansowe');await expect(page.getByRole('group',{name:'Interaktywna baza firmy'})).toBeVisible();await page.getByLabel('Okres finansów',{exact:true}).selectOption('0');
+ await page.reload();await expect(page.getByRole('group',{name:'Interaktywna baza firmy'})).toBeVisible();await expect(page.getByTestId('transport-phase')).toHaveText('Jazda z ładunkiem');await page.clock.runFor(1250);expect((await saved()).active!.offer.id).toBe(before.active!.offer.id);
+ await page.getByRole('button',{name:'MAPA',exact:true}).click();await expect(page.getByTestId('poland-map')).toBeVisible();
+ await page.screenshot({path:`/tmp/pixelcargo-06-driving-${viewport.width}.png`});
+ const bounds=await page.getByTestId('game-timeline').boundingBox();expect(bounds!.y+bounds!.height).toBeLessThanOrEqual(viewport.height);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+ await finishCurrentCourse(page);let delivered=await saved();expect(delivered.completedOfferIds).toEqual([before.active!.offer.id]);expect(delivered.events.filter(e=>e.message.startsWith('Dostarczono')).map(e=>e.changeGrosze)).toEqual([before.active!.offer.payoutGrosze]);
+ await expect(page.getByTestId('game-vehicle')).toHaveAttribute('data-status','Oczekiwanie');await page.reload();await page.clock.runFor(1250);delivered=await saved();expect(delivered.completedOfferIds).toHaveLength(1);
+ await menu(page,'FINANSE','Historia finansowa');await expect(page.getByRole('cell',{name:`Dostarczono ${before.active!.offer.cargo}.`,exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Ustawienia',exact:true}).click();await page.getByRole('button',{name:'ZAPISZ GRĘ',exact:true}).click();page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'RESTART FIRMY',exact:true}).click();expect((await saved()).company).toBeNull();expect((await saved()).market).toBeUndefined();expect(errors).toEqual([]);
+});
