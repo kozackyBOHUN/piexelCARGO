@@ -7,3 +7,5 @@ test-results/
 # Python regeneration helpers and large raw road sources
 __pycache__/
 *.osm.pbf
+
+/tmp/route-recovery11/

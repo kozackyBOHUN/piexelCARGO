@@ -16,8 +16,4 @@ export function makeCountyRouter(links:readonly CountyLink[],network:CountyNetwo
  }
  return {routeBetween,catalog:()=>network.approvedPairs.map(p=>{const [a,b]=p.split('|');const r=routeBetween(a,b);if(!r)throw Error('Brak dopuszczonej trasy.');return r})};
 }
-export async function loadGameRoutes(base:string):Promise<TransportRoute[]>{
- try{const [lr,nr]=await Promise.all([fetch(`${base}roads/county/links.json`,{cache:'no-cache'}),fetch(`${base}roads/county/network.json`,{cache:'no-cache'})]);if(!lr.ok||!nr.ok)throw Error('Brak sieci powiatowej');return makeCountyRouter(await lr.json(),await nr.json()).catalog()}catch{
-  const r=await fetch(`${base}roads/preview/routes.json`,{cache:'no-cache'});if(!r.ok)throw Error('Brak zatwierdzonych tras OSM.');const data=await r.json();if(!Array.isArray(data)||!data.length)throw Error('Nieprawidłowy katalog zapasowy.');return data;
- }
-}
+export {loadPreferredRoutes as loadGameRoutes} from './preferredRoutes11';

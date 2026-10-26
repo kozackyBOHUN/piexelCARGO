@@ -32,7 +32,7 @@ describe('09 certified county network',()=>{
  });
 });
 
-it('loads the unchanged approved fallback when county assets are unavailable, without requesting a full graph',async()=>{
- const calls:string[]=[];vi.stubGlobal('fetch',vi.fn(async(url:string)=>{calls.push(url);return url.endsWith('/preview/routes.json')?{ok:true,json:async()=>legacy}:{ok:false}}));
- try{expect(await loadGameRoutes('/piexelCARGO/')).toEqual(legacy);expect(calls).toEqual(['/piexelCARGO/roads/county/links.json','/piexelCARGO/roads/county/network.json','/piexelCARGO/roads/preview/routes.json']);expect(calls.some(p=>p.includes('graph'))).toBe(false)}finally{vi.unstubAllGlobals()}
+it('fails closed when the preferred manifest is unavailable instead of silently restoring county detours',async()=>{
+ const calls:string[]=[];vi.stubGlobal('fetch',vi.fn(async(url:string)=>{calls.push(url);return {ok:false}}));
+ try{await expect(loadGameRoutes('/piexelCARGO/')).rejects.toThrow(/manifestu/);expect(calls).toEqual(['/piexelCARGO/roads/preferred/manifest.json'])}finally{vi.unstubAllGlobals()}
 });

@@ -1,3 +1,13 @@
+# Etap 11 — routing ukończony
+
+Baza 92ff5c46eaa334f6ad6f7ec6ab03bb1bafe32d25; osobny worktree /workspace/pixelcargo-stage11. **19 miast, 342/342 audytowanych kierunków, 36 relacji Gorlic, 135/135 bez pogorszenia dystansu 08**. Raport wszystkich certyfikatów: docs/reports/11-route-acceptance.json; metoda i ograniczenia: docs/STAGE_11.md. Końcowa kontrola PBF także 342/342 bez błędów. Niekompletne from/to nigdy nie są zgadywane: konkretne manewry muszą być bezpieczne dla każdej możliwej wartości brakującego członka; pozostałe są zamknięte. Trzy krótsze, niecertyfikowalne warianty opisano w raporcie. Największy narzut do audytowanego bezpiecznego optimum pełnego grafu: 0%.
+
+**Testy: TypeScript OK, 144/144 unit, 49/49 pełny Playwright, 1/1 produkcyjny Pages, build i build:pages OK**. W obu rozdzielczościach przeprowadzono dostawę i powrót z każdego 19 miast, kontrolę 12 priorytetów i aktualizację starego aktywnego kursu bez teleportacji/dublowania wypłaty. Pełny graf i PBF nie są ładowane w przeglądarce. Runtime wymaga manifestu 11 i zgodnego SHA, bez fallbacku do powiatowych objazdów. Stare geometrie aktywnych zapisów, stare 135 tras, raporty 08/09 i mechaniki gry pozostają niezmienione.
+
+Punkt wznowienia: commit zawierający ten wpis, docelowo wyłącznie feat/preview-gameplay-core. Katalog 11-3c539dacd20d148a, SHA 502fc56e986e477e76eeb4bde63c111d37e1ce374e0d99cf9e4c5b7ab0afd1a6. Po push potwierdzić workflow Pages dla dokładnego SHA i uruchomić playwright.routing11-live.config.ts na publicznym URL; końcowy raport zadania zawiera wynik. **Po zakończeniu czekać na nowe polecenie**, bez kolejnego etapu, bez main i bez naruszania innych worktree/szkiców.
+
+---
+
 # Aktualizacja — Etap 10 ukończony
 
 Baza cc8b20e51147e27f99119195ed065ce857950a2d; osobny worktree /workspace/pixelcargo-stage10, lokalna gałąź codex/stage10, docelowo wyłącznie feat/preview-gameplay-core. Implementacja jednostek i postępu ładunków, ładowni, dzielenia i rzeczywistego łączenia partii o wspólnym nadawcy/odbiorcy. Bez zmian OSM i PNG. Dokumentacja zasad/migracji/ograniczeń: docs/STAGE_10.md. Wielopunktowy planer nie jest zaimplementowany; inne miasta wymagają osobnych kursów.

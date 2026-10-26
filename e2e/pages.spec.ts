@@ -19,7 +19,7 @@ test('production Pages base serves assets, routes and persistent preview',async(
  await takeTarnow(page);
  await expect(page.getByTestId('osm-route')).toBeVisible();
  expect((await page.getByTestId('osm-route').getAttribute('d'))!.split('L').length).toBeGreaterThan(1000);
- expect(requests.some(u=>u.endsWith('/piexelCARGO/roads/county/links.json'))).toBe(true);
+ expect(requests.some(u=>u.includes('/piexelCARGO/roads/preferred/catalog.json?v='))).toBe(true);
  expect(requests.some(u=>u.includes('/roads/demo/graph'))).toBe(false);
  // Navigation and credits must stay inside the repository path too.
  await page.getByRole('button',{name:'MAPA',exact:true}).click();

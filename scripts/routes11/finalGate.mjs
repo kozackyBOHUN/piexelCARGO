@@ -1,0 +1,4 @@
+import {readFileSync,writeFileSync} from 'node:fs';import {execFileSync} from 'node:child_process';
+const routes=JSON.parse(readFileSync('/tmp/11-full-routes.json')),proof=JSON.parse(readFileSync('/tmp/11-independent-certificates.json'));
+writeFileSync('/tmp/11-audited11.json',JSON.stringify({graphSha256:'e67a4d18e39c2894edcab59e7ef776a01ce0d6251a00618ff7b262d330e42c9f',auditor:'verify-routes08-independent',extension:'universal source-member proofs; no inferred members',routes:routes.map(r=>{const p=proof.find(p=>p.id===r.id);if(!p||p.errors.length)throw Error('No independent proof');return {id:r.id,fromCityId:r.fromCityId,toCityId:r.toCityId,meters:r.meters,seconds:r.seconds,geometry:r.geometry,audit:{passed:true,errors:p.errors,partialMemberProofs:p.partialMemberProofs}}})}));
+execFileSync('node',['scripts/routes11/build_preferred_catalog.mjs','--project','.','--strict19','--audited11','/tmp/11-audited11.json'],{stdio:'inherit'});

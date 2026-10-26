@@ -1,3 +1,11 @@
+# Routing 11 — obecna publikacja
+
+Gałąź: feat/preview-gameplay-core. Aktualna gra pobiera wyłącznie roads/preferred/manifest.json i wersjonowany katalog 342 tras, sprawdzając SHA-256; bez fallbacku do powiatowych objazdów. Pełna kontrola produkcji: `npm run build:pages` i `npx playwright test --config playwright.pages.config.ts`. Kontrola faktycznych publicznych Pages, 19 miast i starego aktywnego kursu: `npx playwright test --config playwright.routing11-live.config.ts`. Weryfikować dokładny SHA commita i katalogu po sukcesie workflow, nie sam adres URL.
+
+Adres gry: https://kozackybohun.github.io/piexelCARGO/?preview=1. Szczegóły: docs/STAGE_11.md. Poniżej historyczny opis pierwszego uruchomienia Pages; dawne blokady proxy nie określają bieżącego statusu publikacji.
+
+---
+
 # Publiczne preview przez GitHub Pages
 
 Gałąź publikowana: **feat/preview-gameplay-core**. Bez merge do main.

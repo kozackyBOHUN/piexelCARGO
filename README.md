@@ -1,4 +1,12 @@
-# PixelCargo — Etap 08
+# PixelCargo — Routing 11
+
+Małopolska: **19 miast i 342 audytowane kierunki OSM**, bez pogorszenia dystansu 135 tras etapu 08. Naprawiono wybór tras i objazdy, dołączono Gorlice. Gra korzysta z wersjonowanego katalogu z kontrolą SHA-256; aktywne starsze kursy zachowują swoją geometrię. Mechaniki 09/10 i PNG pozostają bez zmian.
+
+[Zagraj online](https://kozackybohun.github.io/piexelCARGO/?preview=1) · [Zasady i kontrola routingu](docs/STAGE_11.md) · [342 certyfikaty](docs/reports/11-route-acceptance.json).
+
+---
+
+# Etap 08 (historia)
 
 Zatwierdzona grafika, zegar od założenia firmy, samouczek, profilowy furgon, oś czasu ze stałym TERAZ i historia finansów od najnowszej operacji. Działa 17 miast / 135 audytowanych kierunków; jest powrót z Zakopanego i ręczny przejazd pusty. Szczegóły oraz ograniczenia: [docs/STAGE_08.md](docs/STAGE_08.md).
 

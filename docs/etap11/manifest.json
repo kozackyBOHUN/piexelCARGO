@@ -1,0 +1,20 @@
+{
+  "version": "PixelCargo routing dataset 11",
+  "originGitSha": "92ff5c46eaa334f6ad6f7ec6ab03bb1bafe32d25",
+  "graphSha256": "e67a4d18e39c2894edcab59e7ef776a01ce0d6251a00618ff7b262d330e42c9f",
+  "citiesPlanned": 19,
+  "orderedPairsFull": 342,
+  "stage09CertifiedCities": 18,
+  "stage09CertifiedPairs": 306,
+  "stage09CertifiedLinks": 75,
+  "stage08CertifiedRoutes": 135,
+  "stage08ArchivedRoutesPresent": 134,
+  "stage08ArchivedRoutesMissing": 1,
+  "unverifiedGorliceCandidateRoutes": 35,
+  "numberedPlanningLinks": 45,
+  "warnings": [
+    "Archived historic source files are NOT an audit certificate; repository 08/09 reports and current route catalogs are authoritative.",
+    "No complete 19-city set of legal routes yet; Gorlice remains blocked.",
+    "No algorithm can guarantee current legally shortest roads solely from fixed city-to-city pairs; full OSM shortest-path audit required before FINAL."
+  ]
+}
